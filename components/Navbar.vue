@@ -1,37 +1,5 @@
 <template>
   <!-- Navigation -->
-  <!-- <nav id="nav" class="navbar navbar-expand-lg navbar-dark mt-0">
-    <div class="container">
-      <router-link id="logo" to="/" tag="a" active-class="navbar-brand">
-        <img src="../assets/logoLG.svg" class="m-1" height="42" alt="logo" />
-      </router-link>
-      <button
-        class="navbar-toggler navbar-toggler-right"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarResponsive"
-        aria-controls="navbarResponsive"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon" />
-      </button>
-      <ul
-        class="navbar-nav ml-auto bg-dark p-2 d-flex align-items-center rounded-pill"
-      >
-        <nuxt-link to="/" tag="li" active-class="nav-item">
-          <a id="home" class="nav-link">Events</a>
-        </nuxt-link>
-        <nuxt-link :to="{ name: 'about' }" tag="li" active-class="nav-item">
-          <a id="about" class="nav-link">About</a>
-        </nuxt-link>
-        <nuxt-link :to="{ name: 'contact' }" tag="li" active-class="nav-item">
-          <a id="contact" class="nav-link">Contact</a>
-        </nuxt-link>
-      </ul>
-    </div>
-  </nav> -->
-
   <div>
     <nav id="nav" class="navbar navbar-expand-lg navbar-dark mt-0">
       <div class="container">
@@ -59,13 +27,21 @@
         </nuxt-link>
 
         <button
-          class="btn text-light d-flex d-lg-none"
+          id="menu-btn"
+          :class="{
+            btn: true,
+            'text-light': true,
+            'd-flex': true,
+            'd-lg-none': true,
+            'btn-open': collapseOpen,
+          }"
           type="button"
           data-toggle="collapse"
           data-target="#navbarCollapse"
           aria-controls="navbarCollapse"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          @click="collapseOpen = !collapseOpen"
         >
           <i class="fa fa-bars fa-lg"></i>
         </button>
@@ -117,11 +93,34 @@
 <script>
 export default {
   name: 'Navbar',
+  data() {
+    return {
+      collapseOpen: false,
+    }
+  },
 }
 </script>
 
 <style scoped>
 .navbar {
   background: #fe3d61;
+}
+
+.btn-open i {
+  transform: rotate(90deg);
+}
+
+#menu-btn i {
+  transition: transform 0.5s;
+}
+
+.nav-item {
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.5s;
+}
+
+.show .nav-item {
+  opacity: 1;
 }
 </style>

@@ -35,25 +35,35 @@
 
           <ul class="nav d-flex d-md-none d-lg-none">
             <li class="nav-item">
-              <a class="nav-link text-light active" href="#">Events</a>
+              <nuxt-link to="/" class="nav-link text-light">Events</nuxt-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-light" href="#">About</a>
+              <nuxt-link :to="{ name: 'about' }" class="nav-link text-light"
+                >About</nuxt-link
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link text-light" href="#">Contact</a>
+              <nuxt-link :to="{ name: 'contact' }" class="nav-link text-light"
+                >Contact</nuxt-link
+              >
             </li>
           </ul>
 
           <ul class="nav flex-column d-none d-md-flex">
             <li class="nav-item">
-              <a class="nav-link text-light active" href="#">Events</a>
+              <nuxt-link to="/" class="nav-link text-light" href="#"
+                >Events</nuxt-link
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link text-light" href="#">About</a>
+              <nuxt-link :to="{ name: 'about' }" class="nav-link text-light"
+                >About</nuxt-link
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link text-light" href="#">Contact</a>
+              <nuxt-link :to="{ name: 'contact' }" class="nav-link text-light"
+                >Contact</nuxt-link
+              >
             </li>
           </ul>
         </div>
