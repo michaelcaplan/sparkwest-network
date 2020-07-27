@@ -114,7 +114,7 @@ export default {
   transition: transform 0.5s;
 }
 
-.nav-item {
+.collpase .nav-item {
   opacity: 0;
   transition-property: opacity;
   transition-duration: 0.5s;
