@@ -1,39 +1,100 @@
 <template>
-  <div id="footer" class="px-5 bg-light border text-center">
-    <div class="row my-3">
-      <div class="col text-center">
-        <p class="mb-0 font-weight-bold">Check out our newsletter:</p>
-      </div>
-    </div>
-    <div class="row mt-3 d-flex justify-content-center">
-      <div class="col-md-8">
-        <form class="mb-3">
-          <div class="input-group mb-3">
-            <label>
+  <div id="footer" class="bg-dark py-5 text-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg mb-3">
+          <h3>Spark West Network</h3>
+
+          <p>
+            an umbrella marketing platform that draws together, assists, and
+            coordinates the various organizations, events, and people that
+            define our region’s unique entrepreneurial opportunities.
+          </p>
+
+          <div class="row">
+            <div class="col-auto">
+              <button class="btn btn-light">
+                <i class="fa fa-facebook-f" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="col-auto p-0">
+              <button class="btn btn-light">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-light">
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md mb-3">
+          <h5>Navigation</h5>
+
+          <ul class="nav d-flex d-md-none d-lg-none">
+            <li class="nav-item">
+              <a class="nav-link text-light active" href="#">Events</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#">Contact</a>
+            </li>
+          </ul>
+
+          <ul class="nav flex-column d-none d-md-flex">
+            <li class="nav-item">
+              <a class="nav-link text-light active" href="#">Events</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-12 col-md mb-3">
+          <h5>Check out our newsletter</h5>
+
+          <form>
+            <div class="form-group">
               <input
+                id="inputEmail"
                 type="email"
                 class="form-control"
                 placeholder="Email"
-                required
+                aria-describedby="emailHelp"
               />
-            </label>
-            <label>
+            </div>
+
+            <div class="form-group">
               <input
+                id="inputName"
                 type="text"
                 class="form-control"
                 placeholder="Name"
-                required
               />
-            </label>
-          </div>
+            </div>
 
-          <input
-            type="submit"
-            value="Sign up"
-            class="btn btn-block btn-success"
-          />
-        </form>
+            <div class="form-group">
+              <input
+                type="submit"
+                value="Sign Up"
+                class="btn btn-success float-right"
+              />
+            </div>
+          </form>
+        </div>
       </div>
+
+      <p id="copyright" class="text-center m-0">
+        &copy; 2020 Spark West Network. All rights reserved
+      </p>
     </div>
   </div>
 </template>
@@ -45,7 +106,37 @@ export default {
 </script>
 
 <style scoped>
-.col-md-8 {
-  max-width: 800px;
+#footer {
+  height: auto;
+}
+
+@media only screen and (max-width: 576px) {
+  #footer {
+    height: 740px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  #footer {
+    height: 585px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #footer {
+    height: 500px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #footer {
+    height: 375px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  #footer {
+    height: 351px;
+  }
 }
 </style>
