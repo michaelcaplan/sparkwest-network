@@ -47,18 +47,38 @@
         </button>
 
         <ul class="navbar-nav ml-auto d-none d-lg-flex">
-          <li class="nav-item font-weight-bold">
-            <nuxt-link to="/" class="nav-link text-light">Events</nuxt-link>
+          <li class="nav-item">
+            <nuxt-link
+              to="/"
+              :class="{
+                'nav-link': true,
+                'text-light': true,
+                'font-weight-bold': routeName == 'index',
+              }"
+              >Events</nuxt-link
+            >
           </li>
 
-          <li class="nav-item font-weight-bold">
-            <nuxt-link :to="{ name: 'about' }" class="nav-link text-light"
+          <li class="nav-item">
+            <nuxt-link
+              :to="{ name: 'about' }"
+              :class="{
+                'nav-link': true,
+                'text-light': true,
+                'font-weight-bold': routeName == 'about',
+              }"
               >About</nuxt-link
             >
           </li>
 
-          <li class="nav-item font-weight-bold">
-            <nuxt-link :to="{ name: 'contact' }" class="nav-link text-light"
+          <li class="nav-item">
+            <nuxt-link
+              :to="{ name: 'contact' }"
+              :class="{
+                'nav-link': true,
+                'text-light': true,
+                'font-weight-bold': routeName == 'contact',
+              }"
               >Contact</nuxt-link
             >
           </li>
@@ -69,18 +89,38 @@
     <div id="navbarCollapse" class="collapse navbar-collapse bg-dark d-lg-none">
       <div class="container py-3">
         <ul class="navbar-nav">
-          <li class="nav-item font-weight-bold">
-            <nuxt-link to="/" class="nav-link text-light">Events</nuxt-link>
+          <li class="nav-item">
+            <nuxt-link
+              to="/"
+              :class="{
+                'nav-link': true,
+                'text-light': true,
+                'font-weight-bold': routeName == 'index',
+              }"
+              >Events</nuxt-link
+            >
           </li>
 
-          <li class="nav-item font-weight-bold">
-            <nuxt-link :to="{ name: 'about' }" class="nav-link text-light"
+          <li class="nav-item">
+            <nuxt-link
+              :to="{ name: 'about' }"
+              :class="{
+                'nav-link': true,
+                'text-light': true,
+                'font-weight-bold': routeName == 'about',
+              }"
               >About</nuxt-link
             >
           </li>
 
-          <li class="nav-item font-weight-bold">
-            <nuxt-link :to="{ name: 'contact' }" class="nav-link text-light"
+          <li class="nav-item">
+            <nuxt-link
+              :to="{ name: 'contact' }"
+              :class="{
+                'nav-link': true,
+                'text-light': true,
+                'font-weight-bold': routeName == 'contact',
+              }"
               >Contact</nuxt-link
             >
           </li>
@@ -97,6 +137,11 @@ export default {
     return {
       collapseOpen: false,
     }
+  },
+  computed: {
+    routeName() {
+      return this.$route.name
+    },
   },
 }
 </script>
