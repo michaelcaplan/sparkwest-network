@@ -70,7 +70,7 @@ h6 {
   }
 
   #footer-push {
-    height: -740px;
+    height: 740px;
   }
 }
 
@@ -80,7 +80,7 @@ h6 {
   }
 
   #footer-push {
-    height: -585px;
+    height: 585px;
   }
 }
 
@@ -90,7 +90,7 @@ h6 {
   }
 
   #footer-push {
-    height: -500px;
+    height: 500px;
   }
 }
 
@@ -100,7 +100,7 @@ h6 {
   }
 
   #footer-push {
-    height: -375px;
+    height: 375px;
   }
 }
 
@@ -110,7 +110,7 @@ h6 {
   }
 
   #footer-push {
-    height: -351px;
+    height: 351px;
   }
 }
 
