@@ -71,7 +71,7 @@
             >
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item mr-2 border-right">
             <nuxt-link
               :to="{ name: 'contact' }"
               :class="{
@@ -82,13 +82,29 @@
               >Contact</nuxt-link
             >
           </li>
+
+          <li class="nav-item d-flex align-items-center mr-2">
+            <nuxt-link
+              :to="{ name: 'login' }"
+              class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
+              >Login</nuxt-link
+            >
+          </li>
+
+          <li class="nav-item d-flex align-items-center">
+            <nuxt-link
+              :to="{ name: 'signUp' }"
+              class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
+              >Sign Up</nuxt-link
+            >
+          </li>
         </ul>
       </div>
     </nav>
 
     <div id="navbarCollapse" class="collapse navbar-collapse bg-dark d-lg-none">
       <div class="container py-3">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav border-bottom mb-3">
           <li class="nav-item">
             <nuxt-link
               to="/"
@@ -122,6 +138,24 @@
                 'font-weight-bold': routeName == 'contact',
               }"
               >Contact</nuxt-link
+            >
+          </li>
+        </ul>
+
+        <ul class="nav">
+          <li class="nav-item d-flex align-items-center mr-2">
+            <nuxt-link
+              :to="{ name: 'login' }"
+              class="nav-link btn btn-light rounded-pill py-1 px-3"
+              >Login</nuxt-link
+            >
+          </li>
+
+          <li class="nav-item d-flex align-items-center">
+            <nuxt-link
+              :to="{ name: 'signUp' }"
+              class="nav-link btn btn-light rounded-pill py-1 px-3"
+              >Sign Up</nuxt-link
             >
           </li>
         </ul>
