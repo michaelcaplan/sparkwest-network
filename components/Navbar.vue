@@ -83,7 +83,7 @@
             >
           </li>
 
-          <li class="nav-item d-flex align-items-center mr-2">
+          <li v-if="!user" class="nav-item d-flex align-items-center mr-2">
             <nuxt-link
               :to="{ name: 'login' }"
               class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
@@ -91,12 +91,36 @@
             >
           </li>
 
-          <li class="nav-item d-flex align-items-center">
+          <li v-if="!user" class="nav-item d-flex align-items-center">
             <nuxt-link
               :to="{ name: 'signUp' }"
               class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
               >Sign Up</nuxt-link
             >
+          </li>
+
+          <li v-else class="nav-item dropdown d-flex align-items-center">
+            <button
+              class="btn btn-dark dropdown-toggle rounded-pill py-1 px-3"
+              type="button"
+              id="profileDropdown"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fa fa-user"></i>
+            </button>
+
+            <div
+              class="dropdown-menu dropdown-menu-right"
+              aria-labelledby="profileDropdown"
+            >
+              <a class="dropdown-item disabled" href="#">Profile</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" @click.prevent="signout"
+                >Log Out</a
+              >
+            </div>
           </li>
         </ul>
       </div>
@@ -142,7 +166,7 @@
           </li>
         </ul>
 
-        <ul class="nav">
+        <ul v-if="!user" class="nav">
           <li class="nav-item d-flex align-items-center mr-2">
             <nuxt-link
               :to="{ name: 'login' }"
@@ -159,12 +183,37 @@
             >
           </li>
         </ul>
+
+        <div v-else class="row">
+          <div class="col-auto d-flex align-items-center">
+            <i class="fa fa-user fa-lg text-light"></i>
+          </div>
+
+          <div class="col-auto pl-0">
+            <ul class="nav">
+              <li class="nav-item d-flex align-items-center">
+                <a class="nav-link text-light" href="#">Profile</a>
+              </li>
+
+              <li class="nav-item d-flex align-items-center">
+                <a
+                  class="nav-link btn btn-light py-1 px-3 rounded-pill"
+                  href="#"
+                  @click.prevent="signout"
+                  >Log Out</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Navbar',
   data() {
@@ -172,9 +221,23 @@ export default {
       collapseOpen: false,
     }
   },
+
   computed: {
+    ...mapGetters({
+      user: 'user/user',
+    }),
     routeName() {
       return this.$route.name
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      logout: 'user/logout',
+    }),
+    async signout() {
+      await this.logout()
+      this.$router.push('/')
     },
   },
 }

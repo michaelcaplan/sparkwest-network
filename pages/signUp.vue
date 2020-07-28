@@ -109,6 +109,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'SignUp',
   data() {
@@ -124,6 +126,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      login: 'user/login',
+    }),
+
     async signUp() {
       this.signingUp = true
 
@@ -132,10 +138,12 @@ export default {
         this.error = "Passwords don't match"
       } else {
         try {
-          await this.$fireAuth.createUserWithEmailAndPassword(
+          const response = await this.$fireAuth.createUserWithEmailAndPassword(
             this.email,
             this.password
           )
+
+          await this.login(response.user)
 
           this.$router.push('/')
         } catch (e) {
