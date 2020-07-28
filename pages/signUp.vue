@@ -7,13 +7,18 @@
             <div class="card-body">
               <h1 class="text-center">Sign Up</h1>
 
+              <div v-if="error" class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+
               <div class="row">
                 <div class="col">
-                  <form @submit.prevent="signUp" class="mb-3">
+                  <form class="mb-3" @submit.prevent="signUp">
                     <div class="form-group">
                       <label for="emailInput">Email</label>
                       <input
                         id="emailInput"
+                        v-model="email"
                         type="email"
                         class="form-control"
                         placeholder="severus@snape.com"
@@ -29,6 +34,7 @@
                       <label for="emailInput">Name</label>
                       <input
                         id="textInput"
+                        v-model="name"
                         type="text"
                         class="form-control"
                         placeholder="John Doe"
@@ -41,6 +47,7 @@
                       <label for="passInput">Password</label>
                       <input
                         id="passInput"
+                        v-model="password"
                         type="password"
                         class="form-control"
                         placeholder="super secret ..."
@@ -53,6 +60,7 @@
                       <label for="passReInput">Repeat Password</label>
                       <input
                         id="passReInput"
+                        v-model="passwordRe"
                         type="password"
                         class="form-control"
                         placeholder="Get it right"
@@ -111,12 +119,30 @@ export default {
       passwordRe: '',
 
       signingUp: false,
+      error: '',
     }
   },
 
   methods: {
-    signUp() {
+    async signUp() {
       this.signingUp = true
+
+      if (this.password !== this.passwordRe) {
+        this.signingUp = false
+        this.error = "Passwords don't match"
+      } else {
+        try {
+          await this.$fireAuth.createUserWithEmailAndPassword(
+            this.email,
+            this.password
+          )
+
+          this.$router.push('/')
+        } catch (e) {
+          this.signingUp = false
+          this.error = e.message
+        }
+      }
     },
   },
 }
