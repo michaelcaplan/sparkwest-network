@@ -51,8 +51,7 @@ export default {
         crossorigin: 'anonymous',
       },
       {
-        src:
-          'https://kit.fontawesome.com/d05d35c2fa.js',
+        src: 'https://kit.fontawesome.com/d05d35c2fa.js',
         crossorigin: 'anonymous',
       },
     ],
@@ -99,7 +98,27 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/pwa'],
+  modules: [
+    '@nuxtjs/pwa',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: 'AIzaSyCmCQh8_AnAoUynML1DWjlRIkvP-oZgwk8',
+          authDomain: 'sparkwest-network.firebaseapp.com',
+          databaseURL: 'https://sparkwest-network.firebaseio.com',
+          projectId: 'sparkwest-network',
+          storageBucket: 'sparkwest-network.appspot.com',
+          messagingSenderId: '683874464495',
+          appId: '1:683874464495:web:30ccab48d6abe3594ea11a',
+          measurementId: 'G-5THE0FLY5C',
+        },
+        services: {
+          auth: true,
+        },
+      },
+    ],
+  ],
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
