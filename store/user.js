@@ -89,9 +89,13 @@ export const actions = {
   },
 
   async getProfile({ commit, state }) {
+    console.log(
+      'Getting profile for user: ' + state.user.uid + ', or: ' + state.uid
+    )
     const docRef = this.$fireStore.collection('user').doc(state.user.uid)
     try {
       const doc = await docRef.get()
+      console.log(doc)
 
       commit('SET_PROFILE', {
         name: doc.data().name,

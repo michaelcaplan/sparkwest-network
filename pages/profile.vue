@@ -120,7 +120,6 @@ export default {
     }),
   },
   mounted() {
-    console.log('getting profile')
     this.getProfile()
   },
 }
