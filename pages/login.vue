@@ -87,14 +87,6 @@
 
               <hr />
 
-              <h5 class="text-center">Or Login with:</h5>
-
-              <button class="btn btn-lg btn-block btn-outline-dark" disabled>
-                <i class="fa fa-google fa-lg"></i>
-              </button>
-
-              <hr />
-
               <p class="text-center">
                 Don't have an account?
                 <nuxt-link :to="{ name: 'signUp' }">Sign Up</nuxt-link>
@@ -130,21 +122,6 @@ export default {
     }),
     submit() {
       this.loggingIn = true
-
-      //   try {
-      //     const response = this.$fireAuth.signInWithEmailAndPassword(
-      //       this.email,
-      //       this.password
-      //     )
-      //     console.log(response.i)
-      //     await this.login(response)
-
-      //     this.$router.push('/')
-      //   } catch (e) {
-      //     this.error = e.message
-      //     this.loggingIn = false
-      //   }
-
       this.$fireAuth
         .signInWithEmailAndPassword(this.email, this.password)
         .catch((e) => {

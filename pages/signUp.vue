@@ -64,6 +64,7 @@
                         type="password"
                         class="form-control"
                         placeholder="Get it right"
+                        autocomplete="off"
                         required
                       />
                     </div>
@@ -85,14 +86,6 @@
                   </form>
                 </div>
               </div>
-
-              <hr />
-
-              <h5 class="text-center">Or Sign Up with:</h5>
-
-              <button class="btn btn-lg btn-block btn-outline-dark" disabled>
-                <i class="fa fa-google fa-lg"></i>
-              </button>
 
               <hr />
 
@@ -128,6 +121,7 @@ export default {
   methods: {
     ...mapActions({
       login: 'user/login',
+      setName: 'user/setUserName',
     }),
 
     async signUp() {
@@ -144,6 +138,7 @@ export default {
           )
 
           await this.login(response.user)
+          await this.setName(this.name)
 
           this.$router.push('/')
         } catch (e) {
