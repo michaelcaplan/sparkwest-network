@@ -15,19 +15,31 @@
 
         <div class="row">
           <div class="col-auto">
-            <button class="btn btn-lg btn-primary">
+            <a
+              target="_blank"
+              href="https://www.facebook.com/sparkwestnetwork/"
+              class="btn btn-lg btn-primary"
+            >
               <i class="fa fa-facebook-f"></i>
-            </button>
+            </a>
           </div>
           <div class="col-auto p-0">
-            <button class="btn btn-lg btn-info">
+            <a
+              target="_blank"
+              href="https://twitter.com/SparkWestNet"
+              class="btn btn-lg btn-info"
+            >
               <i class="fa fa-twitter"></i>
-            </button>
+            </a>
           </div>
           <div class="col-auto">
-            <button class="btn btn-lg btn-danger">
+            <a
+              target="_blank"
+              href="https://www.instagram.com/sparkwestnetwork/"
+              class="btn btn-lg btn-danger disabled"
+            >
               <i class="fa fa-instagram"></i>
-            </button>
+            </a>
           </div>
         </div>
       </div>

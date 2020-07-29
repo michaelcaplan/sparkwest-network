@@ -13,19 +13,31 @@
 
           <div class="row">
             <div class="col-auto">
-              <button class="btn btn-light">
+              <a
+                class="btn btn-light"
+                target="_blank"
+                href="https://www.facebook.com/sparkwestnetwork/"
+              >
                 <i class="fa fa-facebook-f" aria-hidden="true"></i>
-              </button>
+              </a>
             </div>
             <div class="col-auto p-0">
-              <button class="btn btn-light">
+              <a
+                class="btn btn-light"
+                target="_blank"
+                href="https://twitter.com/SparkWestNet"
+              >
                 <i class="fa fa-twitter" aria-hidden="true"></i>
-              </button>
+              </a>
             </div>
             <div class="col-auto">
-              <button class="btn btn-light">
+              <a
+                class="btn btn-light disabled"
+                target="_blank"
+                href="https://www.instagram.com/sparkwestnetwork/"
+              >
                 <i class="fa fa-instagram" aria-hidden="true"></i>
-              </button>
+              </a>
             </div>
           </div>
         </div>
