@@ -115,7 +115,12 @@
               class="dropdown-menu dropdown-menu-right"
               aria-labelledby="profileDropdown"
             >
-              <a class="dropdown-item disabled" href="#">Profile</a>
+              <nuxt-link
+                :to="{ name: 'profile' }"
+                class="dropdown-item"
+                href="#"
+                >Profile</nuxt-link
+              >
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#" @click.prevent="signout"
                 >Log Out</a
@@ -192,7 +197,12 @@
           <div class="col-auto pl-0">
             <ul class="nav">
               <li class="nav-item d-flex align-items-center">
-                <a class="nav-link text-light" href="#">Profile</a>
+                <nuxt-link
+                  :to="{ name: 'profile' }"
+                  class="nav-link text-light"
+                  href="#"
+                  >Profile</nuxt-link
+                >
               </li>
 
               <li class="nav-item d-flex align-items-center">
