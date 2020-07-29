@@ -1,7 +1,11 @@
 <template>
-  <h1>Hello</h1>
+  <div class="container py-3">
+    <h1>Home</h1>
+  </div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Home',
+}
 </script>
