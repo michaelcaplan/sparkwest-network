@@ -104,18 +104,18 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: 'AIzaSyCmCQh8_AnAoUynML1DWjlRIkvP-oZgwk8',
-          authDomain: 'sparkwest-network.firebaseapp.com',
-          databaseURL: 'https://sparkwest-network.firebaseio.com',
-          projectId: 'sparkwest-network',
-          storageBucket: 'sparkwest-network.appspot.com',
-          messagingSenderId: '683874464495',
-          appId: '1:683874464495:web:30ccab48d6abe3594ea11a',
-          measurementId: 'G-5THE0FLY5C',
+          apiKey: process.env.API_KEY,
+          authDomain: process.env.AUTH_DOMAIN,
+          databaseURL: process.env.DATABASE_URL,
+          projectId: process.env.PROJECT_ID,
+          storageBucket: process.env.STORAGE_BUCKET,
+          messagingSenderId: process.env.MESSAGING_SENDER_ID,
+          appId: process.env.APP_ID,
+          measurementId: process.env.MEASURMENT_ID,
         },
         services: {
           auth: true,
-          firestore: true
+          firestore: true,
         },
       },
     ],
