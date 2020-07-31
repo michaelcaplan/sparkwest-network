@@ -94,6 +94,26 @@ export const actions = {
       console.error(e)
     }
   },
+
+  async updateProfile({ commit, state }, info) {
+    try {
+      const docRef = this.$fireStore
+        .collection('profiles')
+        .doc(state.user.uid || state.user.user_id)
+
+      console.log(info)
+      await docRef.update(info)
+
+      const newInfo = {
+        name: info.name || state.name,
+        about: info.about || state.about,
+        avatar: info.avatar || state.avatar,
+      }
+      commit('SET_PROFILE', newInfo)
+    } catch (e) {
+      console.error(e)
+    }
+  },
 }
 
 export const mutations = {

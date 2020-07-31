@@ -14,7 +14,7 @@
           <div class="col-12 col-md-2">
             <b>Email: </b>
           </div>
-          <div class="col-12 col-md-2">
+          <div class="col-12 col-md-auto">
             {{ user.email }}
           </div>
           <div class="col-auto">
@@ -26,7 +26,7 @@
           <div class="col-12 col-md-2">
             <b>Password: </b>
           </div>
-          <div class="col-12 col-md-2">
+          <div class="col-12 col-md-auto">
             ****************
           </div>
           <div class="col-auto">
@@ -66,7 +66,7 @@
 
         <div class="row d-flex justify-content-center">
           <div class="col col-md-6">
-            <form>
+            <form @submit.prevent="updateInfo">
               <div class="form-group">
                 <label for="formName">Name</label>
                 <input
@@ -89,7 +89,6 @@
                   placeholder="A breif description of yourself ..."
                   maxlength="200"
                   rows="3"
-                  required
                 ></textarea>
               </div>
 
@@ -97,7 +96,7 @@
                 type="submit"
                 class="btn btn-success float-right"
                 value="Update"
-                disabled
+                :disabled="updating"
               />
             </form>
           </div>
@@ -109,7 +108,10 @@
 
         <div class="row d-flex justify-content-center">
           <div class="col col-md-4">
-            <button class="btn btn-lg btn-block btn-danger" disabled>
+            <button
+              class="btn btn-lg btn-block btn-danger"
+              :disabled="updating"
+            >
               Delete Account
             </button>
           </div>
@@ -120,7 +122,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Edit',
@@ -137,6 +139,8 @@ export default {
       formEmail: null,
       formAbout: null,
       formAvatar: null,
+
+      updating: false,
     }
   },
 
@@ -146,6 +150,21 @@ export default {
       this.formAvatar = this.profile.avatar
       this.formName = this.profile.name
       this.formEmail = this.user.email
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      updateProfile: 'user/updateProfile',
+    }),
+
+    async updateInfo() {
+      this.updating = true
+      await this.updateProfile({
+        name: this.formName,
+        about: this.formAbout || '',
+      })
+      this.updating = false
     },
   },
 }
