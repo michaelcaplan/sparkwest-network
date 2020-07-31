@@ -100,8 +100,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   name: 'Login',
   data() {
@@ -117,25 +115,21 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      login: 'user/login',
-    }),
-    submit() {
+    async submit() {
       this.loggingIn = true
-      this.$fireAuth
-        .signInWithEmailAndPassword(this.email, this.password)
-        .catch((e) => {
-          this.error = e
-          this.loggingIn = false
-        })
-        .then((response) => {
-          console.log(response)
-          return this.login(response.user)
-        })
-        .then(() => {
-          this.loggingIn = false
-          this.$router.push('/')
-        })
+      try {
+        const response = await this.$fireAuth.signInWithEmailAndPassword(
+          this.email,
+          this.password
+        )
+
+        this.$store.dispatch('user/setUser', response.user)
+        this.loggingIn = false
+        this.$router.push('/')
+      } catch (e) {
+        this.error = e.message
+        this.loggingIn = false
+      }
     },
   },
 }

@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 export const state = () => ({
   user: null,
   uid: null,
+  loggedIn: false,
   name: null,
   about: null,
   avatar: null,
@@ -27,7 +28,7 @@ export const getters = {
 
   profile(state) {
     return {
-      uid: state.uid,
+      user: state.user,
       name: state.name,
       about: state.about,
       avatar: state.avatar,
@@ -37,73 +38,60 @@ export const getters = {
 }
 
 export const actions = {
-  // sets user information on login or signup
-  async login({ dispatch, state }, user) {
-    console.log('[STORE ACTIONS] - login')
-    const token = await this.$fireAuth.currentUser.getIdToken(true)
-    const userInfo = {
-      name: user.displayName,
-      email: user.email,
-      avatar: user.photoURL,
-      uid: user.uid,
-    }
-
-    Cookies.set('access_token', token) // saving token in cookie for server rendering
-    await dispatch('setUSER', userInfo)
-    await dispatch('saveUID', userInfo.uid)
-    console.log('[STORE ACTIONS] - in login, response:', status)
-  },
-
-  async logout({ commit, dispatch }) {
-    console.log('[STORE ACTIONS] - logout')
-    await this.$fireAuth.signOut()
-
-    Cookies.remove('access_token') // removes access token cookie
-    commit('SET_USER', null)
-    commit('SAVE_UID', null)
-  },
-
-  saveUID({ commit }, uid) {
-    console.log('[STORE ACTIONS] - saveUID')
-    commit('SAVE_UID', uid)
-  },
-
-  setUSER({ commit }, user) {
+  setUser({ commit }, user) {
     commit('SET_USER', user)
   },
 
-  // Updates user profile document with username
-  async setUserName({ commit, state }, name) {
-    const docRef = this.$fireStore.collection('user').doc(state.uid)
+  onAuthStateChanged({ commit, dispatch }) {
+    this.$fireAuth.onAuthStateChanged(function (user) {
+      if (user) {
+        dispatch('getCurrentUser')
+      } else {
+        Cookies.remove('access_token')
+
+        commit('SET_LOGGEDIN', false)
+      }
+
+      commit('SET_USER', user)
+    })
+  },
+
+  getCurrentUser({ commit }) {
+    this.$fireAuth.currentUser
+      .getIdToken(true)
+      .then((token) => Cookies.set('access_token', token))
+    commit('SET_LOGGEDIN', true)
+  },
+
+  async logout({ commit }) {
     try {
-      await docRef.set(
-        {
-          name,
-        },
-        { merge: true }
-      )
-      commit('SET_USER_NAME', name)
-    } catch (e) {
-      return e
+      await this.$fireAuth.signOut()
+      commit('SET_USER', null)
+    } catch (error) {
+      console.error(error)
     }
   },
 
-  async getProfile({ commit, state }) {
-    console.log(
-      'Getting profile for user: ' + state.user.uid + ', or: ' + state.uid
-    )
-    const docRef = this.$fireStore.collection('user').doc(state.user.uid)
+  async createProfile({ commit, state }, name) {
     try {
-      const doc = await docRef.get()
-      console.log(doc)
-
-      commit('SET_PROFILE', {
-        name: doc.data().name,
-        about: doc.data().about || null,
-        avatar: doc.data().avatar || null,
+      await this.$fireStore.collection('profiles').doc(state.user.uid).set({
+        name,
       })
+      commit('SET_PROFILE', { name })
     } catch (e) {
-      return e
+      console.error(e)
+    }
+  },
+
+  async getProfile({ commit, state }, uid) {
+    try {
+      const response = await this.$fireStore
+        .collection('profiles')
+        .doc(uid)
+        .get()
+      commit('SET_PROFILE', response.data())
+    } catch (e) {
+      console.error(e)
     }
   },
 }
@@ -115,6 +103,10 @@ export const mutations = {
 
   SAVE_UID(state, uid) {
     state.uid = uid
+  },
+
+  SET_LOGGEDIN(state, value) {
+    state.loggedIn = value
   },
 
   SET_USER_NAME(state, name) {

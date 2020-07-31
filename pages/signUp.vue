@@ -13,7 +13,7 @@
 
               <div class="row">
                 <div class="col">
-                  <form class="mb-3" @submit.prevent="signUp">
+                  <form class="mb-3" @submit.prevent="submit">
                     <div class="form-group">
                       <label for="emailInput">Email</label>
                       <input
@@ -120,11 +120,11 @@ export default {
 
   methods: {
     ...mapActions({
-      login: 'user/login',
-      setName: 'user/setUserName',
+      setUser: 'user/setUser',
+      createProfile: 'user/createProfile',
     }),
 
-    async signUp() {
+    async submit() {
       this.signingUp = true
 
       if (this.password !== this.passwordRe) {
@@ -137,8 +137,8 @@ export default {
             this.password
           )
 
-          await this.login(response.user)
-          await this.setName(this.name)
+          await this.setUser(response.user)
+          await this.createProfile(this.name)
 
           this.$router.push('/')
         } catch (e) {

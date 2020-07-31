@@ -1,6 +1,6 @@
 <template>
   <div id="edit">
-    <div class="card">
+    <div v-if="profile && user" class="card">
       <div class="card-body">
         <h3 class="mb-3">
           Edit Profile:
@@ -142,7 +142,6 @@ export default {
 
   watch: {
     profile() {
-      console.log('profile updated')
       this.formAbout = this.profile.about
       this.formAvatar = this.profile.avatar
       this.formName = this.profile.name

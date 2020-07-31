@@ -1,6 +1,19 @@
 <template>
   <div id="profile">
-    <div class="container py-3">
+    <div v-if="!profile">
+      <div
+        class="container py-3 d-flex justify-content-center align-items-center"
+      >
+        <div
+          class="spinner-border text-primary"
+          style="width: 4rem; height: 4rem;"
+          role="status"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div v-if="profile" class="container py-3">
       <h1>Your Profile</h1>
 
       <hr />
@@ -16,6 +29,14 @@
             <h1 v-if="profile.name" class="m-0">
               {{ profile.name.substring(0, 1) }}
             </h1>
+            <div
+              v-else
+              class="spinner-border"
+              style="width: 3rem; height: 3rem;"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
           </div>
 
           <h5 class="text-center my-3">{{ profile.name }}</h5>
@@ -97,30 +118,36 @@ import edit from '@/components/profile/Edit.vue'
 
 export default {
   name: 'Profile',
+
   middleware: 'auth',
+
   data() {
     return {
       tabNum: 0,
     }
   },
-  components: {
-    profile,
-    likes,
-    edit,
-  },
+
   computed: {
     ...mapGetters({
       profile: 'user/profile',
       user: 'user/user',
     }),
   },
+
   methods: {
     ...mapActions({
       getProfile: 'user/getProfile',
     }),
   },
+
   mounted() {
-    this.getProfile()
+    this.getProfile(this.user.uid || this.user.user_id)
+  },
+
+  components: {
+    profile,
+    likes,
+    edit,
   },
 }
 </script>

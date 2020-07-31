@@ -18,6 +18,9 @@ import Navbar from '@/components/Navbar'
 
 export default {
   components: { Navbar, Footer },
+  mounted() {
+    this.$store.dispatch('user/onAuthStateChanged')
+  },
 }
 </script>
 
