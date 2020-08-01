@@ -21,6 +21,6 @@ exports.deleteUserProfile = functions.auth.user().onDelete((user) => {
   const deleteAvatar = bucket.file('profiles/' + UID + '/avatar.png').delete()
 
   Promise.all([deleteDoc, deleteAvatar]).catch((e) => {
-    functions.logger.warn('Error deleting user profile', error)
+    functions.logger.warn('Error deleting user profile', e)
   })
 })
