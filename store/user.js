@@ -80,7 +80,7 @@ export const actions = {
   async logout({ commit }) {
     try {
       await this.$fireAuth.signOut()
-      commit('SET_USER', null)
+      commit('LOGOUT')
     } catch (error) {
       console.error(error)
     }
@@ -185,5 +185,16 @@ export const mutations = {
     state.name = profile.name
     state.about = profile.about
     state.avatar = profile.avatar
+  },
+
+  LOGOUT(state) {
+    state.user = null
+    state.uid = null
+    state.loggedIn = false
+    state.name = null
+    state.about = null
+    state.avatar = null
+    state.avatarUrl = null
+    state.events = null
   },
 }
