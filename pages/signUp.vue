@@ -72,7 +72,7 @@
                     <button
                       class="btn btn-primary float-right"
                       type="submit"
-                      value="Login"
+                      value="Sign Up"
                       :disabled="signingUp"
                     >
                       <span
@@ -81,7 +81,7 @@
                         role="status"
                         aria-hidden="true"
                       ></span>
-                      Login
+                      Sign Up
                     </button>
                   </form>
                 </div>
