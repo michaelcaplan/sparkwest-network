@@ -9,6 +9,7 @@ export const state = () => ({
   name: null,
   about: null,
   avatar: null,
+  avatarUrl: null,
   events: null,
 })
 
@@ -32,6 +33,7 @@ export const getters = {
       name: state.name,
       about: state.about,
       avatar: state.avatar,
+      avatarUrl: state.avatarUrl,
       events: state.events,
     }
   },
@@ -40,6 +42,18 @@ export const getters = {
 export const actions = {
   setUser({ commit }, user) {
     commit('SET_USER', user)
+  },
+
+  async getAvatarUrl({ commit, state }) {
+    try {
+      const path = state.avatar
+      if (path) {
+        const url = await this.$fireStorage.ref().child(path).getDownloadURL()
+        commit('SET_AVATAR_URL', url)
+      }
+    } catch (e) {
+      console.error(e)
+    }
   },
 
   onAuthStateChanged({ commit, dispatch }) {
@@ -83,13 +97,17 @@ export const actions = {
     }
   },
 
-  async getProfile({ commit, state }, uid) {
+  async getProfile({ commit, state, dispatch }, uid) {
     try {
       const response = await this.$fireStore
         .collection('profiles')
         .doc(uid)
         .get()
       commit('SET_PROFILE', response.data())
+
+      if (state.avatar) {
+        await dispatch('getAvatarUrl')
+      }
     } catch (e) {
       console.error(e)
     }
@@ -114,11 +132,41 @@ export const actions = {
       console.error(e)
     }
   },
+
+  async uploadImage({ commit, state, dispatch }, file) {
+    try {
+      const folder = state.user.uid || state.user.user_id
+      const path = 'profiles/' + folder + '/avatar.png'
+      console.log(path)
+
+      const storageRef = this.$fireStorage.ref().child(path)
+      const docRef = this.$fireStore.collection('profiles').doc(folder)
+
+      await storageRef.put(file)
+      await docRef.update({
+        avatar: path,
+      })
+
+      commit('SET_PROFILE', {
+        name: state.name,
+        about: state.about,
+        avatar: path,
+      })
+
+      await dispatch('getAvatarUrl')
+    } catch (e) {
+      console.error(e)
+    }
+  },
 }
 
 export const mutations = {
   SET_USER(state, user) {
     state.user = user
+  },
+
+  SET_AVATAR_URL(state, url) {
+    state.avatarUrl = url
   },
 
   SAVE_UID(state, uid) {
