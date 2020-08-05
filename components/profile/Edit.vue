@@ -112,16 +112,18 @@
           <div class="col col-md-4">
             <button
               class="btn btn-lg btn-block btn-danger"
+              data-toggle="modal"
+              data-target="#deleteModal"
               :disabled="updating"
             >
-              Delete Account
+              Delete Profile
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modals -->
     <div
       class="modal fade"
       id="cropModal"
@@ -201,6 +203,90 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="modal fade"
+      id="deleteModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="deleteModal"
+      aria-hidden="true"
+      v-if="!deleted"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header d-inline-block bg-danger text-light">
+            <div class="row">
+              <div class="col">
+                <h3 class="modal-title" id="exampleModalLabel">
+                  Delete Profile
+                </h3>
+              </div>
+
+              <div class="col-auto">
+                <button
+                  type="button"
+                  class="btn"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  :disabled="updating"
+                >
+                  <i class="fa fa-times text-light" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col">
+                <p>
+                  All information connected to this account will be permanently
+                  delted. This cannot be undone
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <p>If you want to continue, type the name of the profile below:</p>
+
+            <input
+              v-model="deleteName"
+              :placeholder="profile.name"
+              type="text"
+              class="form-control"
+            />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              :disabled="updating"
+            >
+              Cancle
+            </button>
+
+            <button
+              class="btn btn-danger"
+              v-if="profile.name == deleteName && deleteName"
+              :disabled="updating || deleting"
+              @click="deleteProfile"
+            >
+              Delete Profile
+              <span
+                v-if="deleting"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -231,6 +317,10 @@ export default {
 
       updating: false,
       done: false,
+
+      deleteName: null,
+      deleting: false,
+      deleted: false,
     }
   },
 
@@ -285,6 +375,18 @@ export default {
 
         this.updating = false
         this.done = true
+      })
+    },
+
+    deleteProfile() {
+      this.deleting = true
+      const user = this.$fireAuth.currentUser
+
+      console.log(user)
+
+      user.delete().then(() => {
+        this.deleted = true
+        this.$router.push('/')
       })
     },
   },
