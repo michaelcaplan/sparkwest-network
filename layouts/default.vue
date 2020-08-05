@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Footer from '~/components/Footer'
 import Navbar from '@/components/Navbar'
+import Footer from '~/components/Footer'
 
 export default {
   components: { Navbar, Footer },
@@ -123,5 +123,9 @@ h6 {
 
 .fr-box * {
   font-family: inherit;
+}
+
+[contenteditable]:focus {
+  outline: 0 solid transparent;
 }
 </style>
