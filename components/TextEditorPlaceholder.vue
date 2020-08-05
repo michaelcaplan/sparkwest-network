@@ -1,0 +1,106 @@
+<template>
+  <div id="text-editor-placeholder">
+    <!-- Editor loading placeholder -->
+    <div class="card">
+      <div class="card-header p-2 bg-dark">
+        <div class="row">
+          <div class="col-auto">
+            <div class="btn-group rounded border border-secondary">
+              <button class="btn btn-dark" disabled>
+                <i class="fa fa-bold" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-dark" disabled>
+                <i class="fa fa-italic" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-dark" disabled>
+                <i class="fa fa-underline" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-auto pl-0">
+            <div class="btn-group rounded border border-secondary">
+              <button class="btn btn-dark" disabled>
+                <i class="fa fa-paragraph" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-dark" disabled>
+                H1
+              </button>
+              <button class="btn btn-dark" disabled>
+                H2
+              </button>
+              <button class="btn btn-dark" disabled>
+                H3
+              </button>
+            </div>
+          </div>
+
+          <div class="col-auto pl-0">
+            <div class="btn-group rounded border border-secondary">
+              <button class="btn btn-dark" disabled>
+                <i class="fa fa-list-ul" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-dark" disabled>
+                <i class="fa fa-list-ol" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col pl-0">
+            <div class="btn-group rounded border border-secondary float-right">
+              <button class="btn btn-dark" disabled>
+                <i class="fa fa-undo" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-dark" disabled>
+                <i class="fas fa-redo" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body p-3">
+        <div class="loading gradient rounded w-50"></div>
+      </div>
+
+      <div class="card-footer p-2">
+        <p class="small float-right text-muted m-0">characters: 0</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'TextEditorPlaceholder',
+}
+</script>
+
+<style>
+.gradient {
+  animation-duration: 1.8s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #f8f9fa 8%, #f0f0f0 38%, #f8f9fa 54%);
+  background-size: 1000px 640px;
+  position: relative;
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+</style>
+
+<style scoped>
+.loading {
+  height: 1rem;
+}
+</style>
