@@ -14,9 +14,19 @@
           </div>
         </div>
 
-        <button class="btn btn-success float-right">
-          Add New Event
-        </button>
+        <nuxt-link
+          to="/newEvent"
+          class="btn btn-success float-right d-none d-md-inline-block"
+        >
+          New Event <i class="fa fa-plus" aria-hidden="true"></i>
+        </nuxt-link>
+
+        <nuxt-link
+          to="/newEvent"
+          class="btn btn-block btn-success d-block d-md-none d-lg-none"
+        >
+          New Event <i class="fa fa-plus" aria-hidden="true"></i>
+        </nuxt-link>
       </div>
     </div>
   </div>
