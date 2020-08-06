@@ -5,7 +5,7 @@
 
       <hr />
 
-      <form>
+      <form @submit.prevent="uploadEvent">
         <div class="row">
           <div class="col-12 col-lg mb-3 mb-lg-0">
             <div class="card mb-3">
@@ -54,37 +54,55 @@
                   />
                 </div>
 
-                <div class="row">
+                <div class="row mb-3">
                   <div class="col">
                     <div class="form-group mb-0">
                       <label for="startTime"
                         ><span class="text-danger">*</span> Start Time:</label
                       >
-
-                      <input
-                        type="time"
+                      <vue-timepicker
                         id="startTime"
-                        class="form-control"
+                        class="d-block"
+                        input-class="rounded"
+                        input-width="100%"
+                        :format="timeFormats[timeFormat]"
+                        :placeholder="timePlaceholders[timeFormat * 2]"
                         v-model="startTime"
                         required
-                      />
+                      ></vue-timepicker>
                     </div>
                   </div>
-                  <div class="col">
+                  <div class="col pl-0">
                     <div class="form-group mb-0">
                       <label for="endTime"
                         ><span class="text-danger">*</span> End Time:</label
                       >
 
-                      <input
-                        type="time"
-                        id="endTime"
-                        class="form-control"
+                      <vue-timepicker
+                        id="startTime"
+                        class="d-block"
+                        input-class="rounded"
+                        input-width="100%"
+                        :format="timeFormats[timeFormat]"
+                        :placeholder="timePlaceholders[timeFormat * 2 + 1]"
                         v-model="endTime"
                         required
-                      />
+                      ></vue-timepicker>
                     </div>
                   </div>
+                </div>
+
+                <div class="custom-control custom-switch float-right">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="formatSwitch"
+                    :value="timeFormat == 0"
+                    @change.prevent="setFormat"
+                  />
+                  <label class="custom-control-label" for="formatSwitch"
+                    >Use 24 Hour</label
+                  >
                 </div>
               </div>
             </div>
@@ -200,21 +218,30 @@
 import TextEditor from '@/components/TextEditor.vue'
 import TextEditorPlaceholder from '@/components/TextEditorPlaceholder.vue'
 
+import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
+
 export default {
   name: 'NewEvent',
 
   components: {
     TextEditor,
     TextEditorPlaceholder,
+    VueTimepicker,
   },
 
   data() {
     return {
       title: '',
       description: '',
+
       date: null,
-      startTime: null,
-      endTime: null,
+
+      timeFormat: 1,
+      timeFormats: ['k:mm', 'h:mm a'],
+      timePlaceholders: ['9:00', '17:00', '9:00 am', '5:00 pm'],
+      startTime: {},
+      endTime: {},
+
       location: null,
 
       file: null,
@@ -223,6 +250,10 @@ export default {
   },
 
   methods: {
+    setFormat() {
+      if (this.timeFormat === 1) this.timeFormat = 0
+      else this.timeFormat = 1
+    },
     selectFile(event) {
       const file = event.target.files[0]
 
@@ -237,6 +268,56 @@ export default {
       this.$refs.fileInput.value = null
       this.file = null
       this.filePreview = null
+    },
+
+    uploadEvent() {
+      const D = new Date(this.date)
+
+      const startTime = {
+        h: null,
+        m: null,
+      }
+      const endTime = {
+        h: null,
+        m: null,
+      }
+
+      //   Format start end times to 24 hour from 12 or 24 hour
+      if (this.timeFormat === 1) {
+        startTime.h = parseInt(this.startTime.h)
+        startTime.m = parseInt(this.startTime.mm)
+        if (this.startTime.a === 'pm') startTime.h += 12
+
+        endTime.h = parseInt(this.endTime.h)
+        endTime.m = parseInt(this.endTime.mm)
+        if (this.endTime.a === 'pm') endTime.h += 12
+      } else {
+        startTime.h = parseInt(this.startTime.k)
+        startTime.m = parseInt(this.startTime.mm)
+
+        endTime.h = parseInt(this.endTime.k)
+        endTime.m = parseInt(this.endTime.mm)
+      }
+
+      const data = {
+        title: this.title,
+        description: this.description,
+
+        date: D.toDateString(),
+        year: D.getFullYear(),
+        month: D.getMonth(),
+        day: D.getDay(),
+
+        startTimeHour: startTime.h,
+        startTimeMinute: startTime.m,
+
+        endTimeHour: endTime.h,
+        endTimeMinute: endTime.m,
+
+        location: this.location,
+      }
+
+      console.log(data)
     },
   },
 
