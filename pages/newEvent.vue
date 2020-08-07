@@ -195,11 +195,27 @@
 
         <div class="row justify-content-end d-none d-md-flex">
           <div class="col-auto">
-            <nuxt-link to="/profile" class="btn btn-lg btn-secondary mr-2"
-              >Cancle</nuxt-link
-            >
-
-            <input type="submit" class="btn btn-lg btn-primary" />
+            <div class="row">
+              <div class="col-auto pr-0">
+                <nuxt-link to="/profile" class="btn btn-lg btn-secondary"
+                  >Cancle</nuxt-link
+                >
+              </div>
+              <div class="col-auto">
+                <button
+                  type="submit"
+                  class="btn btn-lg btn-primary d-flex align-items-center"
+                >
+                  Upload
+                  <span
+                    v-if="uploading"
+                    class="spinner-border spinner-border-sm ml-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -210,7 +226,18 @@
             >
           </div>
           <div class="col">
-            <input type="submit" class="btn btn-block btn-primary" />
+            <button
+              type="submit"
+              class="btn btn-block btn-primary d-flex align-items-center justify-content-center"
+            >
+              Upload
+              <span
+                v-if="uploading"
+                class="spinner-border spinner-border-sm ml-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </button>
           </div>
         </div>
       </form>
@@ -219,6 +246,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import TextEditor from '@/components/TextEditor.vue'
 import TextEditorPlaceholder from '@/components/TextEditorPlaceholder.vue'
 
@@ -226,6 +255,8 @@ import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
 
 export default {
   name: 'NewEvent',
+
+  middleware: 'auth',
 
   components: {
     TextEditor,
@@ -255,7 +286,15 @@ export default {
       filePreview: null,
 
       error: '',
+
+      uploading: false,
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      user: 'user/user',
+    }),
   },
 
   methods: {
@@ -279,8 +318,9 @@ export default {
       this.filePreview = null
     },
 
-    uploadEvent() {
+    async uploadEvent() {
       if (!this.checkForm()) return
+      this.uploading = true
 
       const D = new Date(this.date)
       const N = new Date()
@@ -312,6 +352,7 @@ export default {
       }
 
       const data = {
+        authorID: this.user.uid || this.user.user_id,
         title: this.title,
         description: this.description,
 
@@ -330,9 +371,24 @@ export default {
         endTimeMinute: endTime.m,
 
         location: this.location,
+
+        imageRef: null,
       }
 
-      return data
+      try {
+        const docRef = this.$fireStore.collection('events').doc()
+
+        data.imageRef = 'events/' + docRef.id + '/original.png'
+        await docRef.set(data)
+
+        const imageRef = this.$fireStorage.ref().child(data.imageRef)
+        await imageRef.put(this.file)
+
+        this.uploading = false
+        this.$router.push('/profile')
+      } catch (e) {
+        console.error(e)
+      }
     },
 
     checkForm() {
