@@ -225,7 +225,19 @@
       </div>
 
       <div class="card-footer p-2">
-        <p class="small float-right text-muted">characters: {{ chars }}</p>
+        <p class="small float-right text-muted" v-if="maxChars == null">
+          characters: {{ chars }}
+        </p>
+        <p
+          class="small float-right"
+          :class="{
+            'text-muted': chars <= maxChars,
+            'text-danger': chars > maxChars,
+          }"
+          v-if="maxChars"
+        >
+          characters: {{ chars }} / {{ maxChars }}
+        </p>
       </div>
     </div>
   </div>
@@ -257,6 +269,8 @@ export default {
     EditorMenuBar,
   },
 
+  props: ['max-chars'],
+
   data() {
     return {
       editor: null,
@@ -267,7 +281,7 @@ export default {
 
   watch: {
     html() {
-      this.$nuxt.$emit('editor-update', this.html)
+      this.$nuxt.$emit('editor-update', { html: this.html, chars: this.chars })
     },
   },
 

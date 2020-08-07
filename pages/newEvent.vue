@@ -6,6 +6,10 @@
       <hr />
 
       <form @submit.prevent="uploadEvent">
+        <div v-if="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+
         <div class="row">
           <div class="col-12 col-lg mb-3 mb-lg-0">
             <div class="card mb-3">
@@ -31,7 +35,7 @@
                   >
 
                   <client-only>
-                    <text-editor />
+                    <text-editor :maxChars="this.maxChars" />
                     <text-editor-placeholder slot="placeholder" />
                   </client-only>
                 </div>
@@ -234,6 +238,9 @@ export default {
       title: '',
       description: '',
 
+      chars: 0,
+      maxChars: 800,
+
       date: null,
 
       timeFormat: 1,
@@ -246,6 +253,8 @@ export default {
 
       file: null,
       filePreview: null,
+
+      error: '',
     }
   },
 
@@ -271,7 +280,10 @@ export default {
     },
 
     uploadEvent() {
+      if (!this.checkForm()) return
+
       const D = new Date(this.date)
+      const N = new Date()
 
       const startTime = {
         h: null,
@@ -308,6 +320,9 @@ export default {
         month: D.getMonth(),
         day: D.getDay(),
 
+        timestamp: D.getTime(),
+        uploaded: N.getTime(),
+
         startTimeHour: startTime.h,
         startTimeMinute: startTime.m,
 
@@ -317,13 +332,95 @@ export default {
         location: this.location,
       }
 
-      console.log(data)
+      return data
+    },
+
+    checkForm() {
+      // Check that description was inputed
+      if (this.chars <= 0) {
+        this.error = 'Valid description required'
+        return false
+      }
+
+      // Check description length
+      if (this.chars > this.maxChars) {
+        this.error = 'Description exceeds max character count'
+        return false
+      }
+
+      // Check that time was inputed
+      if (this.timeFormat === 0) {
+        if (
+          !this.startTime.k ||
+          !this.startTime.mm ||
+          !this.endTime.k ||
+          !this.endTime.mm
+        ) {
+          this.error = 'Valid start and end time required'
+          return false
+        }
+      }
+      if (this.timeFormat === 1) {
+        if (
+          !this.startTime.h ||
+          !this.startTime.mm ||
+          !this.startTime.a ||
+          !this.endTime.h ||
+          !this.endTime.mm ||
+          !this.endTime.a
+        ) {
+          this.error = 'Valid start and end time required'
+          return false
+        }
+      }
+
+      // Check that start time is before end time
+      const startTime = {
+        h: null,
+        m: null,
+      }
+      const endTime = {
+        h: null,
+        m: null,
+      }
+
+      // Format start end times to 24 hour from 12 or 24 hour
+      if (this.timeFormat === 1) {
+        startTime.h = parseInt(this.startTime.h)
+        startTime.m = parseInt(this.startTime.mm)
+        if (this.startTime.a === 'pm') startTime.h += 12
+
+        endTime.h = parseInt(this.endTime.h)
+        endTime.m = parseInt(this.endTime.mm)
+        if (this.endTime.a === 'pm') endTime.h += 12
+      } else {
+        startTime.h = parseInt(this.startTime.k)
+        startTime.m = parseInt(this.startTime.mm)
+
+        endTime.h = parseInt(this.endTime.k)
+        endTime.m = parseInt(this.endTime.mm)
+      }
+
+      console.log(startTime)
+      console.log(endTime)
+
+      if (startTime.h > endTime.h) {
+        this.error = 'Start time must come before end time'
+        return false
+      } else if (startTime.m > endTime.m && startTime.h === endTime.h) {
+        this.error = 'Start time must come before end time'
+        return false
+      }
+
+      this.error = ''
+      return true
     },
   },
 
   created() {
-    this.$nuxt.$on('editor-update', (html) => {
-      this.description = html
+    this.$nuxt.$on('editor-update', (value) => {
+      this.description = value.html
+      this.chars = value.chars
     })
   },
 }
