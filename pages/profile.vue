@@ -144,11 +144,13 @@ export default {
   methods: {
     ...mapActions({
       getProfile: 'user/getProfile',
+      getUserEvents: 'events/getUserEvents',
     }),
   },
 
   mounted() {
     this.getProfile(this.user.uid || this.user.user_id)
+    this.getUserEvents(this.user.uid || this.user.user_id)
   },
 
   components: {

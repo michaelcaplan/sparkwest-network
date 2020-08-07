@@ -359,7 +359,7 @@ export default {
         date: D.toDateString(),
         year: D.getFullYear(),
         month: D.getMonth(),
-        day: D.getDay(),
+        day: D.getDate(),
 
         timestamp: D.getTime(),
         uploaded: N.getTime(),
