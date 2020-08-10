@@ -8,7 +8,7 @@
         <div
           class="col-auto border-right d-flex align-items-center justify-content-center"
         >
-          <div class="px-2">
+          <div class="px-0 px-sm-2">
             <div class="row">
               <div class="col">
                 <p class="m-0 text-center">
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <small id="uploaded" class="m-3 text-muted"
+      <small id="uploaded" class="m-3 text-muted d-none d-md-flex"
         >Uploaded: {{ uploadDate }}</small
       >
     </div>

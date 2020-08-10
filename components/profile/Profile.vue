@@ -6,7 +6,15 @@
           Your Events:
         </h3>
 
-        <div v-if="!events" class="card mb-3">
+        <div v-if="loading" class="row mb-3">
+          <div class="col">
+            <event-card-placeholder class="mb-2" />
+            <event-card-placeholder class="mb-2" />
+            <event-card-placeholder class="mb-3" />
+          </div>
+        </div>
+
+        <div v-if="!events && !loading" class="card mb-3">
           <div class="card-body">
             <h5 class="text-muted m-0">
               You haven't created any events yet ...
@@ -14,9 +22,9 @@
           </div>
         </div>
 
-        <div v-else>
+        <div v-if="events && !loading">
           <div
-            v-for="(event, index) in events"
+            v-for="(event, index) in pages[this.pageNum]"
             :key="event.id"
             class="row"
             :class="{
@@ -27,6 +35,53 @@
             <div class="col">
               <event-card :event="event" />
             </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <nav aria-label="Page navigation">
+              <ul class="pagination float-right">
+                <li class="page-item" :class="{ disabled: pageNum <= 0 }">
+                  <a
+                    class="page-link"
+                    @click.prevent="prevPage"
+                    href="#"
+                    aria-label="Previous"
+                  >
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                  </a>
+                </li>
+
+                <li
+                  v-for="(page, index) in pages"
+                  :key="index"
+                  class="page-item"
+                  :class="{ active: index == pageNum }"
+                >
+                  <a
+                    class="page-link"
+                    @click.prevent="pageNum = index"
+                    href="#"
+                    >{{ index + 1 }}</a
+                  >
+                </li>
+
+                <li
+                  class="page-item"
+                  :class="{ disabled: pageNum >= pages.length - 1 }"
+                >
+                  <a
+                    class="page-link"
+                    @click.prevent="nextPage"
+                    href="#"
+                    aria-label="Next"
+                  >
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
 
@@ -52,58 +107,71 @@
 import { mapGetters } from 'vuex'
 
 import EventCard from '@/components/EventCard.vue'
+import EventCardPlaceholder from '@/components/EventCardPlaceholder.vue'
 
 export default {
   name: 'Profile',
 
   components: {
     EventCard,
+    EventCardPlaceholder,
+  },
+
+  data() {
+    return {
+      loading: false,
+      pageNum: 0,
+    }
   },
 
   computed: {
     ...mapGetters({
       events: 'events/events',
+      user: 'user/user',
     }),
+
+    pages() {
+      if (this.events.length > 3) {
+        const pages = []
+        const pagesNum = Math.ceil(this.events.length / 3)
+
+        for (let i = 0; i < pagesNum; i++) {
+          pages.push(this.events.slice(i * 3, (i + 1) * 3))
+        }
+
+        return pages
+      } else {
+        return this.events
+      }
+    },
   },
 
   methods: {
-    doubleDigit(num) {
-      if (num < 10) return '0' + num
-      else return num
+    async getUserEvents() {
+      try {
+        this.loading = true
+        await this.$store.dispatch(
+          'events/getUserEvents',
+          this.user.uid || this.user.user_id
+        )
+        this.loading = false
+      } catch (e) {
+        this.loading = false
+        console.error(e)
+      }
     },
-    monthName(num, len) {
-      const mL = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ]
-      const mS = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'June',
-        'July',
-        'Aug',
-        'Sept',
-        'Oct',
-        'Nov',
-        'Dec',
-      ]
-      if (len === 0) return mL[num]
-      else if (len === 1) return mS[num]
-      else return mL[num]
+
+    prevPage() {
+      if (this.pageNum > 0) this.pageNum -= 1
     },
+
+    nextPage() {
+      if (this.pageNum < this.pages.length - 1) this.pageNum += 1
+    },
+  },
+
+  mounted() {
+    this.getUserEvents()
   },
 }
 </script>
