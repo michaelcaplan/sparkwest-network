@@ -128,4 +128,13 @@ h6 {
 [contenteditable]:focus {
   outline: 0 solid transparent;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
