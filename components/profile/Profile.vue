@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <div v-if="!events && !loading" class="card mb-3">
+        <div v-if="events.length == 0 && !loading" class="card mb-3">
           <div class="card-body">
             <h5 class="text-muted m-0">
               You haven't created any events yet ...
@@ -119,14 +119,14 @@ export default {
 
   data() {
     return {
-      loading: false,
+      loading: true,
       pageNum: 0,
     }
   },
 
   computed: {
     ...mapGetters({
-      events: 'events/events',
+      events: 'events/userEvents',
       user: 'user/user',
     }),
 
@@ -141,7 +141,7 @@ export default {
 
         return pages
       } else {
-        return this.events
+        return [this.events]
       }
     },
   },

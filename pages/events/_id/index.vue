@@ -25,31 +25,61 @@
             <author-card :uid="event.data.authorID" class="mb-3" />
 
             <button
+              v-if="user"
               class="btn btn-block btn-lg btn-like d-flex align-items-center justify-content-center"
               :class="{
                 liked: liked,
                 'btn-light': !liked,
                 'btn-danger': liked,
               }"
-              @click.prevent="liked = !liked"
+              :disabled="liking || !user"
+              @click.prevent="toggleLike"
             >
-              <span v-if="!liked"
+              <span v-if="!liked && !liking"
                 ><i
                   class="far fa-lg fa-heart animate__animated animate__fadeIn"
                 ></i
               ></span>
-              <span v-else
+              <span v-if="liked && !liking"
                 ><i
                   class="fas fa-lg fa-heart animate__animated animate__bounceIn"
                 ></i>
               </span>
+              <span
+                v-if="liking"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
 
               <span
                 class="badge badge-pill badge-like"
                 :class="{ 'badge-light': liked, 'badge-dark': !liked }"
-                >{{ Math.round(Math.random() * 10) }}</span
+                >{{ likeNum }}</span
               >
             </button>
+
+            <div class="card" v-else>
+              <div class="card-body">
+                <p class="text-center">
+                  <span
+                    class="badge badge-pill badge-like-inline mr-1 animate__animated animate__bounceIn"
+                  >
+                    <i
+                      class="fa-heart mr-2"
+                      :class="{ fas: likeNum > 0, far: likeNum <= 0 }"
+                    ></i
+                    >{{ likeNum }}
+                  </span>
+                  <span v-if="likeNum == 1">person has</span
+                  ><span v-else>people have</span> liked this event
+                </p>
+
+                <nuxt-link to="/signUp" class="btn btn-block btn-primary"
+                  >Sign Up to like this event</nuxt-link
+                >
+              </div>
+            </div>
           </div>
         </div>
 
@@ -239,6 +269,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import AuthorCard from '@/components/AuthorCard.vue'
 
 export default {
@@ -249,8 +281,19 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      user: 'user/user',
+    }),
     id() {
       return this.$route.params.id
+    },
+    likeNum() {
+      if (this.event) {
+        if (this.event.data.likes) return this.event.data.likes.length
+        else return 0
+      } else {
+        return 0
+      }
     },
   },
 
@@ -258,7 +301,14 @@ export default {
     return {
       event: null,
       liked: false,
+      liking: false,
     }
+  },
+
+  watch: {
+    user() {
+      this.checkLike()
+    },
   },
 
   methods: {
@@ -275,8 +325,20 @@ export default {
           data: doc.data(),
           image: URL,
         }
+
+        this.checkLike()
       } catch (e) {
         console.error(e)
+      }
+    },
+
+    checkLike() {
+      if (this.user && this.event) {
+        this.liked = this.event.data.likes.includes(
+          this.user.uid || this.user.user_id
+        )
+      } else {
+        this.liked = false
       }
     },
 
@@ -316,6 +378,49 @@ export default {
       if (len === 0) return mL[num]
       else if (len === 1) return mS[num]
       else return mL[num]
+    },
+
+    async toggleLike() {
+      if (!this.liking && this.user) {
+        if (!this.liked) {
+          try {
+            this.liking = true
+            const likeEvent = this.$fireFunc.httpsCallable('likeEvent')
+            const res = await likeEvent({
+              uid: this.user.uid || this.user.user_id,
+              docID: this.event.id,
+            })
+            if (res.data.success) {
+              this.liked = true
+              this.event.data.likes.push(this.user.uid || this.user.user_id)
+            }
+            this.liking = false
+          } catch (e) {
+            console.error(e)
+            this.liking = false
+          }
+        } else {
+          try {
+            this.liking = true
+            const unlikeEvent = this.$fireFunc.httpsCallable('unlikeEvent')
+            const res = await unlikeEvent({
+              uid: this.user.uid || this.user.user_id,
+              docID: this.event.id,
+            })
+            if (res.data.success) {
+              this.liked = false
+              const index = this.event.data.likes.indexOf(
+                this.user.uid || this.user.user_id
+              )
+              this.event.data.likes.splice(index, 1)
+            }
+            this.liking = false
+          } catch (e) {
+            console.error(e)
+            this.liking = false
+          }
+        }
+      }
     },
   },
 
@@ -357,6 +462,12 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.badge-like-inline {
+  color: #fff;
+  background: #fe3d61;
+  font-size: 1rem;
 }
 
 #image-placeholder {

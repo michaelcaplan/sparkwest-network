@@ -45,6 +45,17 @@
         </div>
       </div>
 
+      <span
+        id="likes"
+        class="badge badge-pill badge-like badge-danger m-3 animate__animated animate__bounceIn"
+      >
+        <i
+          class="fa-heart d-none d-sm-inline-block mr-2"
+          :class="{ fas: likeNum > 0, far: likeNum <= 0 }"
+        ></i
+        >{{ likeNum }}
+      </span>
+
       <small id="uploaded" class="m-3 text-muted d-none d-md-flex"
         >Uploaded: {{ uploadDate }}</small
       >
@@ -62,6 +73,14 @@ export default {
     uploadDate() {
       const D = new Date(this.event.data.uploaded)
       return D.toDateString()
+    },
+    likeNum() {
+      if (this.event) {
+        if (this.event.data.likes) return this.event.data.likes.length
+        else return 0
+      } else {
+        return 0
+      }
     },
   },
 
@@ -114,6 +133,18 @@ export default {
 
 .card-body {
   position: relative;
+}
+
+#likes {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.badge-like {
+  color: #fff;
+  background: #fe3d61;
+  font-size: 1rem;
 }
 
 #uploaded {

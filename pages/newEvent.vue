@@ -373,6 +373,7 @@ export default {
         location: this.location,
 
         imageRef: null,
+        likes: [],
       }
 
       try {
