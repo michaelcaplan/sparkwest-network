@@ -5,7 +5,7 @@
   >
     <div class="card-body">
       <div class="row pr-3">
-        <div class="col-auto">
+        <div class="col-auto border-right">
           <div
             v-if="profile.avatarUrl"
             class="avatar rounded"

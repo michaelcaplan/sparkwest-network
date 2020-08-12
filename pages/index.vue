@@ -8,14 +8,14 @@
           <img
             src="../assets/logo.svg"
             alt="logo"
-            class="img-fluid d-inline-block d-md-none"
+            class="img-fluid d-inline-block d-md-none animate__animated animate__fadeInRight"
             height="42"
           />
 
           <img
             src="../assets/logoLG.svg"
             alt="logo"
-            class="img-fluid d-none d-md-inline-block"
+            class="img-fluid d-none d-md-inline-block animate__animated animate__fadeInRight"
             height="42"
           />
         </div>
@@ -23,7 +23,7 @@
 
       <div class="row mb-4" v-if="user">
         <div class="col">
-          <profile-card />
+          <profile-card class="animate__animated animate__fadeIn" />
         </div>
       </div>
 
@@ -85,7 +85,7 @@
     </div>
 
     <div class="row">
-      <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+      <div class="col-12 col-lg-4 mb-3 mb-lg-0 d-none">
         <div class="card mb-3">
           <div class="card-body">
             <h3>
@@ -186,7 +186,11 @@
               <div
                 class="card-body d-flex align-items-center justify-content-center"
               >
-                <img src="@/assets/logo.svg" alt="" class="img-fluid" />
+                <img
+                  src="@/assets/logo.svg"
+                  alt=""
+                  class="img-fluid mr-0 mr-lg-3"
+                />
               </div>
             </div>
           </div>

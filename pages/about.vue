@@ -4,34 +4,54 @@
 
     <hr />
 
-    <div class="row mb-5">
-      <div class="col-12 col-lg">
-        <img src="../assets/SPARKWEST_COL.png" class="img-fluid" alt="" />
-      </div>
-      <div class="col-12 col-lg">
-        <h1>What is Spark West Network</h1>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-lg mb-3 mb-lg-0">
+            <div class="card h-100 bg-dark border-0">
+              <div
+                class="card-body d-flex align-items-center justify-content-center"
+              >
+                <img src="@/assets/logoLG.svg" alt="" class="img-fluid" />
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg">
+            <h2>What is Spark West Network?</h2>
 
-        <p>
-          Spark West Network is an umbrella marketing platform that draws
-          together, assists, and coordinates the various organizations, events,
-          and people that define our region’s unique entrepreneurial
-          opportunities. The Spark West website aims to act as a platform for
-          hosting the unique events and opportunities that make up western Nova
-          Scotia’s entrepreneurial ecosystem.
-        </p>
+            <p>
+              Spark West Network is an umbrella marketing platform that draws
+              together, assists, and coordinates the various organizations,
+              events, and people that define our region’s unique entrepreneurial
+              opportunities. The Spark West website aims to act as a platform
+              for hosting the unique events and opportunities that make up
+              western Nova Scotia’s entrepreneurial ecosystem.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <h1 class="text-center">Our Vision</h1>
+    <hr />
 
     <div class="row d-flex justify-content-center">
       <div class="col col-md-6">
-        <p>
-          Our vision is to create a unified voice for entrepreneurship in the
-          rural areas of western Nova Scotia. We want to make our region a
-          friendlier place for entrepreneurs to connect with each other, get
-          advice, become noticed, and build up their businesses and skill sets.
-        </p>
+        <div class="card">
+          <div class="card-body">
+            <h2>
+              Our Vision
+              <i class="fas fa-project-diagram text-primary float-right"></i>
+            </h2>
+
+            <p>
+              Our vision is to create a unified voice for entrepreneurship in
+              the rural areas of western Nova Scotia. We want to make our region
+              a friendlier place for entrepreneurs to connect with each other,
+              get advice, become noticed, and build up their businesses and
+              skill sets.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -132,8 +152,8 @@
 
     <hr />
 
-    <h1 class="text-center mb-3 mt-5">Have More Questions?</h1>
-    <div class="w-100 d-flex justify-content-center">
+    <h1 class="text-center mb-3">Have More Questions?</h1>
+    <div class="w-100 d-flex justify-content-center mb-3">
       <nuxt-link :to="{ name: 'contact' }" class="btn btn-lg btn-primary">
         Contact Us
       </nuxt-link>
