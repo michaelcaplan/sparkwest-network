@@ -138,6 +138,7 @@ export default {
           auth: true,
           firestore: true,
           storage: true,
+          functions: true,
         },
       },
     ],
