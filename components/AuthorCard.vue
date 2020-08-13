@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="'/user/' + uid" class="author card bg-dark text-light">
+  <nuxt-link :to="'/profiles/' + uid" class="author card bg-dark text-light">
     <div v-if="profile" class="card-body">
       <div class="row">
         <div class="col-auto border-right">
