@@ -71,6 +71,34 @@ export const actions = {
       console.error(e)
     }
   },
+
+  async getMonthEvents({ commit }, date) {
+    try {
+      const docRef = this.$fireStore
+        .collection('events')
+        .where('year', '==', date.year)
+        .where('month', '==', date.month)
+        .orderBy('day')
+
+      const snap = await docRef.get()
+
+      const eventPromises = snap.docs.map(async (doc) => {
+        const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
+        const URL = await imageRef.getDownloadURL()
+
+        return {
+          id: doc.id,
+          data: doc.data(),
+          image: URL,
+        }
+      })
+
+      const docs = await Promise.all(eventPromises)
+      commit('SET_EVENTS', docs)
+    } catch (e) {
+      console.error(e)
+    }
+  },
 }
 
 export const mutations = {

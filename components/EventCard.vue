@@ -11,7 +11,10 @@
           <div class="px-0 px-sm-2">
             <div class="row">
               <div class="col">
-                <p class="m-0 text-center">
+                <p v-if="weekly" class="m-0 text-center">
+                  {{ weekName(dayOfWeek, 1).toUpperCase() }}
+                </p>
+                <p v-else class="m-0 text-center">
                   {{ monthName(event.data.month, 1).toUpperCase() }}
                 </p>
               </div>
@@ -47,7 +50,7 @@
 
       <span
         id="likes"
-        class="badge badge-pill badge-like badge-danger m-3 animate__animated animate__bounceIn"
+        class="badge badge-pill badge-like badge-danger m-1 m-sm-3 animate__animated animate__bounceIn"
       >
         <i
           class="fa-heart d-none d-sm-inline-block mr-2"
@@ -67,7 +70,7 @@
 export default {
   name: 'EventCard',
 
-  props: ['event'],
+  props: ['event', 'weekly'],
 
   computed: {
     uploadDate() {
@@ -78,6 +81,19 @@ export default {
       if (this.event) {
         if (this.event.data.likes) return this.event.data.likes.length
         else return 0
+      } else {
+        return 0
+      }
+    },
+    dayOfWeek() {
+      if (this.event) {
+        const D = new Date(
+          this.event.data.year,
+          this.event.data.month,
+          this.event.data.day
+        )
+
+        return D.getDay()
       } else {
         return 0
       }
@@ -121,6 +137,21 @@ export default {
       if (len === 0) return mL[num]
       else if (len === 1) return mS[num]
       else return mL[num]
+    },
+    weekName(num, len) {
+      const wL = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ]
+      const wS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      if (len === 0) return wL[num]
+      else if (len === 1) return wS[num]
+      else return wL[num]
     },
   },
 }

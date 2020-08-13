@@ -132,41 +132,7 @@
 
             <hr />
 
-            <div class="row">
-              <div class="col">
-                <h3 class="text-center">
-                  <span class="badge badge-dark">AUG</span>
-                </h3>
-              </div>
-            </div>
-
-            <div class="row d-flex justify-content-center mb-3">
-              <div class="col-auto">
-                <div class="row">
-                  <div class="col-auto">
-                    <button class="btn btn-light">
-                      <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <h3 class="mb-0 text-center">09 - 15</h3>
-                  </div>
-                  <div class="col-auto">
-                    <button class="btn btn-light">
-                      <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <event-card-placeholder class="mb-2" />
-                <event-card-placeholder class="mb-2" />
-                <event-card-placeholder />
-              </div>
-            </div>
+            <week-list />
           </div>
         </div>
       </div>
@@ -217,8 +183,8 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import EventCardPlaceholder from '@/components/EventCardPlaceholder.vue'
 import ProfileCard from '@/components/ProfileCard.vue'
+import WeekList from '@/components/WeekList.vue'
 
 export default {
   name: 'Home',
@@ -231,7 +197,7 @@ export default {
 
   components: {
     ProfileCard,
-    EventCardPlaceholder,
+    WeekList,
   },
 }
 </script>
