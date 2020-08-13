@@ -10,7 +10,7 @@
           ></div>
           <div v-else class="avatar rounded bg-secondary text-light">
             <h4 v-if="profile.data.name" class="m-0">
-              {{ profile.name.substring(0, 1) }}
+              {{ profile.data.name.substring(0, 1) }}
             </h4>
             <div
               v-else
