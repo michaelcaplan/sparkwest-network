@@ -49,13 +49,23 @@
                     ><span class="text-danger">*</span> Event Date:</label
                   >
 
-                  <input
+                  <!-- <input
                     type="date"
                     id="date"
                     class="form-control"
                     v-model="date"
                     required
-                  />
+                  /> -->
+
+                  <client-only>
+                    <date-picker
+                      v-model="date"
+                      :input-class="'bg-white'"
+                      :bootstrap-styling="true"
+                      :required="true"
+                      :disabled="false"
+                    />
+                  </client-only>
                 </div>
 
                 <div class="row mb-3">
@@ -272,7 +282,7 @@ export default {
       chars: 0,
       maxChars: 800,
 
-      date: null,
+      date: new Date(),
 
       timeFormat: 1,
       timeFormats: ['k:mm', 'h:mm a'],
@@ -322,7 +332,6 @@ export default {
       if (!this.checkForm()) return
       this.uploading = true
 
-      const D = new Date(this.date)
       const N = new Date()
 
       const startTime = {
@@ -356,12 +365,12 @@ export default {
         title: this.title,
         description: this.description,
 
-        date: D.toDateString(),
-        year: D.getFullYear(),
-        month: D.getMonth(),
-        day: D.getDate(),
+        date: this.date.toDateString(),
+        year: this.date.getFullYear(),
+        month: this.date.getMonth(),
+        day: this.date.getDate(),
 
-        timestamp: D.getTime(),
+        timestamp: this.date.getTime(),
         uploaded: N.getTime(),
 
         startTimeHour: startTime.h,
