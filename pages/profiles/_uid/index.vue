@@ -13,7 +13,7 @@
                     :style="'background-image: url(\'' + profile.avatar + '\')'"
                   ></div>
                   <div v-else class="avatar rounded bg-secondary text-light">
-                    <h1 v-if="profile.name" class="m-0">
+                    <h1 v-if="profile.data.name" class="m-0">
                       {{ profile.data.name.substring(0, 1) }}
                     </h1>
                     <div
@@ -150,6 +150,8 @@ import ProfileLikesList from '@/components/ProfileLikesList.vue'
 
 export default {
   name: 'profile',
+
+  middleware: 'profile',
 
   components: {
     ProfileEventList,
