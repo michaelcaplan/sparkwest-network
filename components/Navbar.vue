@@ -254,10 +254,6 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
-  background: #fe3d61;
-}
-
 .btn-open i {
   transform: rotate(90deg);
 }

@@ -172,34 +172,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.avatar {
-  width: 10rem;
-  height: 10rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-#likes-nav {
-  color: #fe3d61;
-}
-
-#likes-nav.active {
-  background: #fe3d61 !important;
-  color: #fff !important;
-}
-
-#edit-nav {
-  color: #17a2b8;
-}
-
-#edit-nav.active {
-  background: #17a2b8 !important;
-  color: #fff !important;
-}
-</style>

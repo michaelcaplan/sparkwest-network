@@ -3,7 +3,7 @@
     <div class="jumbotron">
       <h1 class="mb-3">Welcome to:</h1>
 
-      <div class="card border-0 mb-3" style="background: #fe3d61;">
+      <div id="logo-banner" class="gradient-slide card border-0 mb-3">
         <div class="card-body">
           <img
             src="../assets/logo.svg"
@@ -216,3 +216,27 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+#logo-banner {
+  background: #fe3d61;
+  background: linear-gradient(
+    135deg,
+    rgba(254, 61, 97, 1) 0%,
+    rgba(254, 61, 97, 1) 60%,
+    rgba(252, 210, 60, 1) 100%
+  );
+  background-size: 200% auto;
+  background-position: 0% 0%;
+  animation: 1s 1s forwards ease gradient-slide;
+}
+
+@keyframes gradient-slide {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 0%;
+  }
+}
+</style>

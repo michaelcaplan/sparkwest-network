@@ -29,6 +29,7 @@
     "vuejs-datepicker": "^1.6.2"
   },
   "devDependencies": {
+    "@nuxtjs/color-mode": "^1.0.3",
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/stylelint-module": "^4.0.0",

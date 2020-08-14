@@ -60,7 +60,7 @@
       </div>
 
       <div class="card-body p-3">
-        <div class="loading gradient rounded w-50"></div>
+        <div class="loading gradient-light rounded w-50"></div>
       </div>
 
       <div class="card-footer p-2">
@@ -75,32 +75,3 @@ export default {
   name: 'TextEditorPlaceholder',
 }
 </script>
-
-<style>
-.gradient {
-  animation-duration: 1.8s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  animation-name: placeHolderShimmer;
-  animation-timing-function: linear;
-  background: #f6f7f8;
-  background: linear-gradient(to right, #f8f9fa 8%, #f0f0f0 38%, #f8f9fa 54%);
-  background-size: 1000px 640px;
-  position: relative;
-}
-
-@keyframes placeHolderShimmer {
-  0% {
-    background-position: -468px 0;
-  }
-  100% {
-    background-position: 468px 0;
-  }
-}
-</style>
-
-<style scoped>
-.loading {
-  height: 1rem;
-}
-</style>

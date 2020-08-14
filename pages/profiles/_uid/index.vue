@@ -264,30 +264,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.avatar {
-  width: 10rem;
-  height: 10rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-#likes-nav {
-  color: #fe3d61;
-}
-
-#likes-nav.active {
-  background: #fe3d61 !important;
-  color: #fff !important;
-}
-
-.badge-like {
-  color: #fff;
-  background: #fe3d61;
-}
-</style>

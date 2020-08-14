@@ -1,0 +1,245 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* -------- Fonts -------- */
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1 *,
+h2 *,
+h3 *,
+h4 *,
+h5 *,
+h6 * {
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+}
+
+/* -------- App styling -------- */
+
+#app {
+  height: 100vh;
+  position: relative;
+}
+
+#content-wrapper {
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+@media only screen and (max-width: 576px) {
+  #content-wrapper {
+    margin-bottom: -740px;
+  }
+
+  #footer-push {
+    height: 740px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  #content-wrapper {
+    margin-bottom: -585px;
+  }
+
+  #footer-push {
+    height: 585px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #content-wrapper {
+    margin-bottom: -500px;
+  }
+
+  #footer-push {
+    height: 500px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #content-wrapper {
+    margin-bottom: -375px;
+  }
+
+  #footer-push {
+    height: 375px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  #content-wrapper {
+    margin-bottom: -351px;
+  }
+
+  #footer-push {
+    height: 351px;
+  }
+}
+
+/* -------- Utility styling -------- */
+
+.fr-box {
+  font-family: inherit;
+}
+
+.fr-box * {
+  font-family: inherit;
+}
+
+[contenteditable]:focus {
+  outline: 0 solid transparent;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.loading {
+  height: 1rem;
+}
+
+.loading-lg {
+  height: 1.75rem;
+}
+
+.loading-btn {
+  height: 2rem;
+}
+
+.gradient {
+  animation-duration: 1.8s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #6c757d;
+  background: linear-gradient(to right, #6c757d 8%, #7e8992 38%, #6c757d 54%);
+  background-size: 1000px 640px;
+  position: relative;
+}
+
+.gradient-light {
+  animation-duration: 1.8s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #f8f9fa 8%, #f0f0f0 38%, #f8f9fa 54%);
+  background-size: 1000px 640px;
+  position: relative;
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* -------- Element styling -------- */
+
+.navbar {
+  background: #fe3d61;
+}
+
+.avatar {
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.avatar-sm {
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#likes-nav {
+  color: #fe3d61;
+}
+
+#likes-nav.active {
+  background: #fe3d61 !important;
+  color: #fff !important;
+}
+
+#edit-nav {
+  color: #17a2b8;
+}
+
+#edit-nav.active {
+  background: #17a2b8 !important;
+  color: #fff !important;
+}
+
+.badge-like {
+  color: #fff;
+  background: #fe3d61;
+}
+
+.badge-like-inline {
+  color: #fff;
+  background: #fe3d61;
+  font-size: 1rem;
+}
+
+.btn-like {
+  background: #f8f9fa;
+  border-color: #f8f9fa;
+  color: #212529;
+  position: relative;
+}
+
+.btn-like.liked {
+  background: #fe3d61;
+  border-color: #fe3d61;
+  color: #f8f9fa;
+}
+
+.btn-like:hover {
+  background: #e2e6ea;
+  border-color: #e2e6ea;
+  box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
+}
+
+.btn-like.liked:hover {
+  background: rgb(212, 50, 104);
+  border-color: rgb(212, 50, 104);
+  box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
+}

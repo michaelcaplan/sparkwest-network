@@ -8,10 +8,10 @@
         <div class="col-auto border-right">
           <div
             v-if="profile.avatarUrl"
-            class="avatar rounded"
+            class="avatar-sm rounded"
             :style="'background-image: url(\'' + profile.avatarUrl + '\')'"
           ></div>
-          <div v-else class="avatar rounded bg-secondary text-light">
+          <div v-else class="avatar-sm rounded bg-secondary text-light">
             <h4 v-if="profile.name" class="m-0">
               {{ profile.name.substring(0, 1) }}
             </h4>
@@ -61,17 +61,6 @@ export default {
 </script>
 
 <style scoped>
-.avatar {
-  width: 4rem;
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 .card {
   text-decoration: none;
 }

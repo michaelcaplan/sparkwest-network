@@ -173,8 +173,6 @@ export default {
 }
 
 .badge-like {
-  color: #fff;
-  background: #fe3d61;
   font-size: 1rem;
 }
 

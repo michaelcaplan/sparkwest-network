@@ -5,10 +5,10 @@
         <div class="col-auto border-right">
           <div
             v-if="profile.avatar"
-            class="avatar rounded"
+            class="avatar-sm rounded"
             :style="'background-image: url(\'' + profile.avatar + '\')'"
           ></div>
-          <div v-else class="avatar rounded bg-secondary text-light">
+          <div v-else class="avatar-sm rounded bg-secondary text-light">
             <h4 v-if="profile.data.name" class="m-0">
               {{ profile.data.name.substring(0, 1) }}
             </h4>
@@ -93,44 +93,8 @@ export default {
   text-decoration: none;
 }
 
-.avatar {
-  width: 4rem;
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 .avatar-placeholder {
   width: 4rem;
   height: 4rem;
-}
-
-.loading {
-  height: 1rem;
-}
-
-.gradient {
-  animation-duration: 1.8s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  animation-name: placeHolderShimmer;
-  animation-timing-function: linear;
-  background: #6c757d;
-  background: linear-gradient(to right, #6c757d 8%, #7e8992 38%, #6c757d 54%);
-  background-size: 1000px 640px;
-  position: relative;
-}
-
-@keyframes placeHolderShimmer {
-  0% {
-    background-position: -468px 0;
-  }
-  100% {
-    background-position: 468px 0;
-  }
 }
 </style>

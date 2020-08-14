@@ -53,7 +53,7 @@
               ></span>
 
               <span
-                class="badge badge-pill badge-like"
+                class="badge badge-pill badge-num"
                 :class="{ 'badge-light': liked, 'badge-dark': !liked }"
                 >{{ likeNum }}</span
               >
@@ -447,43 +447,12 @@ export default {
 </script>
 
 <style scoped>
-.btn-like {
-  background: #f8f9fa;
-  border-color: #f8f9fa;
-  color: #212529;
-  position: relative;
-}
-
-.btn-like.liked {
-  background: #fe3d61;
-  border-color: #fe3d61;
-  color: #f8f9fa;
-}
-
-.btn-like:hover {
-  background: #e2e6ea;
-  border-color: #e2e6ea;
-  box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
-}
-
-.btn-like.liked:hover {
-  background: rgb(212, 50, 104);
-  border-color: rgb(212, 50, 104);
-  box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
-}
-
-.badge-like {
+.badge-num {
   font-size: 0.8rem;
   margin: 0.5rem;
   position: absolute;
   top: 0;
   right: 0;
-}
-
-.badge-like-inline {
-  color: #fff;
-  background: #fe3d61;
-  font-size: 1rem;
 }
 
 #image-placeholder {
@@ -500,38 +469,5 @@ export default {
 .avatar-placeholder {
   width: 4rem;
   height: 4rem;
-}
-
-.loading {
-  height: 1rem;
-}
-
-.loading-lg {
-  height: 1.75rem;
-}
-
-.loading-btn {
-  height: 2rem;
-}
-
-.gradient {
-  animation-duration: 1.8s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  animation-name: placeHolderShimmer;
-  animation-timing-function: linear;
-  background: #6c757d;
-  background: linear-gradient(to right, #6c757d 8%, #7e8992 38%, #6c757d 54%);
-  background-size: 1000px 640px;
-  position: relative;
-}
-
-@keyframes placeHolderShimmer {
-  0% {
-    background-position: -468px 0;
-  }
-  100% {
-    background-position: 468px 0;
-  }
 }
 </style>

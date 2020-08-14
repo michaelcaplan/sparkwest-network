@@ -415,17 +415,6 @@ export default {
 </script>
 
 <style scoped>
-.avatar {
-  width: 10rem;
-  height: 10rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 textarea {
   resize: none;
 }
