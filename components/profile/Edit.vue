@@ -10,6 +10,13 @@
 
         <h5>Account Details:</h5>
 
+        <div
+          v-if="detailError"
+          class="alert alert-danger animate__animated animate__shakeX"
+        >
+          {{ detailError }}
+        </div>
+
         <div class="row mb-3">
           <div class="col-12 col-md-2">
             <b>Email: </b>
@@ -18,7 +25,66 @@
             {{ user.email }}
           </div>
           <div class="col-auto">
-            <a class="disabled" href="#">Change Email</a>
+            <a class="disabled" data-toggle="collapse" href="#emailCollapse"
+              >Change Email</a
+            >
+          </div>
+        </div>
+
+        <div id="emailCollapse" class="collapse">
+          <div class="row w-100 m-0">
+            <div class="col p-0">
+              <hr />
+
+              <div class="row d-flex justify-content-center">
+                <div class="col col-md-6">
+                  <form @submit.prevent="changeEmail">
+                    <div class="form-group">
+                      <label for="pass">New Email</label>
+                      <input
+                        type="email"
+                        name="pass"
+                        id="pass"
+                        class="form-control"
+                        placeholder="JohnDoe@email.com"
+                        v-model="formEmail"
+                        required
+                      />
+                    </div>
+
+                    <div class="row justify-content-end">
+                      <div class="col-auto">
+                        <button
+                          class="btn btn-secondary mr-3"
+                          data-toggle="collapse"
+                          data-target="#emailCollapse"
+                          @click.prevent
+                        >
+                          Cancle
+                        </button>
+
+                        <button
+                          class="btn btn-primary"
+                          type="submit"
+                          value="update"
+                          :disabled="updating || formEmail === user.email"
+                        >
+                          <span
+                            v-show="updating"
+                            class="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <hr />
+            </div>
           </div>
         </div>
 
@@ -30,7 +96,81 @@
             ****************
           </div>
           <div class="col-auto">
-            <a class="disabled" href="#">Reset Password</a>
+            <a data-toggle="collapse" href="#passwordCollapse"
+              >Reset Password</a
+            >
+          </div>
+        </div>
+
+        <div id="passwordCollapse" class="collapse">
+          <div class="row w-100 m-0">
+            <div class="col p-0">
+              <hr />
+
+              <div class="row d-flex justify-content-center">
+                <div class="col col-md-6">
+                  <form @submit.prevent="changePass">
+                    <div class="form-group">
+                      <label for="pass">New Password</label>
+                      <input
+                        type="password"
+                        name="pass"
+                        id="pass"
+                        class="form-control"
+                        placeholder="super secret"
+                        v-model="formPassword"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="rePass">Repeat Password</label>
+                      <input
+                        type="password"
+                        name="rePass"
+                        id="pass"
+                        class="form-control"
+                        placeholder="super secret"
+                        v-model="formPasswordRe"
+                        required
+                      />
+                    </div>
+
+                    <div class="row justify-content-end">
+                      <div class="col-auto">
+                        <button
+                          class="btn btn-secondary mr-3"
+                          data-toggle="collapse"
+                          data-target="#passwordCollapse"
+                          @click.prevent
+                        >
+                          Cancle
+                        </button>
+
+                        <button
+                          class="btn btn-primary"
+                          type="submit"
+                          value="update"
+                          :disabled="
+                            updating ||
+                            formPassword !== formPasswordRe ||
+                            !formPassword
+                          "
+                        >
+                          <span
+                            v-show="updating"
+                            class="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -323,6 +463,8 @@ export default {
     return {
       formName: null,
       formEmail: null,
+      formPassword: null,
+      formPasswordRe: null,
       formAbout: null,
       formAvatar: null,
 
@@ -335,6 +477,8 @@ export default {
       deleteName: null,
       deleting: false,
       deleted: false,
+
+      detailError: false,
     }
   },
 
@@ -405,6 +549,42 @@ export default {
         this.updating = false
         this.done = true
       })
+    },
+
+    async changeEmail() {
+      try {
+        this.updating = true
+
+        const user = this.$fireAuth.currentUser
+        await user.updateEmail(this.formEmail)
+
+        this.detailError = false
+        this.updating = false
+      } catch (e) {
+        console.error(e)
+
+        this.detailError = e.message
+        this.updating = false
+      }
+    },
+
+    async changePass() {
+      try {
+        if (this.formPassword === this.formPasswordRe) {
+          this.updating = true
+
+          const user = this.$fireAuth.currentUser
+          await user.updatePassword(this.formPassword)
+
+          this.detailError = false
+          this.updating = false
+        }
+      } catch (e) {
+        console.error(e)
+
+        this.detailError = e.message
+        this.updating = false
+      }
     },
 
     deleteProfile() {
