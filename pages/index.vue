@@ -219,13 +219,13 @@ export default {
 
 <style scoped>
 #logo-banner {
-  background: #fe3d61;
+  background: #fe3d61 !important;
   background: linear-gradient(
     135deg,
-    rgba(254, 61, 97, 1) 0%,
-    rgba(254, 61, 97, 1) 60%,
-    rgba(252, 210, 60, 1) 100%
-  );
+    var(--brand-primary) 0%,
+    var(--brand-primary) 60%,
+    var(--brand-secondary) 100%
+  ) !important;
   background-size: 200% auto;
   background-position: 0% 0%;
   animation: 1s 1s forwards ease gradient-slide;

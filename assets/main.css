@@ -1,3 +1,52 @@
+/* -------- Variables -------- */
+:root {
+  --bg: #fff;
+  --bg-secondary: #e9ecef;
+  --bg-dark: #343a40;
+  --card-bg: #fff;
+  --nav-bg: #fe3d61;
+  --nav-bg-dark: #343a40;
+  --hr-color: rgba(0, 0, 0, 0.1);
+  --text: #212529;
+  --text-on: #f8f9fa;
+  --text-dark: #212529;
+  --text-light: #f8f9fa;
+  --link: #007bff;
+  --link-hover: #0b5cd5;
+  --brand-primary: #fe3d61;
+  --brand-primary-dark: #fe3459;
+  --brand-secondary: #fcd23c;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+}
+
+.dark-mode {
+  --bg: #212529;
+  --bg-secondary: #343a40;
+  --bg-dark: #495057;
+  --card-bg: #343a40;
+  --nav-bg: #343a40;
+  --nav-bg-dark: #495057;
+  --hr-color: rgba(255, 255, 255, 0.1);
+  --text: #f8f9fa;
+  --text-on: #212529;
+  --link: #5a9cfe;
+  --link-hover: #3485fd;
+  --brand-primary: #fe5d7a;
+  --brand-primary-dark: #fe3d61;
+  --brand-secondary: #fcd23c;
+  --primary: #5a9cfe;
+  --info: #3cb1c3;
+}
+
+/* -------- Root styling -------- */
+
 html,
 body {
   margin: 0;
@@ -42,6 +91,9 @@ h6 {
 #content-wrapper {
   min-height: 100%;
   overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.5s ease;
 }
 
 @media only screen and (max-width: 576px) {
@@ -95,6 +147,18 @@ h6 {
 }
 
 /* -------- Utility styling -------- */
+
+a {
+  color: var(--link);
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
 
 .fr-box {
   font-family: inherit;
@@ -165,7 +229,34 @@ h6 {
 /* -------- Element styling -------- */
 
 .navbar {
-  background: #fe3d61;
+  background: var(--nav-bg);
+}
+
+#nav .bg-dark {
+  background: var(--nav-bg-dark) !important;
+}
+
+hr {
+  border-color: var(--hr-color);
+}
+
+.card {
+  background: var(--card-bg) !important;
+  color: var(--text) !important;
+}
+
+.card.bg-dark {
+  background: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+}
+
+.badge-dark {
+  background: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+}
+
+.jumbotron {
+  background: var(--bg-secondary);
 }
 
 .avatar {
@@ -190,46 +281,51 @@ h6 {
   background-repeat: no-repeat;
 }
 
+.nav-pills .nav-link.active {
+  background: var(--primary);
+  color: var(--text-on);
+}
+
 #likes-nav {
-  color: #fe3d61;
+  color: var(--brand-primary);
 }
 
 #likes-nav.active {
-  background: #fe3d61 !important;
-  color: #fff !important;
+  background: var(--brand-primary) !important;
+  color: var(--text-on) !important;
 }
 
 #edit-nav {
-  color: #17a2b8;
+  color: var(--info);
 }
 
 #edit-nav.active {
-  background: #17a2b8 !important;
-  color: #fff !important;
+  background: var(--info) !important;
+  color: var(--text-on) !important;
 }
 
 .badge-like {
-  color: #fff;
-  background: #fe3d61;
+  color: var(--text-light);
+  background: var(--brand-primary);
 }
 
 .badge-like-inline {
-  color: #fff;
-  background: #fe3d61;
+  color: var(--text-light);
+  background: var(--brand-primary);
   font-size: 1rem;
 }
 
 .btn-like {
-  background: #f8f9fa;
-  border-color: #f8f9fa;
+  background: var(--light);
+  border-color: var(--light);
   color: #212529;
   position: relative;
 }
 
 .btn-like.liked {
-  background: #fe3d61;
-  border-color: #fe3d61;
-  color: #f8f9fa;
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: var(--light);
 }
 
 .btn-like:hover {

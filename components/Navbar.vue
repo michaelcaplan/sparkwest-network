@@ -1,7 +1,7 @@
 <template>
   <!-- Navigation -->
-  <div>
-    <nav id="nav" class="navbar navbar-expand-lg navbar-dark mt-0">
+  <div id="nav">
+    <nav class="navbar navbar-expand-lg navbar-dark mt-0">
       <div class="container">
         <nuxt-link id="logo" to="/" class="navbar-brand">
           <img

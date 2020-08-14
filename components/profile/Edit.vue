@@ -1,6 +1,6 @@
 <template>
   <div id="edit">
-    <div v-if="profile && user" class="card">
+    <div v-if="profile && user" class="card mb-3">
       <div class="card-body">
         <h3 class="mb-3">
           Edit Profile:
@@ -118,6 +118,24 @@
             >
               Delete Profile
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-dark">
+      <div class="card-body">
+        <h3>Experimental:</h3>
+        <p class="font-italic">
+          Features for Spark West Network that aren't yet complete
+        </p>
+        <hr />
+
+        <h5>Theme:</h5>
+
+        <div class="row d-flex justify-content-center">
+          <div class="col-12 col-md-8">
+            <theme-picker />
           </div>
         </div>
       </div>
@@ -296,6 +314,8 @@ import { mapGetters, mapActions } from 'vuex'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 
+import ThemePicker from '@/components/ThemePicker.vue'
+
 export default {
   name: 'Edit',
 
@@ -342,6 +362,7 @@ export default {
 
   components: {
     VueCropper,
+    ThemePicker,
   },
 
   methods: {
