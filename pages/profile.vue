@@ -130,7 +130,7 @@ export default {
 
   head() {
     return {
-      title: this.profile.name,
+      title: this.profile.name || 'Profile',
       meta: [
         {
           hid: 'description',

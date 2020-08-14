@@ -151,6 +151,10 @@ export default {
             this.password
           )
 
+          await response.user.updateProfile({
+            displayName: this.name,
+          })
+
           await this.setUser(response.user)
           await this.createProfile(this.name)
 

@@ -298,12 +298,6 @@ import 'cropperjs/dist/cropper.css'
 
 export default {
   name: 'Edit',
-  computed: {
-    ...mapGetters({
-      profile: 'user/profile',
-      user: 'user/user',
-    }),
-  },
 
   data() {
     return {
@@ -324,8 +318,21 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      profile: 'user/profile',
+      user: 'user/user',
+    }),
+
+    name() {
+      return this.profile.name
+    },
+  },
+
   watch: {
-    profile() {
+    name() {
+      console.log('Set form')
+
       this.formAbout = this.profile.about
       this.formAvatar = this.profile.avatar
       this.formName = this.profile.name
@@ -341,6 +348,7 @@ export default {
     ...mapActions({
       updateProfile: 'user/updateProfile',
       uploadImage: 'user/uploadImage',
+      getProfile: 'user/getProfile',
     }),
 
     async updateInfo() {
@@ -389,6 +397,19 @@ export default {
         this.$router.push('/')
       })
     },
+  },
+
+  async mounted() {
+    if (!this.profile.name) {
+      await this.getProfile(this.user.uid || this.user.user_id)
+    }
+
+    console.log('mounted')
+
+    this.formAbout = this.profile.about
+    this.formAvatar = this.profile.avatar
+    this.formName = this.profile.name
+    this.formEmail = this.user.email
   },
 }
 </script>

@@ -122,6 +122,12 @@ export const actions = {
       console.log(info)
       await docRef.update(info)
 
+      const user = this.$fireAuth.currentUser
+
+      user.updateProfile({
+        displayName: info.name,
+      })
+
       const newInfo = {
         name: info.name || state.name,
         about: info.about || state.about,
