@@ -63,7 +63,9 @@
 
                     <div class="row mb-3">
                       <div class="col">
-                        <a href="#" class="text-muted">Forgot password?</a>
+                        <nuxt-link to="/forgotPassword"
+                          >Forgot password?</nuxt-link
+                        >
                       </div>
                     </div>
 

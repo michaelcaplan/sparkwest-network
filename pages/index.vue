@@ -228,6 +228,7 @@ export default {
   ) !important;
   background-size: 200% auto;
   background-position: 0% 0%;
+  overflow: hidden;
   animation: 1s 1s forwards ease gradient-slide;
 }
 
