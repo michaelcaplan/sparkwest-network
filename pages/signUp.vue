@@ -106,6 +106,20 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'SignUp',
+
+  head() {
+    return {
+      title: 'Sign Up',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Create an account for Spark West Network',
+        },
+      ],
+    }
+  },
+
   data() {
     return {
       email: '',

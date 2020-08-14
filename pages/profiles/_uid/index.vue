@@ -153,6 +153,22 @@ export default {
 
   middleware: 'profile',
 
+  head() {
+    let name = 'Profile'
+    if (this.profile) name = this.profile.data.name
+
+    return {
+      title: name,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: name + ' on Spark West Network',
+        },
+      ],
+    }
+  },
+
   components: {
     ProfileEventList,
     ProfileLikesList,

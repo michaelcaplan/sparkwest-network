@@ -164,6 +164,20 @@
 <script>
 export default {
   name: 'About',
+
+  head() {
+    return {
+      title: 'About',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'About Spark West Network',
+        },
+      ],
+    }
+  },
+
   methods: {
     toggleCaret(id) {
       document.getElementById(id).classList.toggle('up')

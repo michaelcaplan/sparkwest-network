@@ -102,6 +102,20 @@
 <script>
 export default {
   name: 'Login',
+
+  head() {
+    return {
+      title: 'Login',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Login to you Spark West Network account',
+        },
+      ],
+    }
+  },
+
   data() {
     return {
       email: '',

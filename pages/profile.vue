@@ -128,6 +128,19 @@ export default {
 
   middleware: 'auth',
 
+  head() {
+    return {
+      title: this.profile.name,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Your Spark West Network account',
+        },
+      ],
+    }
+  },
+
   data() {
     return {
       tabNum: 0,

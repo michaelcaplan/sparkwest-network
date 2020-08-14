@@ -189,6 +189,21 @@ import WeekList from '@/components/WeekList.vue'
 export default {
   name: 'Home',
 
+  head() {
+    return {
+      title: 'Spark West Network',
+      titleTemplate: false,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'Spark West Network is an umbrella marketing platform that draws together, assists, and coordinates the various organizations, events, and people that define our region’s unique entrepreneurial opportunities. ',
+        },
+      ],
+    }
+  },
+
   computed: {
     ...mapGetters({
       user: 'user/user',

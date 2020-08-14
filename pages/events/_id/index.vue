@@ -276,6 +276,22 @@ import AuthorCard from '@/components/AuthorCard.vue'
 export default {
   name: 'event',
 
+  head() {
+    let title = 'Event'
+    if (this.event) title = this.event.data.title
+
+    return {
+      title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: title + ' on Spark West Network',
+        },
+      ],
+    }
+  },
+
   components: {
     AuthorCard,
   },

@@ -92,12 +92,27 @@
 <script>
 export default {
   name: 'Contact',
+
+  head() {
+    return {
+      title: 'Contact',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Get in touch with Spark West Network',
+        },
+      ],
+    }
+  },
+
   data() {
     return {
       email: '',
       message: '',
     }
   },
+
   methods: {
     sendMessage() {
       const messageTrim = this.message.trim()

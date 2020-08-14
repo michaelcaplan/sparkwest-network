@@ -49,14 +49,6 @@
                     ><span class="text-danger">*</span> Event Date:</label
                   >
 
-                  <!-- <input
-                    type="date"
-                    id="date"
-                    class="form-control"
-                    v-model="date"
-                    required
-                  /> -->
-
                   <client-only>
                     <date-picker
                       v-model="date"
@@ -267,6 +259,19 @@ export default {
   name: 'NewEvent',
 
   middleware: 'auth',
+
+  head() {
+    return {
+      title: 'New Event',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Create a new event',
+        },
+      ],
+    }
+  },
 
   components: {
     TextEditor,
