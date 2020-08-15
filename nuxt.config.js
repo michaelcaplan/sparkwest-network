@@ -82,7 +82,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['@/assets/main.css'],
+  css: ['@/assets/main.css', '@/assets/noscript.css'],
   /*
    ** Nuxt loading bar settings
    */

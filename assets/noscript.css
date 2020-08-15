@@ -1,0 +1,12 @@
+noscript {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  background: #fe3d61;
+  color: #f8f9fa;
+  display: flex;
+  align-items: center;
+}

@@ -43,11 +43,26 @@
 
   <body {{ BODY_ATTRS }}>
     <noscript>
-      <strong
-        >We're Sorry, but Javascript is required to view Spark West Network.
-        Please enable it to continue</strong
-      >
+      <div class="container py-3">
+        <div class="row d-flex justify-content-center">
+          <div class="col-auto">
+            <img src="/logoLG.svg" alt="logo" class="img-fluid" />
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row d-flex justify-content-center">
+          <div class="col-auto">
+            <p>
+              We're Sorry, but Javascript is required to view Spark West
+              Network. Please enable it to continue
+            </p>
+          </div>
+        </div>
+      </div>
     </noscript>
+
     {{ APP }}
   </body>
 </html>
