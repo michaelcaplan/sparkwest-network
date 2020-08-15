@@ -1,7 +1,7 @@
 <template>
   <div id="text-editor">
     <div v-if="editor" @submit.prevent class="card editor">
-      <div class="card-header bg-dark p-2">
+      <div class="card-header p-2">
         <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
           <div class="row">
             <div class="col-auto d-none d-xl-flex">
@@ -225,13 +225,12 @@
       </div>
 
       <div class="card-footer p-2">
-        <p class="small float-right text-muted" v-if="maxChars == null">
+        <p class="small float-right" v-if="maxChars == null">
           characters: {{ chars }}
         </p>
         <p
           class="small float-right"
           :class="{
-            'text-muted': chars <= maxChars,
             'text-danger': chars > maxChars,
           }"
           v-if="maxChars"
@@ -333,5 +332,21 @@ export default {
 
 .editor p:last-child {
   margin-bottom: 0;
+}
+</style>
+
+<style scoped>
+.card-header {
+  background: var(--editor-menu-bg);
+}
+
+.card-body {
+  background: var(--editor-body-bg);
+  color: var(--editor-text-color);
+}
+
+.card-footer {
+  background: var(--editor-footer-bg);
+  color: var(--editor-footer-text-color);
 }
 </style>

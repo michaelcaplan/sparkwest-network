@@ -61,7 +61,7 @@
       data-toggle="collapse"
       data-target="#faqCollapse1"
       href="#"
-      class="card faq-card text-dark mb-3"
+      class="card faq-card mb-3"
       @click="toggleCaret('caret1')"
     >
       <div class="card-body">
@@ -90,7 +90,7 @@
       data-toggle="collapse"
       data-target="#faqCollapse2"
       href="#"
-      class="card faq-card text-dark mb-3"
+      class="card faq-card mb-3"
       @click="toggleCaret('caret2')"
     >
       <div class="card-body">
@@ -119,7 +119,7 @@
       data-toggle="collapse"
       data-target="#faqCollapse3"
       href="#"
-      class="card faq-card text-dark"
+      class="card faq-card"
       @click="toggleCaret('caret3')"
     >
       <div class="card-body">

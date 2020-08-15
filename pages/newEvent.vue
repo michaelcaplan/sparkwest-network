@@ -6,7 +6,11 @@
       <hr />
 
       <form @submit.prevent="uploadEvent">
-        <div v-if="error" class="alert alert-danger" role="alert">
+        <div
+          v-if="error"
+          class="alert alert-danger animate__animated animate__shakeX"
+          role="alert"
+        >
           {{ error }}
         </div>
 
@@ -52,11 +56,16 @@
                   <client-only>
                     <date-picker
                       v-model="date"
-                      :input-class="'bg-white'"
+                      :input-class="'date-input'"
+                      :calendar-class="'calendar-input'"
                       :bootstrap-styling="true"
                       :required="true"
                       :disabled="false"
                     />
+                    <div
+                      class="loading-lg gradient rounded w-100"
+                      slot="placeholder"
+                    ></div>
                   </client-only>
                 </div>
 
@@ -171,7 +180,7 @@
                 <div
                   v-else
                   id="file-placeholder"
-                  class="rounded bg-white border text-muted"
+                  class="rounded border text-muted"
                 >
                   <div class="content">
                     <div>
@@ -318,13 +327,15 @@ export default {
       else this.timeFormat = 1
     },
     selectFile(event) {
-      const file = event.target.files[0]
+      if (event.target.files) {
+        const file = event.target.files[0]
 
-      const urlCreator = window.URL || window.webkitURL
-      const imageUrl = urlCreator.createObjectURL(file)
+        const urlCreator = window.URL || window.webkitURL
+        const imageUrl = urlCreator.createObjectURL(file)
 
-      this.filePreview = imageUrl
-      this.file = file
+        this.filePreview = imageUrl
+        this.file = file
+      }
     },
 
     clearFile() {
@@ -503,6 +514,8 @@ export default {
   overflow: hidden;
   padding-top: calc(2 / 3 * 100%);
   position: relative;
+  background: var(--bg-card);
+  border-color: var(--secondary) !important;
 }
 
 #file-placeholder .content {
@@ -525,5 +538,19 @@ export default {
   top: 0;
   right: 0;
   margin: 0.5rem;
+}
+</style>
+
+<style>
+.calendar-input {
+  background: var(--card-bg) !important;
+}
+
+.calendar-input header * {
+  color: var(--text);
+}
+
+.calendar-input header *:hover {
+  color: var(--text-on);
 }
 </style>

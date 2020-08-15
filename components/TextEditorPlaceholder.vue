@@ -2,7 +2,7 @@
   <div id="text-editor-placeholder">
     <!-- Editor loading placeholder -->
     <div class="card">
-      <div class="card-header p-2 bg-dark">
+      <div class="card-header p-2">
         <div class="row">
           <div class="col-auto">
             <div class="btn-group rounded border border-secondary">
@@ -60,7 +60,7 @@
       </div>
 
       <div class="card-body p-3">
-        <div class="loading gradient-light rounded w-50"></div>
+        <div class="loading gradient rounded w-50"></div>
       </div>
 
       <div class="card-footer p-2">
@@ -75,3 +75,19 @@ export default {
   name: 'TextEditorPlaceholder',
 }
 </script>
+
+<style scoped>
+.card-header {
+  background: var(--editor-menu-bg);
+}
+
+.card-body {
+  background: var(--editor-body-bg);
+  color: var(--editor-text-color);
+}
+
+.card-footer {
+  background: var(--editor-footer-bg);
+  color: var(--editor-footer-text-color);
+}
+</style>

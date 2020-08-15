@@ -6,15 +6,18 @@
   --card-bg: #fff;
   --nav-bg: #fe3d61;
   --nav-bg-dark: #343a40;
+  --nav-btn: #343a40;
+  --nav-btn-hover: #212529;
   --hr-color: rgba(0, 0, 0, 0.1);
   --text: #212529;
+  --text-hover: #121212;
   --text-on: #f8f9fa;
   --text-dark: #212529;
   --text-light: #f8f9fa;
   --link: #007bff;
   --link-hover: #0b5cd5;
   --brand-primary: #fe3d61;
-  --brand-primary-dark: #fe3459;
+  --brand-primary-hover: #fe3459;
   --brand-secondary: #fcd23c;
   --primary: #007bff;
   --secondary: #6c757d;
@@ -24,6 +27,22 @@
   --danger: #dc3545;
   --light: #f8f9fa;
   --dark: #343a40;
+  --primary-hover: #0b5cd5;
+  --secondary-hover: #495057;
+  --success-hover: #228c3a;
+  --info-hover: #13889b;
+  --warning-hover: #d6a206;
+  --danger-hover: #b92d3a;
+  --light-hover: #e9ecef;
+  --dark-hover: #212529;
+  --form-control-bg: #fff;
+  --form-control-color: #212529;
+  --form-control-border: #ced4da;
+  --editor-menu-bg: #343a40;
+  --editor-body-bg: #fff;
+  --editor-text-color: #212529;
+  --editor-footer-bg: #f7f7f7;
+  --editor-footer-text-color: #495057;
 }
 
 .dark-mode {
@@ -33,16 +52,41 @@
   --card-bg: #343a40;
   --nav-bg: #343a40;
   --nav-bg-dark: #495057;
+  --nav-btn: #212529;
+  --nav-btn-hover: #121212;
   --hr-color: rgba(255, 255, 255, 0.1);
   --text: #f8f9fa;
+  --text-hover: #e9ecef;
   --text-on: #212529;
   --link: #5a9cfe;
   --link-hover: #3485fd;
   --brand-primary: #fe5d7a;
-  --brand-primary-dark: #fe3d61;
+  --brand-primary-hover: #fe3d61;
   --brand-secondary: #fcd23c;
   --primary: #5a9cfe;
+  --secondary: #6c757d;
+  --success: #4ab563;
   --info: #3cb1c3;
+  --warning: #ffd556;
+  --danger: #e77681;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --primary-hover: #3485fd;
+  --secondary-hover: #535a61;
+  --success-hover: #28a745;
+  --info-hover: #17a2b8;
+  --warning-hover: #ffcb2f;
+  --danger-hover: #e25563;
+  --light-hover: #e9ecef;
+  --dark-hover: #212529;
+  --form-control-bg: #212529;
+  --form-control-color: #f8f9fa;
+  --form-control-border: #121212;
+  --editor-menu-bg: #212529;
+  --editor-body-bg: #343a40;
+  --editor-text-color: #f8f9fa;
+  --editor-footer-bg: #495057;
+  --editor-footer-text-color: #e9ecef;
 }
 
 /* -------- Root styling -------- */
@@ -156,10 +200,6 @@ a:hover {
   color: var(--link-hover);
 }
 
-.text-primary {
-  color: var(--primary) !important;
-}
-
 .fr-box {
   font-family: inherit;
 }
@@ -232,31 +272,24 @@ a:hover {
   background: var(--nav-bg);
 }
 
-#nav .bg-dark {
-  background: var(--nav-bg-dark) !important;
+#nav .btn-dark {
+  background: var(--nav-btn) !important;
 }
 
-hr {
-  border-color: var(--hr-color);
+#nav .btn-dark:hover {
+  background: var(--nav-btn-hover) !important;
 }
 
-.card {
-  background: var(--card-bg) !important;
-  color: var(--text) !important;
+#nav .badge-dark {
+  background: var(--nav-badge-dark) !important;
 }
 
-.card.bg-dark {
-  background: var(--bg-dark) !important;
-  color: var(--text-light) !important;
+.faq-card {
+  color: var(--text);
 }
 
-.badge-dark {
-  background: var(--bg-dark) !important;
-  color: var(--text-light) !important;
-}
-
-.jumbotron {
-  background: var(--bg-secondary);
+.fa1-card:hover {
+  color: var(--text-hover);
 }
 
 .avatar {
@@ -318,24 +351,206 @@ hr {
 .btn-like {
   background: var(--light);
   border-color: var(--light);
-  color: #212529;
+  color: var(--text-light);
   position: relative;
 }
 
 .btn-like.liked {
   background: var(--brand-primary);
   border-color: var(--brand-primary);
-  color: var(--light);
+  color: var(--text-light);
 }
 
 .btn-like:hover {
-  background: #e2e6ea;
-  border-color: #e2e6ea;
+  background: var(--light-hover);
+  border-color: var(--light-hover);
   box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
 }
 
 .btn-like.liked:hover {
-  background: rgb(212, 50, 104);
-  border-color: rgb(212, 50, 104);
+  background: var(--brand-primary-hover);
+  border-color: var(--brand-primary-hover);
   box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
+}
+
+/* -------- Bootstrap override -------- */
+
+.text-primary {
+  color: var(--primary) !important;
+}
+.text-secondary,
+.text-muted {
+  color: var(--secondary) !important;
+}
+.text-success {
+  color: var(--success) !important;
+}
+.text-danger {
+  color: var(--danger) !important;
+}
+.text-warning {
+  color: var(--warning) !important;
+}
+.text-info {
+  color: var(--info) !important;
+}
+.text-light {
+  color: var(--light) !important;
+}
+.text-dark {
+  color: var(--dark) !important;
+}
+
+hr {
+  border-color: var(--hr-color);
+}
+
+.card {
+  background: var(--card-bg) !important;
+  color: var(--text) !important;
+}
+
+.card.bg-dark {
+  background: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+}
+
+.badge-dark {
+  background: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+}
+
+.jumbotron {
+  background: var(--bg-secondary);
+}
+
+.btn-primary {
+  color: var(--text-on);
+  background: var(--primary) !important;
+}
+.btn-secondary {
+  color: var(--text-light);
+  background: var(--secondary) !important;
+}
+.btn-success {
+  color: var(--text-on);
+  background: var(--success) !important;
+}
+.btn-danger {
+  color: var(--text-on);
+  background: var(--danger) !important;
+}
+.btn-warning {
+  color: var(--text-dark);
+  background: var(--warning) !important;
+}
+.btn-info {
+  color: var(--text-on);
+  background: var(--info) !important;
+}
+.btn-light {
+  color: var(--text-on);
+  background: var(--light) !important;
+}
+.btn-dark {
+  color: var(--text-light);
+  background: var(--dark) !important;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover) !important;
+}
+.btn-secondary:hover {
+  background: var(--secondary-hover) !important;
+}
+.btn-success:hover {
+  background: var(--success-hover) !important;
+}
+.btn-danger:hover {
+  background: var(--danger-hover) !important;
+}
+.btn-warning:hover {
+  background: var(--warning-hover) !important;
+}
+.btn-info:hover {
+  background: var(--info-hover) !important;
+}
+.btn-light:hover {
+  background: var(--light-hover) !important;
+}
+.btn-dark:hover {
+  background: var(--dark-hover) !important;
+}
+
+.btn-primary.active {
+  background: var(--primary-hover) !important;
+}
+.btn-secondary.active {
+  background: var(--secondary-hover) !important;
+}
+.btn-success.active {
+  background: var(--success-hover) !important;
+}
+.btn-danger.active {
+  background: var(--danger-hover) !important;
+}
+.btn-warning.active {
+  background: var(--warning-hover) !important;
+}
+.btn-info.active {
+  background: var(--info-hover) !important;
+}
+.btn-light.active {
+  background: var(--light-hover) !important;
+}
+.btn-dark.active {
+  background: var(--dark-hover) !important;
+}
+
+.form-control {
+  background: var(--form-control-bg);
+  color: var(--form-control-text);
+  border-color: var(--form-control-border);
+}
+
+.form-control:focus {
+  background: var(--form-control-bg);
+  color: var(--form-control-text);
+  border-color: var(--form-control-border);
+}
+
+.custom-file-label {
+  background: var(--form-control-bg);
+  color: var(--form-control-text);
+  border-color: var(--form-control-border);
+}
+
+.custom-file-label::after {
+  background: var(--dark);
+  color: var(--text-light);
+  border-color: var(--form-control-border);
+}
+
+.display-time {
+  background: var(--form-control-bg);
+  color: var(--form-control-text);
+  border-color: var(--form-control-border) !important;
+}
+
+.display-time:focus {
+  background: var(--form-control-bg);
+  color: var(--form-control-text);
+  border-color: var(--form-control-border) !important;
+}
+
+.date-input {
+  background: var(--form-control-bg) !important;
+  color: var(--form-control-text) !important;
+  border-color: var(--form-control-border) !important;
+}
+
+.date-input:focus {
+  background: var(--form-control-bg) !important;
+  color: var(--form-control-text) !important;
+  border-color: var(--form-control-border) !important;
 }
