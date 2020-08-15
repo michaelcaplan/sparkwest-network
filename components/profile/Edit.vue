@@ -111,6 +111,19 @@
                 <div class="col col-md-6">
                   <form @submit.prevent="changePass">
                     <div class="form-group">
+                      <label for="pass">Old Password</label>
+                      <input
+                        type="password"
+                        name="pass"
+                        id="pass"
+                        class="form-control"
+                        placeholder="super secret"
+                        v-model="formPasswordOld"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
                       <label for="pass">New Password</label>
                       <input
                         type="password"
@@ -154,7 +167,8 @@
                           :disabled="
                             updating ||
                             formPassword !== formPasswordRe ||
-                            !formPassword
+                            !formPassword ||
+                            !formPasswordOld
                           "
                         >
                           <span
@@ -407,14 +421,24 @@
           </div>
 
           <div class="modal-body">
-            <p>If you want to continue, type the name of the profile below:</p>
+            <div class="card card-body">
+              <p>
+                If you want to continue, type your password below:
+              </p>
 
-            <input
-              v-model="deleteName"
-              :placeholder="profile.name"
-              type="text"
-              class="form-control"
-            />
+              <div class="form-group">
+                <label for="email">Password: </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Super secret"
+                  v-model="deletePassword"
+                  required
+                />
+              </div>
+            </div>
           </div>
 
           <div class="modal-footer">
@@ -429,7 +453,7 @@
 
             <button
               class="btn btn-danger"
-              v-if="profile.name == deleteName && deleteName"
+              v-if="deletePassword"
               :disabled="updating || deleting"
               @click="deleteProfile"
             >
@@ -465,6 +489,7 @@ export default {
       formEmail: null,
       formPassword: null,
       formPasswordRe: null,
+      formPasswordOld: null,
       formAbout: null,
       formAvatar: null,
 
@@ -474,7 +499,7 @@ export default {
       updating: false,
       done: false,
 
-      deleteName: null,
+      deletePassword: null,
       deleting: false,
       deleted: false,
 
@@ -574,6 +599,12 @@ export default {
           this.updating = true
 
           const user = this.$fireAuth.currentUser
+          const credentials = this.$fireAuthObj.EmailAuthProvider.credential(
+            this.user.email,
+            this.formPasswordOld
+          )
+
+          await user.reauthenticateWithCredential(credentials)
           await user.updatePassword(this.formPassword)
 
           this.detailError = false
@@ -587,16 +618,27 @@ export default {
       }
     },
 
-    deleteProfile() {
-      this.deleting = true
-      const user = this.$fireAuth.currentUser
+    async deleteProfile() {
+      try {
+        this.deleting = true
 
-      console.log(user)
+        const user = this.$fireAuth.currentUser
+        const credentials = this.$fireAuthObj.EmailAuthProvider.credential(
+          this.user.email,
+          this.deletePassword
+        )
 
-      user.delete().then(() => {
+        await user.reauthenticateWithCredential(credentials)
+        await user.delete()
+
         this.deleted = true
+        this.deleting = false
         this.$router.push('/')
-      })
+      } catch (e) {
+        console.error(e)
+        this.deleted = false
+        this.deleting = false
+      }
     },
   },
 
