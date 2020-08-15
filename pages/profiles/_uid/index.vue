@@ -138,6 +138,112 @@
           </div>
         </div>
       </div>
+
+      <div v-if="loading">
+        <div class="row">
+          <div class="col-12 col-lg-auto mb-3 mb-lg-0">
+            <div class="card">
+              <div class="card-body">
+                <div class="row d-flex justify-content-center mb-3">
+                  <div class="col-auto">
+                    <div class="avatar-placeholder rounded gradient"></div>
+                  </div>
+                </div>
+
+                <div class="row mb-2 d-flex justify-content-center">
+                  <div class="col-6">
+                    <div class="loading gradient rounded w-100"></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <div class="loading gradient rounded w-100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg">
+            <div class="card">
+              <div class="card-body">
+                <div class="loading-lg gradient rounded w-25"></div>
+
+                <hr />
+
+                <div class="row mb-3">
+                  <div class="col border-right d-none d-sm-block">
+                    <div class="loading gradient rounded w-50 mb-2"></div>
+
+                    <div class="loading gradient rounded w-75"></div>
+                  </div>
+                  <div class="col-12 d-block d-sm-none">
+                    <div class="loading gradient rounded w-50 mb-2"></div>
+
+                    <div class="loading gradient rounded w-75"></div>
+                    <hr />
+                  </div>
+
+                  <div class="col-12 col-sm">
+                    <div class="loading gradient rounded w-50 mb-2"></div>
+
+                    <div class="loading gradient rounded w-100"></div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col">
+                    <div class="loading-btn gradient rounded w-100"></div>
+                  </div>
+                  <div class="col pl-0">
+                    <div class="loading-btn gradient rounded w-100"></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <event-card-placeholder class="mb-2" />
+                    <event-card-placeholder class="mb-2" />
+                    <event-card-placeholder class="mb-2" />
+                  </div>
+                </div>
+
+                <div class="row d-flex justify-content-end">
+                  <div class="col-3">
+                    <div class="loading-btn gradient rounded w-100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="!loading && !profile"
+        class="row d-flex justify-content-center"
+      >
+        <div class="col col-lg-6">
+          <h1 class="display-1 text-center">404</h1>
+          <h3 class="text-center">Profile not found</h3>
+
+          <hr />
+
+          <p class="text-cent">
+            It seems the profile you are looking for does not exist. This could
+            be because the profile was deleted or there is a typo in your search
+          </p>
+
+          <div class="row d-flex justify-content-center">
+            <div class="col-auto">
+              <nuxt-link to="/" class="btn btn-primary">
+                Go Back Home
+              </nuxt-link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -147,6 +253,8 @@ import { mapGetters } from 'vuex'
 
 import ProfileEventList from '@/components/ProfileEventList.vue'
 import ProfileLikesList from '@/components/ProfileLikesList.vue'
+
+import EventCardPlaceholder from '@/components/EventCardPlaceholder'
 
 export default {
   name: 'profile',
@@ -172,6 +280,7 @@ export default {
   components: {
     ProfileEventList,
     ProfileLikesList,
+    EventCardPlaceholder,
   },
 
   computed: {
@@ -248,7 +357,6 @@ export default {
           }
         } else {
           this.loading = false
-          this.$router.push('/')
         }
 
         this.loading = false
@@ -264,3 +372,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.avatar-placeholder {
+  width: 10rem;
+  height: 10rem;
+}
+</style>
