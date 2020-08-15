@@ -470,7 +470,11 @@ export default {
   },
 
   mounted() {
-    this.getEvent()
+    this.$nextTick(async () => {
+      this.$nuxt.$loading.start()
+      await this.getEvent()
+      this.$nuxt.$loading.finish()
+    })
   },
 }
 </script>

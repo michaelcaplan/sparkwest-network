@@ -28,7 +28,7 @@ export default {
       },
       {
         name: 'theme-color',
-        content: '#353A40',
+        content: '#343a40',
       },
     ],
     script: [
@@ -83,6 +83,13 @@ export default {
    ** Global CSS
    */
   css: ['@/assets/main.css'],
+  /*
+   ** Nuxt loading bar settings
+   */
+  loading: {
+    color: '#fcd23c',
+    height: '0.25rem',
+  },
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins

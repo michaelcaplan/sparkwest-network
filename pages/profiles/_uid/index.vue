@@ -368,7 +368,11 @@ export default {
   },
 
   mounted() {
-    this.getProfile()
+    this.$nextTick(async () => {
+      this.$nuxt.$loading.start()
+      await this.getProfile()
+      this.$nuxt.$loading.finish()
+    })
   },
 }
 </script>

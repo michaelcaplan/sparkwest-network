@@ -162,7 +162,11 @@ export default {
   },
 
   mounted() {
-    this.getProfile(this.user.uid || this.user.user_id)
+    this.$nextTick(async () => {
+      this.$nuxt.$loading.start()
+      await this.getProfile(this.user.uid || this.user.user_id)
+      this.$nuxt.$loading.finish()
+    })
   },
 
   components: {
