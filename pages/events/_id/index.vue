@@ -1,6 +1,6 @@
 <template>
   <div class="container py-3">
-    <div v-if="event" class="row">
+    <div v-if="event && !loading" class="row">
       <div v-if="event" class="col-12 col-lg mb-3 mb-lg-0">
         <img :src="event.image" class="img-fluid rounded mb-3" alt="" />
 
@@ -178,7 +178,7 @@
     </div>
 
     <!-- Placeholder markup -->
-    <div v-else class="row">
+    <div v-if="loading" class="row">
       <div class="col-12 col-lg mb-3 mb-lg-0">
         <div id="image-placeholder" class="gradient rounded mb-3"></div>
 
@@ -265,6 +265,28 @@
         </div>
       </div>
     </div>
+
+    <div v-if="!loading && !event" class="row d-flex justify-content-center">
+      <div class="col col-lg-6">
+        <h1 class="display-1 text-center">404</h1>
+        <h3 class="text-center">Event not found</h3>
+
+        <hr />
+
+        <p class="text-cent">
+          It seems the event you are looking for does not exist. This could be
+          because the event was deleted or there is a typo in your search
+        </p>
+
+        <div class="row d-flex justify-content-center">
+          <div class="col-auto">
+            <nuxt-link to="/" class="btn btn-primary">
+              Go Back Home
+            </nuxt-link>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -316,6 +338,7 @@ export default {
   data() {
     return {
       event: null,
+      loading: true,
       liked: false,
       liking: false,
     }
@@ -330,21 +353,27 @@ export default {
   methods: {
     async getEvent() {
       try {
+        this.loading = true
         const docRef = this.$fireStore.collection('events').doc(this.id)
         const doc = await docRef.get()
 
-        const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-        const URL = await imageRef.getDownloadURL()
+        if (doc.exists) {
+          const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
+          const URL = await imageRef.getDownloadURL()
 
-        this.event = {
-          id: doc.id,
-          data: doc.data(),
-          image: URL,
+          this.event = {
+            id: doc.id,
+            data: doc.data(),
+            image: URL,
+          }
+
+          this.checkLike()
         }
 
-        this.checkLike()
+        this.loading = false
       } catch (e) {
         console.error(e)
+        this.loading = false
       }
     },
 
