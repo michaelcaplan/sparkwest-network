@@ -177,6 +177,22 @@
       </div>
     </div>
 
+    <div v-if="event">
+      <div v-if="event.data.authorID === (user.uid || user.user_id)">
+        <hr />
+        <div class="row d-flex justify-content-end">
+          <div class="col-auto">
+            <nuxt-link
+              :to="'/edit/' + (event.id || id)"
+              class="btn btn-lg btn-info"
+            >
+              Edit
+            </nuxt-link>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Placeholder markup -->
     <div v-if="loading" class="row">
       <div class="col-12 col-lg mb-3 mb-lg-0">

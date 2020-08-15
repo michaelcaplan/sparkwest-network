@@ -349,27 +349,27 @@ a:hover {
 }
 
 .btn-like {
-  background: var(--light);
-  border-color: var(--light);
-  color: var(--text-light);
+  background: var(--light) !important;
+  border-color: var(--light) !important;
+  color: var(--text-dark);
   position: relative;
 }
 
 .btn-like.liked {
-  background: var(--brand-primary);
-  border-color: var(--brand-primary);
+  background: var(--brand-primary) !important;
+  border-color: var(--brand-primary) !important;
   color: var(--text-light);
 }
 
 .btn-like:hover {
-  background: var(--light-hover);
-  border-color: var(--light-hover);
+  background: var(--light-hover) !important;
+  border-color: var(--light-hover) !important;
   box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
 }
 
 .btn-like.liked:hover {
-  background: var(--brand-primary-hover);
-  border-color: var(--brand-primary-hover);
+  background: var(--brand-primary-hover) !important;
+  border-color: var(--brand-primary-hover) !important;
   box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
 }
 
@@ -449,7 +449,7 @@ hr {
   background: var(--info) !important;
 }
 .btn-light {
-  color: var(--text-on);
+  color: var(--text-dark);
   background: var(--light) !important;
 }
 .btn-dark {

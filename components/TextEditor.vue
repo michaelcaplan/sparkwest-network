@@ -268,7 +268,7 @@ export default {
     EditorMenuBar,
   },
 
-  props: ['max-chars'],
+  props: ['max-chars', 'content'],
 
   data() {
     return {
@@ -307,7 +307,11 @@ export default {
           showOnlyCurrent: true,
         }),
       ],
-      content: '',
+      content: this.content || '',
+      onInit: (event) => {
+        this.chars = event.state.doc.textContent.length
+        this.html = this.content || ''
+      },
       onUpdate: (event) => {
         this.chars = event.state.doc.textContent.length
         this.html = event.getHTML()
