@@ -207,7 +207,7 @@
 
         <hr />
 
-        <div class="row justify-content-end d-none d-md-flex">
+        <div class="row justify-content-end d-none d-md-flex mb-3">
           <div class="col-auto">
             <div class="row">
               <div class="col-auto pr-0">
@@ -217,10 +217,19 @@
                   >Cancle</nuxt-link
                 >
               </div>
+              <div class="col-auto pr-0 d-none d-md-flex">
+                <button
+                  class="btn btn-lg btn-danger"
+                  @click.prevent="checkDelete = true"
+                >
+                  Delete
+                </button>
+              </div>
               <div class="col-auto">
                 <button
                   type="submit"
                   class="btn btn-lg btn-primary d-flex align-items-center"
+                  :disabled="uploading || deleting"
                 >
                   Upload
                   <span
@@ -235,7 +244,7 @@
           </div>
         </div>
 
-        <div class="row d-flex d-md-none d-lg-none">
+        <div class="row d-flex d-md-none d-lg-none mb-3">
           <div class="col pr-0">
             <nuxt-link
               :to="'/events/' + event.id"
@@ -247,6 +256,7 @@
             <button
               type="submit"
               class="btn btn-block btn-primary d-flex align-items-center justify-content-center"
+              :disabled="uploading || deleting"
             >
               Upload
               <span
@@ -255,6 +265,17 @@
                 role="status"
                 aria-hidden="true"
               ></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="row d-flex d-md-none d-lg-none">
+          <div class="col">
+            <button
+              class="btn btn-block btn-danger"
+              @click.prevent="checkDelete = true"
+            >
+              Delete
             </button>
           </div>
         </div>
@@ -333,6 +354,74 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete modal -->
+    <transition name="fade">
+      <div id="deleteModal" v-if="checkDelete">
+        <div class="content container">
+          <div class="card border-0 shadow">
+            <div class="card-header d-inline-block bg-danger text-light">
+              <div class="row">
+                <div class="col">
+                  <h3 class="modal-title" id="exampleModalLabel">
+                    Delete Event
+                  </h3>
+                </div>
+
+                <div class="col-auto">
+                  <button
+                    type="button"
+                    class="btn"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    @click.prevent="checkDelete = false"
+                    :disabled="deleting"
+                  >
+                    <i class="fa fa-times text-light" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <p>
+                All information connected to this event will be permanently
+                delted. This cannot be undone
+              </p>
+
+              <hr />
+
+              <div class="row">
+                <div class="col pr-0">
+                  <button
+                    class="btn btn-block btn-lg btn-secondary"
+                    @click.prevent="checkDelete = false"
+                    :disabled="deleting"
+                  >
+                    Cancle
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    class="btn btn-block btn-lg btn-danger"
+                    @click.prevent="deleteEvent"
+                    :disabled="deleting"
+                  >
+                    Delete
+                    <span
+                      v-if="deleting"
+                      class="spinner-border spinner-border-sm ml-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -396,6 +485,9 @@ export default {
       error: '',
 
       uploading: false,
+
+      checkDelete: false,
+      deleting: false,
     }
   },
 
@@ -613,6 +705,27 @@ export default {
       this.error = ''
       return true
     },
+
+    async deleteEvent() {
+      try {
+        this.deleting = true
+
+        const docRef = this.$fireStore.collection('events').doc(this.id)
+        await docRef.delete()
+
+        const imageRef = this.$fireStorage
+          .ref()
+          .child('events/' + this.id + '/original.png')
+        await imageRef.delete()
+
+        this.deleting = false
+        this.$router.push('/')
+      } catch (e) {
+        console.error(e)
+        this.deleting = false
+        this.checkDelete = false
+      }
+    },
   },
 
   created() {
@@ -733,5 +846,23 @@ export default {
 
 .calendar-input header *:hover {
   color: var(--text-on);
+}
+
+#deleteModal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#deleteModal .content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 </style>
