@@ -129,6 +129,7 @@ export default {
    */
   modules: [
     '@nuxtjs/pwa',
+    '@nuxtjs/robots',
     [
       '@nuxtjs/firebase',
       {

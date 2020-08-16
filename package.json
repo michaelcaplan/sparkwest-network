@@ -2,6 +2,12 @@
   "name": "sparkwest-network",
   "version": "1.0.0",
   "private": false,
+  "license": "MIT",
+  "author": {
+    "name": "Max Caplan",
+    "email": "maxacaplan@gmail.com",
+    "url": "https://maxcaplan.github.io/"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt generate",
@@ -16,7 +22,8 @@
   "dependencies": {
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/firebase": "^6.1.1",
-    "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "@nuxtjs/pwa": "^3.0.0",
+    "@nuxtjs/robots": "^2.4.2",
     "cookieparser": "^0.1.0",
     "firebase": "^7.17.1",
     "js-cookie": "^2.2.1",
