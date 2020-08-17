@@ -30,6 +30,14 @@ export default {
         name: 'theme-color',
         content: '#343a40',
       },
+      {
+        name: 'msapplication-TileColor',
+        content: '#fe3d61',
+      },
+      {
+        name: 'msapplication-config',
+        content: '/icons/browserconfig.xml?v=9B0BkpJAWp',
+      },
     ],
     script: [
       {
@@ -58,7 +66,47 @@ export default {
       },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // Favicons
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/icons/apple-touch-icon.png?v=9B0BkpJAWp',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/icons/favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '194x194',
+        href: '/icons/favicon-194x194.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '192x192',
+        href: '/icons/android-chrome-192x192.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/icons/favicon-16x16.png',
+      },
+      {
+        rel: 'mask-icon',
+        href: '/icons/safari-pinned-tab.svg?v=9B0BkpJAWp',
+        color: '#fe3d61',
+      },
+      {
+        rel: 'shortcut icon',
+        href: '/icons/favicon.ico?v=9B0BkpJAWp',
+      },
+
+      // Stylesheets
       {
         rel: 'stylesheet',
         href:
@@ -152,6 +200,42 @@ export default {
       },
     ],
   ],
+  /*
+   ** PWA settings
+   */
+  pwa: {
+    icon: false,
+    manifest: {
+      name: 'Spark West Network',
+      short_name: 'SWN',
+      background_color: '#343a40',
+      theme_color: '#343a40',
+      icons: [
+        {
+          src: '/icons/android-chrome-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/icons/android-chrome-512x512.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+      ],
+    },
+    meta: {
+      name: 'Spark West Network',
+      favicon: false,
+    },
+  },
+  /*
+   ** Sight crawler settings
+   */
+  robots: {
+    UserAgent: '*',
+    Disallow: '/profile',
+    Disallow: '/edit',
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
