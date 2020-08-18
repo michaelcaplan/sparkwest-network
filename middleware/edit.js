@@ -1,20 +1,17 @@
 // Middleware to check if user is author of an event
-import { getUserFromCookie } from '@/helpers'
-
 export default async function ({
   $fireAuth,
   $fireStore,
-  store,
-  req,
+  res,
   route,
   redirect,
 }) {
   const doc = await $fireStore.collection('events').doc(route.params.id).get()
 
   // Check auth server side
-  if (process.server) {
+  if (process.server && res && res.locals && res.locals.user) {
     // Get access_token cookie from header and get user
-    const user = getUserFromCookie(req)
+    const user = res.locals.user
 
     // If user uid isn't the same as events author uid, redirect
     if (user) {

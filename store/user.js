@@ -1,7 +1,4 @@
 // Functional module for user profile and authentication
-
-import Cookies from 'js-cookie'
-
 export const state = () => ({
   user: null,
   uid: null,
@@ -40,6 +37,23 @@ export const getters = {
 }
 
 export const actions = {
+  onAuthStateChangedAction({ commit, dispatch }, { authUser }) {
+    if (!authUser) {
+      commit('SET_LOGGEDIN', false)
+      commit('SET_USER', null)
+      return
+    }
+
+    const { uid, email, emailVerified, displayName } = authUser
+
+    commit('SET_USER', {
+      uid,
+      email,
+      emailVerified,
+      displayName,
+    })
+  },
+
   setUser({ commit }, user) {
     commit('SET_USER', user)
   },
@@ -54,27 +68,6 @@ export const actions = {
     } catch (e) {
       console.error(e)
     }
-  },
-
-  onAuthStateChanged({ commit, dispatch }) {
-    this.$fireAuth.onAuthStateChanged(function (user) {
-      if (user) {
-        dispatch('getCurrentUser')
-      } else {
-        Cookies.remove('access_token')
-
-        commit('SET_LOGGEDIN', false)
-      }
-
-      commit('SET_USER', user)
-    })
-  },
-
-  getCurrentUser({ commit }) {
-    this.$fireAuth.currentUser
-      .getIdToken(true)
-      .then((token) => Cookies.set('access_token', token))
-    commit('SET_LOGGEDIN', true)
   },
 
   async logout({ commit }) {
@@ -99,14 +92,14 @@ export const actions = {
 
   async getProfile({ commit, state, dispatch }, uid) {
     try {
-      const response = await this.$fireStore
-        .collection('profiles')
-        .doc(uid)
-        .get()
-      commit('SET_PROFILE', response.data())
+      const doc = await this.$fireStore.collection('profiles').doc(uid).get()
 
-      if (state.avatar) {
-        await dispatch('getAvatarUrl')
+      if (doc.exists) {
+        commit('SET_PROFILE', doc.data())
+
+        if (state.avatar) {
+          await dispatch('getAvatarUrl')
+        }
       }
     } catch (e) {
       console.error(e)

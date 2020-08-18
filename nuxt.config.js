@@ -192,7 +192,7 @@ export default {
           measurementId: process.env.MEASURMENT_ID,
         },
         services: {
-          auth: true,
+          auth: { ssr: true },
           firestore: true,
           storage: true,
           functions: true,
@@ -226,6 +226,15 @@ export default {
     meta: {
       name: 'Spark West Network',
       favicon: false,
+    },
+    workbox: {
+      importScripts: [
+        // ...
+        '/firebase-auth-sw.js',
+      ],
+      // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
+      // only set this true for testing and remember to always clear your browser cache in development
+      dev: false,
     },
   },
   /*

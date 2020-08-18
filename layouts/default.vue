@@ -20,9 +20,5 @@ export default {
   scrollToTop: true,
 
   components: { Navbar, Footer },
-
-  mounted() {
-    this.$store.dispatch('user/onAuthStateChanged')
-  },
 }
 </script>

@@ -21,12 +21,6 @@
         </div>
       </div>
 
-      <div class="row mb-4" v-if="user">
-        <div class="col">
-          <profile-card class="animate__animated animate__fadeIn" />
-        </div>
-      </div>
-
       <div class="row d-flex d-md-none">
         <div class="col">
           <a
@@ -183,7 +177,6 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import ProfileCard from '@/components/ProfileCard.vue'
 import WeekList from '@/components/WeekList.vue'
 
 export default {
@@ -211,7 +204,6 @@ export default {
   },
 
   components: {
-    ProfileCard,
     WeekList,
   },
 }

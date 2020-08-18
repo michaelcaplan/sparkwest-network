@@ -115,6 +115,10 @@
               class="dropdown-menu dropdown-menu-right"
               aria-labelledby="profileDropdown"
             >
+              <h6 v-if="profile.name" class="dropdown-header text-truncate">
+                Hello, {{ profile.name }}
+              </h6>
+              <div class="dropdown-divider"></div>
               <nuxt-link
                 :to="{ name: 'profile' }"
                 class="dropdown-item"
@@ -226,6 +230,17 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Navbar',
+
+  async asyncData({ $fireAuth, store, res }) {
+    if (process.server && res && res.local && res.local.user) {
+      const user = await res.local.user
+      store.dispatch('user/getProfile', user.uid || user.user_id)
+    } else {
+      const user = $fireAuth.currentUser
+      store.dispatch('user/getProfile', user.uid || user.user_id)
+    }
+  },
+
   data() {
     return {
       collapseOpen: false,
@@ -235,6 +250,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'user/user',
+      profile: 'user/profile',
     }),
     routeName() {
       return this.$route.name
@@ -244,11 +260,18 @@ export default {
   methods: {
     ...mapActions({
       logout: 'user/logout',
+      getProfile: 'user/getProfile',
     }),
     async signout() {
       await this.logout()
       this.$router.push('/')
     },
+  },
+
+  mounted() {
+    if (this.user && !this.profile.name) {
+      this.getProfile(this.user.uid || this.user.user_id)
+    }
   },
 }
 </script>

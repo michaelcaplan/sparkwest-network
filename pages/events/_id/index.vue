@@ -177,7 +177,7 @@
       </div>
     </div>
 
-    <div v-if="event">
+    <div v-if="event && user">
       <div v-if="event.data.authorID === (user.uid || user.user_id)">
         <hr />
         <div class="row d-flex justify-content-end">

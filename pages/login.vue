@@ -140,6 +140,7 @@ export default {
         )
 
         this.$store.dispatch('user/setUser', response.user)
+        this.$store.dispatch('user/getProfile', response.user.uid)
         this.loggingIn = false
         this.$router.push('/')
       } catch (e) {

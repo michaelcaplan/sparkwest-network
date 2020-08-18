@@ -1,11 +1,9 @@
 // Middleware to check if user is viewing own profile
-import { getUserFromCookie } from '@/helpers'
-
-export default function ({ $fireAuth, store, req, route, redirect }) {
+export default function ({ $fireAuth, res, route, redirect }) {
   // Check auth server side
-  if (process.server) {
+  if (process.server && res && res.locals && res.locals.user) {
     // Get access_token cookie from header and get user
-    const user = getUserFromCookie(req)
+    const user = res.locals.user
 
     // If user uid is the same as route redirect to users profile
     if (user) {
