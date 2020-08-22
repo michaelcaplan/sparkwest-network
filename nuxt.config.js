@@ -171,6 +171,7 @@ export default {
     messagingSenderId: process.env.MESSAGING_SENDER_ID,
     appId: process.env.APP_ID,
     measurementId: process.env.MEASURMENT_ID,
+    mailchimpKey: process.env.MAILCHIMP_KEY,
   },
   /*
    ** Nuxt.js modules
@@ -178,6 +179,7 @@ export default {
   modules: [
     '@nuxtjs/pwa',
     '@nuxtjs/robots',
+    '@nuxtjs/axios',
     [
       '@nuxtjs/firebase',
       {
@@ -192,7 +194,7 @@ export default {
           measurementId: process.env.MEASURMENT_ID,
         },
         services: {
-          auth: { ssr: true },
+          auth: { persistence: 'local', ssr: true },
           firestore: true,
           storage: true,
           functions: true,
@@ -200,6 +202,16 @@ export default {
       },
     ],
   ],
+  /*
+   ** Vue router settings
+   */
+  router: {
+    middleware: 'default',
+  },
+  /*
+   ** Server Middleware
+   */
+  serverMiddleware: [{ path: '/api', handler: '~/api/index.js' }],
   /*
    ** PWA settings
    */
@@ -234,7 +246,7 @@ export default {
       ],
       // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
       // only set this true for testing and remember to always clear your browser cache in development
-      dev: false,
+      dev: true,
     },
   },
   /*

@@ -28,8 +28,8 @@
             </div>
           </div>
         </div>
-        <div class="col-auto">
-          <h5>{{ event.data.title }}</h5>
+        <div class="col">
+          <h5 class="text-truncate">{{ event.data.title }}</h5>
           <h5>
             <span class="badge badge-pill badge-light">
               {{
@@ -46,18 +46,35 @@
             </span>
           </h5>
         </div>
+        <div class="col-auto d-none d-sm-block">
+          <span
+            class="badge badge-pill badge-like badge-danger animate__animated animate__bounceIn"
+          >
+            <i
+              class="fa-heart mr-2"
+              :class="{ fas: likeNum > 0, far: likeNum <= 0 }"
+            ></i
+            >{{ likeNum }}
+          </span>
+        </div>
       </div>
 
-      <span
-        id="likes"
-        class="badge badge-pill badge-like badge-danger m-1 m-sm-3 animate__animated animate__bounceIn"
-      >
-        <i
-          class="fa-heart d-none d-sm-inline-block mr-2"
-          :class="{ fas: likeNum > 0, far: likeNum <= 0 }"
-        ></i
-        >{{ likeNum }}
-      </span>
+      <div class="row mt-3 d-block d-sm-none">
+        <div class="col">
+          <span class="badge w-100 badge-like badge-danger">
+            <i
+              class="fa-heart mr-2 animate__animated"
+              :class="{
+                fas: likeNum > 0,
+                far: likeNum <= 0,
+                animate__bounceIn: likeNum > 0,
+              }"
+            ></i
+            >{{ likeNum }} <span v-if="likeNum === 1">person likes</span
+            ><span v-else>people like</span> this
+          </span>
+        </div>
+      </div>
 
       <small id="uploaded" class="m-3 text-muted d-none d-md-flex"
         >Uploaded: {{ uploadDate }}</small
@@ -164,12 +181,6 @@ export default {
 
 .card-body {
   position: relative;
-}
-
-#likes {
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 
 .badge-like {

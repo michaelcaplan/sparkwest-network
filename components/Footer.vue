@@ -31,19 +31,17 @@
               </a>
             </div>
             <div class="col-auto">
-              <a
-                class="btn btn-light disabled"
-                target="_blank"
-                href="https://www.instagram.com/sparkwestnetwork/"
-              >
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
+              <nuxt-link to="/contact" class="btn btn-light">
+                <i class="fas fa-envelope"></i>
+              </nuxt-link>
             </div>
           </div>
+
+          <hr class="mt-4 d-block d-lg-none" />
         </div>
 
         <div class="col-12 col-md mb-3">
-          <h5>Navigation</h5>
+          <h5>Navigation <i class="fas fa-search float-right"></i></h5>
 
           <ul class="nav d-flex d-md-none d-lg-none">
             <li class="nav-item">
@@ -119,34 +117,76 @@
         </div>
 
         <div class="col-12 col-md mb-3">
-          <h5>Check out our newsletter</h5>
+          <h5>
+            Check out our newsletter
+            <i class="far fa-envelope-open float-right"></i>
+          </h5>
 
-          <form>
+          <form @submit.prevent="subscribe">
             <div class="form-group">
+              <label for="inputEmail">* Email:</label>
               <input
                 id="inputEmail"
+                v-model="email"
                 type="email"
                 class="form-control"
                 placeholder="Email"
                 aria-describedby="emailHelp"
+                required
               />
             </div>
 
-            <div class="form-group">
-              <input
-                id="inputName"
-                type="text"
-                class="form-control"
-                placeholder="Name"
-              />
+            <div class="row">
+              <div class="col pr-0">
+                <div class="form-group">
+                  <label for="inputFirst">* First Name:</label>
+                  <input
+                    id="inputFirst"
+                    v-model="first"
+                    type="text"
+                    class="form-control"
+                    placeholder="John"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputLast">Last Name</label>
+                  <input
+                    id="inputLast"
+                    v-model="last"
+                    type="text"
+                    class="form-control"
+                    placeholder="Smith"
+                  />
+                </div>
+              </div>
             </div>
 
             <div class="form-group">
-              <input
+              <button
                 type="submit"
                 value="Sign Up"
                 class="btn btn-success float-right"
-              />
+              >
+                Sign Up
+                <span
+                  v-if="subscribing"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <i
+                  v-if="!subscribing && success"
+                  class="fas fa-lg fa-check-circle animate__animated animate__bounceIn"
+                ></i>
+
+                <i
+                  v-if="!subscribing && fail"
+                  class="fas fa-lg fa-times-circle animate__animated animate__bounceIn"
+                ></i>
+              </button>
             </div>
           </form>
         </div>
@@ -162,46 +202,54 @@
 <script>
 export default {
   name: 'Footer',
+
   computed: {
     routeName() {
       return this.$route.name
     },
   },
+
+  data() {
+    return {
+      email: null,
+      first: null,
+      last: null,
+
+      subscribing: false,
+      success: false,
+      fail: false,
+    }
+  },
+
+  methods: {
+    async subscribe() {
+      try {
+        this.subscribing = true
+        this.success = false
+        this.fail = false
+
+        const data = {
+          email: this.email,
+          first: this.first,
+          last: this.last || '',
+        }
+        const response = await this.$axios.$post('/api/subscribe', {
+          email: data.email.trim(),
+          first: data.first.trim(),
+          last: data.last.trim(),
+        })
+        console.log(response)
+
+        this.subscribing = false
+        this.success = true
+        this.fail = false
+      } catch (e) {
+        console.log(e)
+        this.subscribing = false
+        this.success = false
+        this.fail = true
+      }
+    },
+  },
 }
 </script>
-
-<style scoped>
-#footer {
-  height: auto;
-}
-
-@media only screen and (max-width: 576px) {
-  #footer {
-    height: 740px;
-  }
-}
-
-@media only screen and (min-width: 576px) {
-  #footer {
-    height: 585px;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  #footer {
-    height: 500px;
-  }
-}
-
-@media only screen and (min-width: 992px) {
-  #footer {
-    height: 375px;
-  }
-}
-
-@media only screen and (min-width: 1200px) {
-  #footer {
-    height: 351px;
-  }
-}
-</style>

@@ -1,6 +1,32 @@
-# sparkwest-network
+# Spark West Network
+
+Spark West Network is an umbrella marketing platform that draws
+together, assists, and coordinates the various organizations,
+events, and people that define our region’s unique entrepreneurial
+opportunities. The Spark West website aims to act as a platform
+for hosting the unique events and opportunities that make up
+western Nova Scotia’s entrepreneurial ecosystem.
+
+---
 
 ## Build Setup
+
+Create `.env` in the root of the project.
+Copy the contents `.env_example` or the following into `.env`:
+
+```txt
+API_KEY=<api key>
+AUTH_DOMAIN=<auth domain>
+DATABASE_URL=<database url>
+PROJECT_ID=<project id>
+STORAGE_BUCKET=<storage bucket>
+MESSAGING_SENDER_ID=<messaging sender>
+APP_ID=<app id>
+MEASURMENT_ID=<measurment id>
+MAILCHIMP_KEY=<mailchimp api key>
+```
+
+Replace text surronded by `<>` along with the brackets with its corrosponding information
 
 ```bash
 # install dependencies
@@ -17,4 +43,4 @@ $ yarn start
 $ yarn generate
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+For detailed explanation on how things work, check out the [Nuxt.js docs](https://nuxtjs.org) and the [Firebase docs](https://firebase.google.com/docs)

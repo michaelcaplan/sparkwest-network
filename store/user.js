@@ -8,6 +8,11 @@ export const state = () => ({
   avatar: null,
   avatarUrl: null,
   events: null,
+  facebook: null,
+  twitter: null,
+  instagram: null,
+  linkedin: null,
+  otherWebsite: null,
 })
 
 export const getters = {
@@ -32,6 +37,11 @@ export const getters = {
       avatar: state.avatar,
       avatarUrl: state.avatarUrl,
       events: state.events,
+      facebook: state.facebook,
+      twitter: state.twitter,
+      instagram: state.instagram,
+      linkedin: state.linkedin,
+      otherWebsite: state.otherWebsite,
     }
   },
 }
@@ -92,6 +102,7 @@ export const actions = {
 
   async getProfile({ commit, state, dispatch }, uid) {
     try {
+      console.log('Getting profile')
       const doc = await this.$fireStore.collection('profiles').doc(uid).get()
 
       if (doc.exists) {
@@ -125,6 +136,11 @@ export const actions = {
         name: info.name || state.name,
         about: info.about || state.about,
         avatar: info.avatar || state.avatar,
+        facebook: info.facebook,
+        twitter: info.twitter,
+        instagram: info.instagram,
+        linkedin: info.linkedin,
+        otherWebsite: info.otherWebsite,
       }
       commit('SET_PROFILE', newInfo)
     } catch (e) {
@@ -184,6 +200,11 @@ export const mutations = {
     state.name = profile.name
     state.about = profile.about
     state.avatar = profile.avatar
+    state.facebook = profile.facebook
+    state.twitter = profile.twitter
+    state.instagram = profile.instagram
+    state.linkedin = profile.linkedin
+    state.otherWebsite = profile.otherWebsite
   },
 
   LOGOUT(state) {

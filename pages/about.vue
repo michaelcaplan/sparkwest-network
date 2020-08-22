@@ -57,6 +57,10 @@
 
     <hr />
 
+    <h1>
+      FAQ
+    </h1>
+
     <a
       data-toggle="collapse"
       data-target="#faqCollapse1"
@@ -65,12 +69,17 @@
       @click="toggleCaret('caret1')"
     >
       <div class="card-body">
-        <b>
-          Why should this initiative be focused on a small rural area like the
-          Annapolis Valley?
-
-          <i id="caret1" class="fas fa-caret-down float-right up"></i>
-        </b>
+        <div class="row">
+          <div class="col">
+            <b>
+              Why should this initiative be focused on a small rural area like
+              the Annapolis Valley?
+            </b>
+          </div>
+          <div class="col-auto">
+            <i id="caret1" class="fas fa-caret-down float-right up"></i>
+          </div>
+        </div>
 
         <div id="faqCollapse1" class="collapse show">
           <hr />
@@ -94,12 +103,17 @@
       @click="toggleCaret('caret2')"
     >
       <div class="card-body">
-        <b>
-          Should we not just promote our region’s activities under the Halifax
-          Startup Digest?
-
-          <i id="caret2" class="fas fa-caret-down float-right"></i>
-        </b>
+        <div class="row">
+          <div class="col">
+            <b>
+              Should we not just promote our region’s activities under the
+              Halifax Startup Digest?
+            </b>
+          </div>
+          <div class="col-auto">
+            <i id="caret2" class="fas fa-caret-down float-right"></i>
+          </div>
+        </div>
 
         <div id="faqCollapse2" class="collapse">
           <hr />
@@ -123,11 +137,16 @@
       @click="toggleCaret('caret3')"
     >
       <div class="card-body">
-        <b>
-          Where do you draw your inspiration from?
-
-          <i id="caret3" class="fas fa-caret-down float-right"></i>
-        </b>
+        <div class="row">
+          <div class="col">
+            <b>
+              Where do you draw your inspiration from?
+            </b>
+          </div>
+          <div class="col-auto">
+            <i id="caret3" class="fas fa-caret-down float-right"></i>
+          </div>
+        </div>
 
         <div id="faqCollapse3" class="collapse">
           <hr />
@@ -152,11 +171,51 @@
 
     <hr />
 
-    <h1 class="text-center mb-3">Have More Questions?</h1>
+    <h1 class="text-center">Have More Questions?</h1>
     <div class="w-100 d-flex justify-content-center mb-3">
       <nuxt-link :to="{ name: 'contact' }" class="btn btn-lg btn-primary">
         Contact Us
       </nuxt-link>
+    </div>
+
+    <hr />
+
+    <div class="card card-body">
+      <div class="row">
+        <div class="col-12 col-md-3 col-lg-2 pr-mb-0 mb-3 mb-md-0">
+          <a
+            class="card card-github card-body w-100 h-100 bg-dark d-flex align-items-center justify-content-center"
+            target="_blank"
+            href="https://github.com/michaelcaplan/sparkwest-network"
+          >
+            <img
+              src="../assets/GitHubLG.svg"
+              alt="GitHub"
+              class="img-fluid d-none d-md-block"
+            />
+            <img
+              src="../assets/GitHubSM.svg"
+              alt="GitHub"
+              class="img-fluid d-block d-md-none"
+            />
+          </a>
+        </div>
+        <div class="col">
+          <h5>SWN, For the communtiy</h5>
+
+          <hr />
+
+          Spark West Network is built with Nuxt.js
+          <i class="fab fa-vuejs text-success"></i> and Firebase
+          <i class="fas fa-fire text-danger"></i> and is proud to be an open
+          source project. Learn more or become a contributer at
+          <a
+            href="https://github.com/michaelcaplan/sparkwest-network"
+            target="_blank"
+            >github.com/michaelcaplan/sparkwest-network</a
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -197,5 +256,21 @@ export default {
 
 .up {
   transform: rotate(180deg);
+}
+
+.card-github {
+  transition: all 0.25s ease;
+}
+
+.card-github img {
+  -webkit-filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  transition: all 0.25s ease;
+}
+
+.card-github:hover img {
+  -webkit-filter: drop-shadow(0 1rem 1rem rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 1rem 1rem rgba(0, 0, 0, 0.25));
+  transform: translateY(-0.5rem);
 }
 </style>

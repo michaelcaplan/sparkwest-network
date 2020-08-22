@@ -1,18 +1,13 @@
-// Middleware for pages that require user authentication
+// Default middleware for all pages
 
 export default function ({ $fireAuth, store, res, redirect }) {
   if (process.server && res && res.locals && res.locals.user) {
-    if (!res.locals.user) {
-      redirect('/login')
-    } else {
+    if (res.locals.user) {
       store.dispatch('user/setUser', res.locals.user)
     }
   } else {
     const user = $fireAuth.currentUser
-    // If user is not authenticated, redirect to login
-    if (!user) {
-      redirect('/login')
-    } else {
+    if (user) {
       store.dispatch('user/setUser', user)
     }
   }

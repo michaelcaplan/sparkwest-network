@@ -150,9 +150,7 @@
             <div class="card bg-light mb-2">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="image"
-                    ><span class="text-danger">*</span> Event Image:</label
-                  >
+                  <label for="image">Event Image:</label>
 
                   <div class="custom-file">
                     <input
@@ -162,7 +160,6 @@
                       ref="fileInput"
                       accept="image/x-png, image/jpeg"
                       @change="selectFile"
-                      required
                     />
                     <label class="custom-file-label" for="customFile"
                       >Choose file</label
@@ -404,14 +401,18 @@ export default {
       try {
         const docRef = this.$fireStore.collection('events').doc()
 
-        data.imageRef = 'events/' + docRef.id + '/original.png'
-        await docRef.set(data)
+        if (this.file) {
+          data.imageRef = 'events/' + docRef.id + '/original.png'
+          await docRef.set(data)
 
-        const imageRef = this.$fireStorage.ref().child(data.imageRef)
-        await imageRef.put(this.file)
+          const imageRef = this.$fireStorage.ref().child(data.imageRef)
+          await imageRef.put(this.file)
+        } else {
+          await docRef.set(data)
+        }
 
         this.uploading = false
-        this.$router.push('/profile')
+        this.$router.push('/events/' + docRef.id)
       } catch (e) {
         console.error(e)
       }

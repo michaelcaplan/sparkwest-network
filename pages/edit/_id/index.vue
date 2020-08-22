@@ -153,9 +153,7 @@
             <div class="card bg-light mb-2">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="image"
-                    ><span class="text-danger">*</span> Event Image:</label
-                  >
+                  <label for="image">Event Image:</label>
 
                   <div class="custom-file">
                     <input
@@ -165,7 +163,6 @@
                       ref="fileInput"
                       accept="image/x-png, image/jpeg"
                       @change="selectFile"
-                      :required="newFile"
                     />
                     <label class="custom-file-label" for="customFile"
                       >Choose file</label
@@ -508,13 +505,21 @@ export default {
         const doc = await docRef.get()
 
         if (doc.exists) {
-          const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-          const URL = await imageRef.getDownloadURL()
+          if (doc.data().imageRef) {
+            const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
+            const URL = await imageRef.getDownloadURL()
 
-          this.event = {
-            id: doc.id,
-            data: doc.data(),
-            image: URL,
+            this.event = {
+              id: doc.id,
+              data: doc.data(),
+              image: URL,
+            }
+          } else {
+            this.event = {
+              id: doc.id,
+              data: doc.data(),
+              image: false,
+            }
           }
 
           if (
@@ -609,12 +614,23 @@ export default {
         const docRef = this.$fireStore.collection('events').doc(this.id)
 
         if (this.newFile) {
-          data.imageRef = 'events/' + this.id + '/original.png'
+          if (this.file) {
+            data.imageRef = 'events/' + this.id + '/original.png'
+          } else {
+            data.imageRef = null
+          }
 
           await docRef.update(data)
 
-          const imageRef = this.$fireStorage.ref().child(data.imageRef)
-          await imageRef.put(this.file)
+          if (this.file) {
+            const imageRef = this.$fireStorage.ref().child(data.imageRef)
+            await imageRef.put(this.file)
+          } else {
+            const imageRef = this.$fireStorage
+              .ref()
+              .child('events/' + this.id + '/original.png')
+            await imageRef.delete()
+          }
 
           this.uploading = false
           this.$router.push('/events/' + this.id)
@@ -713,10 +729,12 @@ export default {
         const docRef = this.$fireStore.collection('events').doc(this.id)
         await docRef.delete()
 
-        const imageRef = this.$fireStorage
-          .ref()
-          .child('events/' + this.id + '/original.png')
-        await imageRef.delete()
+        if (this.event.image) {
+          const imageRef = this.$fireStorage
+            .ref()
+            .child('events/' + this.id + '/original.png')
+          await imageRef.delete()
+        }
 
         this.deleting = false
         this.$router.push('/')

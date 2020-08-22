@@ -31,7 +31,7 @@
                 <div class="col-auto">
                   <h5 class="text-center mt-3 mb-0">{{ profile.data.name }}</h5>
 
-                  <p v-if="profile.data.about" class="mt-3 mb-0 text-wrap">
+                  <p v-if="profile.data.about" class="mt-3 mb-3 text-wrap">
                     {{ profile.data.about }}
                   </p>
                 </div>
@@ -48,15 +48,36 @@
               <hr />
 
               <div class="row">
-                <div class="col border-right d-none d-sm-block">
+                <div class="col border-right d-none d-md-block">
                   <h5>About:</h5>
                   <p v-if="profile.data.about">{{ profile.data.about }}</p>
+
+                  <social-btns
+                    :links="{
+                      facebook: profile.data.facebook,
+                      twitter: profile.data.twitter,
+                      instagram: profile.data.instagram,
+                      linkedin: profile.data.linkedin,
+                      otherWebsite: profile.data.otherWebsite,
+                    }"
+                  />
                 </div>
-                <div class="col-12 d-block d-sm-none">
+
+                <div class="col-12 d-block d-md-none">
                   <h5>About:</h5>
-                  <p v-if="profile.data.about" class="mb-0">
+                  <p v-if="profile.data.about" class="mb-3">
                     {{ profile.data.about }}
                   </p>
+
+                  <social-btns
+                    :links="{
+                      facebook: profile.data.facebook,
+                      twitter: profile.data.twitter,
+                      instagram: profile.data.instagram,
+                      linkedin: profile.data.linkedin,
+                      otherWebsite: profile.data.otherWebsite,
+                    }"
+                  />
 
                   <hr />
                 </div>
@@ -71,13 +92,13 @@
                       ><i class="fas fa-calendar"></i> Events:
                       {{ eventsNum }}</span
                     >
+                    <span class="badge badge-like mb-2"
+                      ><i class="fas fa-heart" aria-hidden="true"></i> Likes
+                      Given: {{ likesNum }}</span
+                    >
                     <span class="badge badge-info mb-2">
                       <i class="fas fa-calendar-plus"></i>
-                      Event Likes: {{ eventLikesNum }}</span
-                    >
-                    <span class="badge badge-like mb-2"
-                      ><i class="fas fa-heart" aria-hidden="true"></i> Likes:
-                      {{ likesNum }}</span
+                      Likes Received: {{ eventLikesNum }}</span
                     >
                   </h5>
                 </div>
@@ -95,8 +116,8 @@
                         @click.prevent="tabNum = 0"
                         href="#"
                       >
-                        <i class="fa fa-user-circle"></i>
-                        Profile
+                        <i class="fas fa-calendar"></i>
+                        Events
                       </a>
                     </li>
 
@@ -108,12 +129,14 @@
                         href="#"
                       >
                         <i class="fa fa-heart"></i>
-                        Likes
+                        Liked Events
                       </a>
                     </li>
                   </ul>
                 </div>
               </div>
+
+              <hr />
 
               <div class="row">
                 <div class="col">
@@ -251,6 +274,8 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import SocialBtns from '@/components/SocialBtns.vue'
+
 import ProfileEventList from '@/components/ProfileEventList.vue'
 import ProfileLikesList from '@/components/ProfileLikesList.vue'
 
@@ -278,6 +303,7 @@ export default {
   },
 
   components: {
+    SocialBtns,
     ProfileEventList,
     ProfileLikesList,
     EventCardPlaceholder,

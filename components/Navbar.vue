@@ -1,7 +1,10 @@
 <template>
   <!-- Navigation -->
   <div id="nav">
-    <nav class="navbar navbar-expand-lg navbar-dark mt-0">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark mt-0"
+      :class="{ shadow: collapseOpen }"
+    >
       <div class="container">
         <nuxt-link id="logo" to="/" class="navbar-brand">
           <img
@@ -22,28 +25,20 @@
             src="../assets/logoSM.svg"
             alt="logo"
             class="d-inline-block d-sm-none d-md-none d-lg-none m-1"
+            :class="{ open: collapseOpen }"
             height="42"
           />
         </nuxt-link>
 
         <button
           id="menu-btn"
-          :class="{
-            btn: true,
-            'text-light': true,
-            'd-flex': true,
-            'd-lg-none': true,
-            'btn-open': collapseOpen,
-          }"
+          class="btn d-flex d-lg-none"
           type="button"
-          data-toggle="collapse"
-          data-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          @click="collapseOpen = !collapseOpen"
+          @click="toggleCollapse"
         >
-          <i class="fa fa-bars fa-lg"></i>
+          <hamburger :open="collapseOpen" />
         </button>
 
         <ul class="navbar-nav ml-auto d-none d-lg-flex">
@@ -118,13 +113,27 @@
               <h6 v-if="profile.name" class="dropdown-header text-truncate">
                 Hello, {{ profile.name }}
               </h6>
+
               <div class="dropdown-divider"></div>
+
               <nuxt-link
                 :to="{ name: 'profile' }"
                 class="dropdown-item"
+                :class="{ active: routeName === 'profile' }"
                 href="#"
-                >Profile</nuxt-link
+                >Profile <i class="fa fa-sm fa-user" aria-hidden="true"></i
+              ></nuxt-link>
+
+              <nuxt-link
+                to="/newEvent"
+                class="dropdown-item"
+                :class="{ active: routeName === 'newEvent' }"
+                href="#"
               >
+                New Event
+                <i class="fa fa-sm fa-plus" aria-hidden="true"></i>
+              </nuxt-link>
+
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#" @click.prevent="signout"
                 >Log Out</a
@@ -135,7 +144,11 @@
       </div>
     </nav>
 
-    <div id="navbarCollapse" class="collapse navbar-collapse bg-dark d-lg-none">
+    <div
+      id="navbarCollapse"
+      class="bg-dark d-lg-none"
+      :class="{ open: collapseOpen }"
+    >
       <div class="container py-3">
         <ul class="navbar-nav border-bottom mb-3">
           <li class="nav-item">
@@ -194,18 +207,26 @@
         </ul>
 
         <div v-else class="row">
-          <div class="col-auto d-flex align-items-center">
-            <i class="fa fa-user fa-lg text-light"></i>
+          <div class="col-auto d-flex align-items-center pr-0">
+            <nuxt-link :to="{ name: 'profile' }" class="btn btn-light">
+              <i class="fa fa-user fa-lg"></i>
+            </nuxt-link>
           </div>
 
           <div class="col-auto pl-0">
             <ul class="nav">
-              <li class="nav-item d-flex align-items-center">
+              <li class="nav-item align-items-center d-none d-sm-flex">
                 <nuxt-link
                   :to="{ name: 'profile' }"
                   class="nav-link text-light"
                   href="#"
                   >Profile</nuxt-link
+                >
+              </li>
+
+              <li class="nav-item d-flex align-items-center">
+                <nuxt-link to="/newEvent" class="nav-link text-light" href="#"
+                  >New Event</nuxt-link
                 >
               </li>
 
@@ -222,14 +243,22 @@
         </div>
       </div>
     </div>
+
+    <div v-if="collapseOpen" id="close-collapse" @click="closeCollapse"></div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
+import Hamburger from '@/components/Hamburger.vue'
+
 export default {
   name: 'Navbar',
+
+  components: {
+    Hamburger,
+  },
 
   async asyncData({ $fireAuth, store, res }) {
     if (process.server && res && res.local && res.local.user) {
@@ -262,6 +291,16 @@ export default {
       logout: 'user/logout',
       getProfile: 'user/getProfile',
     }),
+    toggleCollapse() {
+      this.collapseOpen = !this.collapseOpen
+    },
+    closeCollapse() {
+      console.log('scroll')
+      this.collapseOpen = false
+    },
+    handleScroll() {
+      console.log('scroll')
+    },
     async signout() {
       await this.logout()
       this.$router.push('/')
@@ -277,15 +316,45 @@ export default {
 </script>
 
 <style scoped>
-.btn-open i {
-  transform: rotate(90deg);
+#nav {
+  position: relative;
 }
 
-#menu-btn i {
-  transition: transform 0.5s;
+#close-collapse {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 100%;
+  left: 0;
+  z-index: 100;
 }
 
-.collpase .nav-item {
+.navbar {
+  position: relative;
+  z-index: 100;
+  transition: 0.25s all ease-in-out;
+}
+
+.navbar-brand img {
+  transition: 0.25s all ease-in-out;
+}
+
+.navbar-brand img.open {
+  transform: rotate(-90deg);
+}
+
+#navbarCollapse {
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  transition: 0.25s height ease-in-out;
+}
+
+#navbarCollapse.open {
+  height: 209px;
+}
+
+/* .collpase .nav-item {
   opacity: 0;
   transition-property: opacity;
   transition-duration: 0.5s;
@@ -293,5 +362,5 @@ export default {
 
 .show .nav-item {
   opacity: 1;
-}
+} */
 </style>

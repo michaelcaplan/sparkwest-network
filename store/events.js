@@ -28,13 +28,21 @@ export const actions = {
       const snap = await query.get()
 
       const docs = snap.docs.map(async (doc) => {
-        const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-        const url = await imageRef.getDownloadURL()
+        if (doc.data().imageRef) {
+          const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
+          const url = await imageRef.getDownloadURL()
 
-        return {
-          id: doc.id,
-          data: doc.data(),
-          image: url,
+          return {
+            id: doc.id,
+            data: doc.data(),
+            image: url,
+          }
+        } else {
+          return {
+            id: doc.id,
+            data: doc.data(),
+            image: false,
+          }
         }
       })
 
@@ -55,20 +63,32 @@ export const actions = {
       const snap = await query.get()
 
       const docs = snap.docs.map(async (doc) => {
-        const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-        const url = await imageRef.getDownloadURL()
+        if (doc.data().imageRef) {
+          const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
+          const url = await imageRef.getDownloadURL()
 
-        return {
-          id: doc.id,
-          data: doc.data(),
-          image: url,
+          return {
+            id: doc.id,
+            data: doc.data(),
+            image: url,
+          }
+        } else {
+          return {
+            id: doc.id,
+            data: doc.data(),
+            image: false,
+          }
         }
       })
 
       const events = await Promise.all(docs)
       commit('SET_LIKED_EVENTS', events)
+
+      return events
     } catch (e) {
       console.error(e)
+
+      return null
     }
   },
 
@@ -83,13 +103,21 @@ export const actions = {
       const snap = await docRef.get()
 
       const eventPromises = snap.docs.map(async (doc) => {
-        const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-        const URL = await imageRef.getDownloadURL()
+        if (doc.data().imageRef) {
+          const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
+          const url = await imageRef.getDownloadURL()
 
-        return {
-          id: doc.id,
-          data: doc.data(),
-          image: URL,
+          return {
+            id: doc.id,
+            data: doc.data(),
+            image: url,
+          }
+        } else {
+          return {
+            id: doc.id,
+            data: doc.data(),
+            image: false,
+          }
         }
       })
 

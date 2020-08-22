@@ -16,31 +16,22 @@
             <p>Email: <b>Info@sparkwest.network</b></p>
 
             <div class="row">
-              <div class="col-auto">
+              <div class="col">
                 <a
                   target="_blank"
                   href="https://www.facebook.com/sparkwestnetwork/"
-                  class="btn btn-lg btn-primary"
+                  class="btn btn-block btn-primary"
                 >
                   <i class="fa fa-facebook-f"></i>
                 </a>
               </div>
-              <div class="col-auto p-0">
+              <div class="col pl-0">
                 <a
                   target="_blank"
                   href="https://twitter.com/SparkWestNet"
-                  class="btn btn-lg btn-info"
+                  class="btn btn-block btn-info"
                 >
                   <i class="fa fa-twitter"></i>
-                </a>
-              </div>
-              <div class="col-auto">
-                <a
-                  target="_blank"
-                  href="https://www.instagram.com/sparkwestnetwork/"
-                  class="btn btn-lg btn-danger disabled"
-                >
-                  <i class="fa fa-instagram"></i>
                 </a>
               </div>
             </div>
@@ -53,36 +44,126 @@
           <div class="card-body">
             <form @submit.prevent="sendMessage">
               <div class="form-group">
-                <label for="emailInput">Email</label>
+                <label for="subject">Subject</label>
                 <input
-                  id="emailInput"
-                  v-model="email"
-                  type="email"
+                  id="subject"
+                  v-model="subject"
+                  type="text"
                   class="form-control"
-                  placeholder="john@doe.ca"
+                  placeholder="Feedback"
                   required
                 />
               </div>
 
               <div class="form-group">
-                <label for="emailInput">Message</label>
+                <label for="messageInput">Message</label>
                 <textarea
                   id="messageInput"
                   v-model="message"
                   class="form-control"
                   cols="30"
                   rows="6"
+                  placeholder="Your message ..."
                   required
                 ></textarea>
               </div>
 
-              <input
+              <button
                 type="submit"
                 value="Send Message"
                 class="btn btn-success float-right"
-              />
+              >
+                Send Message <i class="fas fa-paper-plane"></i>
+              </button>
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <h2 class="text-center mb-3">
+      Subscribe to our newsletter <i class="far fa-envelope-open"></i>
+    </h2>
+
+    <div class="row d-flex justify-content-center">
+      <div class="col col-lg-6">
+        <div class="card card-body">
+          <p class="mb-0 text-center">
+            Get informed about entrepreneurial happenings and receive updates
+            about Spark West Network in our monthly newsletter!
+          </p>
+
+          <hr />
+
+          <form @submit.prevent="subscribe">
+            <div class="form-group">
+              <label for="inputEmail">* Email:</label>
+              <input
+                id="inputEmail"
+                v-model="email"
+                type="email"
+                class="form-control"
+                placeholder="Email"
+                aria-describedby="emailHelp"
+                required
+              />
+            </div>
+
+            <div class="row">
+              <div class="col pr-0">
+                <div class="form-group">
+                  <label for="inputFirst">* First Name:</label>
+                  <input
+                    id="inputFirst"
+                    v-model="first"
+                    type="text"
+                    class="form-control"
+                    placeholder="John"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputLast">Last Name</label>
+                  <input
+                    id="inputLast"
+                    v-model="last"
+                    type="text"
+                    class="form-control"
+                    placeholder="Smith"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <button
+                type="submit"
+                value="Sign Up"
+                class="btn btn-success float-right"
+              >
+                Sign Up
+                <span
+                  v-if="subscribing"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <i
+                  v-if="!subscribing && success"
+                  class="fas fa-lg fa-check-circle animate__animated animate__bounceIn"
+                ></i>
+
+                <i
+                  v-if="!subscribing && fail"
+                  class="fas fa-lg fa-times-circle animate__animated animate__bounceIn"
+                ></i>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -108,16 +189,54 @@ export default {
 
   data() {
     return {
-      email: '',
+      subject: '',
       message: '',
+
+      email: null,
+      first: null,
+      last: null,
+
+      subscribing: false,
+      success: false,
+      fail: false,
     }
   },
 
   methods: {
     sendMessage() {
-      const messageTrim = this.message.trim()
+      const subject = encodeURIComponent(this.subject.trim())
+      const body = encodeURIComponent(this.message.trim())
       window.location.href =
-        'mailto:info@sparkwest.network?subject=Contact%Form&body=' + messageTrim
+        'mailto:info@sparkwest.network?subject=' + subject + '&body=' + body
+    },
+
+    async subscribe() {
+      try {
+        this.subscribing = true
+        this.success = false
+        this.fail = false
+
+        const data = {
+          email: this.email,
+          first: this.first,
+          last: this.last || '',
+        }
+        const response = await this.$axios.$post('/api/subscribe', {
+          email: data.email.trim(),
+          first: data.first.trim(),
+          last: data.last.trim(),
+        })
+        console.log(response)
+
+        this.subscribing = false
+        this.success = true
+        this.fail = false
+      } catch (e) {
+        console.log(e)
+        this.subscribing = false
+        this.success = false
+        this.fail = true
+      }
     },
   },
 }

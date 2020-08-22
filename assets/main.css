@@ -36,6 +36,7 @@
   --light-hover: #e9ecef;
   --dark-hover: #212529;
   --form-control-bg: #fff;
+  --form-control-text: #212529;
   --form-control-color: #212529;
   --form-control-border: #ced4da;
   --editor-menu-bg: #343a40;
@@ -80,6 +81,7 @@
   --light-hover: #e9ecef;
   --dark-hover: #212529;
   --form-control-bg: #212529;
+  --form-control-text: #f8f9fa;
   --form-control-color: #f8f9fa;
   --form-control-border: #121212;
   --editor-menu-bg: #212529;
@@ -97,6 +99,7 @@ body {
   padding: 0;
   height: 100%;
   overflow-x: hidden;
+  background: var(--bg);
 }
 
 /* -------- Fonts -------- */
@@ -140,33 +143,49 @@ h6 {
   transition: background 0.5s ease;
 }
 
+#footer {
+  height: auto;
+}
+
 @media only screen and (max-width: 576px) {
   #content-wrapper {
-    margin-bottom: -740px;
+    margin-bottom: -790px;
   }
 
   #footer-push {
-    height: 740px;
+    height: 790px;
+  }
+
+  #footer {
+    height: 790px;
   }
 }
 
 @media only screen and (min-width: 576px) {
   #content-wrapper {
-    margin-bottom: -585px;
+    margin-bottom: -690px;
   }
 
   #footer-push {
-    height: 585px;
+    height: 690px;
+  }
+
+  #footer {
+    height: 690px;
   }
 }
 
 @media only screen and (min-width: 768px) {
   #content-wrapper {
-    margin-bottom: -500px;
+    margin-bottom: -602px;
   }
 
   #footer-push {
-    height: 500px;
+    height: 602px;
+  }
+
+  #footer {
+    height: 602px;
   }
 }
 
@@ -178,15 +197,23 @@ h6 {
   #footer-push {
     height: 375px;
   }
+
+  #footer {
+    height: 375px;
+  }
 }
 
 @media only screen and (min-width: 1200px) {
   #content-wrapper {
-    margin-bottom: -351px;
+    margin-bottom: -378px;
   }
 
   #footer-push {
-    height: 351px;
+    height: 378px;
+  }
+
+  #footer {
+    height: 378px;
   }
 }
 

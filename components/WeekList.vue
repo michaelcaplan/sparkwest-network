@@ -79,8 +79,8 @@
         :key="event.id"
         class="row"
         :class="{
-          'mb-2': index < events.length - 1,
-          'mb-0': index === events.length - 1,
+          'mb-2': index < week.length - 1,
+          'mb-0': index === week.length - 1,
         }"
       >
         <div class="col">
@@ -98,6 +98,24 @@
             </h5>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div v-if="user" class="row mt-3">
+      <div class="col">
+        <nuxt-link
+          to="/newEvent"
+          class="btn btn-success float-right d-none d-md-inline-block"
+        >
+          New Event <i class="fa fa-plus" aria-hidden="true"></i>
+        </nuxt-link>
+
+        <nuxt-link
+          to="/newEvent"
+          class="btn btn-block btn-success d-block d-md-none d-lg-none"
+        >
+          New Event <i class="fa fa-plus" aria-hidden="true"></i>
+        </nuxt-link>
       </div>
     </div>
   </div>
@@ -131,6 +149,7 @@ export default {
   computed: {
     ...mapGetters({
       events: 'events/events',
+      user: 'user/user',
     }),
 
     // Returns current year month and day

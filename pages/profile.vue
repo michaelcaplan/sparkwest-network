@@ -49,6 +49,29 @@
         </div>
       </div>
 
+      <div
+        v-if="
+          profile.facebook ||
+          profile.twitter ||
+          profile.instagram ||
+          profile.linkedin ||
+          profile.otherWebsite
+        "
+        class="row d-flex justify-content-center mb-3"
+      >
+        <div class="col col-md-auto">
+          <social-btns
+            :links="{
+              facebook: profile.facebook,
+              twitter: profile.twitter,
+              instagram: profile.instagram,
+              linkedin: profile.linkedin,
+              otherWebsite: profile.otherWebsite,
+            }"
+          />
+        </div>
+      </div>
+
       <div class="row mb-3">
         <div class="col">
           <div class="card">
@@ -119,6 +142,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
+import SocialBtns from '@/components/SocialBtns.vue'
+
 import profile from '@/components/profile/Profile.vue'
 import likes from '@/components/profile/Likes.vue'
 import edit from '@/components/profile/Edit.vue'
@@ -161,7 +186,7 @@ export default {
     }),
   },
 
-  mounted() {
+  beforeMount() {
     this.$nextTick(async () => {
       this.$nuxt.$loading.start()
       await this.getProfile(this.user.uid || this.user.user_id)
@@ -170,6 +195,7 @@ export default {
   },
 
   components: {
+    SocialBtns,
     profile,
     likes,
     edit,

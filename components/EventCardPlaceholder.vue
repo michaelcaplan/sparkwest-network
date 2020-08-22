@@ -12,6 +12,11 @@
           <div class="loading gradient w-25 rounded"></div>
         </div>
       </div>
+      <div class="row mt-3 d-block d-sm-none">
+        <div class="col">
+          <div class="loading gradient w-100 rounded"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

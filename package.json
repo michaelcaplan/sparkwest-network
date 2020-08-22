@@ -9,7 +9,7 @@
     "url": "https://maxcaplan.github.io/"
   },
   "scripts": {
-    "dev": "nuxt",
+    "dev": "HOST=0.0.0.0 nuxt",
     "build": "nuxt generate",
     "start": "nuxt start",
     "export": "nuxt export",
@@ -20,11 +20,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "@mailchimp/mailchimp_marketing": "^3.0.13",
+    "@nuxtjs/axios": "^5.12.1",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/firebase": "^6.1.1",
     "@nuxtjs/pwa": "^3.0.0",
     "@nuxtjs/robots": "^2.4.2",
+    "body-parser": "^1.19.0",
     "cookieparser": "^0.1.0",
+    "express": "^4.17.1",
     "firebase": "^7.17.1",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",

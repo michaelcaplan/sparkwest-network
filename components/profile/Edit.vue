@@ -248,6 +248,131 @@
                 ></textarea>
               </div>
 
+              <!-- Facebook -->
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-auto">
+                    <a
+                      class="btn btn-primary btn-social"
+                      :class="{ disabled: !formFacebook }"
+                      target="_blank"
+                      :href="formFacebook || '#'"
+                    >
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class="col pl-0">
+                    <input
+                      v-model="formFacebook"
+                      type="url"
+                      name="facebook"
+                      class="form-control"
+                      placeholder="https://www.facebook.com/"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Twitter -->
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-auto">
+                    <a
+                      class="btn btn-info btn-social"
+                      :class="{ disabled: !formTwitter }"
+                      target="_blank"
+                      :href="formTwitter || '#'"
+                    >
+                      <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class="col pl-0">
+                    <input
+                      v-model="formTwitter"
+                      type="url"
+                      name="twitter"
+                      class="form-control"
+                      placeholder="https://twitter.com/"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Instagram -->
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-auto">
+                    <a
+                      class="btn btn-danger btn-social"
+                      :class="{ disabled: !formInstagram }"
+                      target="_blank"
+                      :href="formInstagram || '#'"
+                    >
+                      <i class="fa fa-instagram" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class="col pl-0">
+                    <input
+                      v-model="formInstagram"
+                      type="url"
+                      name="instagram"
+                      class="form-control"
+                      placeholder="https://www.instagram.com/"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Linkedin -->
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-auto">
+                    <a
+                      class="btn btn-info btn-social"
+                      :class="{ disabled: !formLinkedin }"
+                      target="_blank"
+                      :href="formLinkedin || '#'"
+                    >
+                      <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class="col pl-0">
+                    <input
+                      v-model="formLinkedin"
+                      type="url"
+                      name="linkedin"
+                      class="form-control"
+                      placeholder="https://www.linkedin.com/in/"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Other -->
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-auto">
+                    <a
+                      class="btn btn-secondary btn-social"
+                      :class="{ disabled: !formOther }"
+                      target="_blank"
+                      :href="formOther || '#'"
+                    >
+                      <i class="fas fa-globe" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div class="col pl-0">
+                    <input
+                      v-model="formOther"
+                      type="url"
+                      name="facebook"
+                      class="form-control"
+                      placeholder="https://www.otherWebsite.com/"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <input
                 type="submit"
                 class="btn btn-success float-right"
@@ -493,6 +618,12 @@ export default {
       formAbout: null,
       formAvatar: null,
 
+      formFacebook: null,
+      formTwitter: null,
+      formInstagram: null,
+      formLinkedin: null,
+      formOther: null,
+
       selectedFileUrl: null,
       selectedFile: null,
 
@@ -512,21 +643,6 @@ export default {
       profile: 'user/profile',
       user: 'user/user',
     }),
-
-    name() {
-      return this.profile.name
-    },
-  },
-
-  watch: {
-    name() {
-      console.log('Set form')
-
-      this.formAbout = this.profile.about
-      this.formAvatar = this.profile.avatar
-      this.formName = this.profile.name
-      this.formEmail = this.user.email
-    },
   },
 
   components: {
@@ -546,6 +662,11 @@ export default {
       await this.updateProfile({
         name: this.formName,
         about: this.formAbout || '',
+        facebook: this.formFacebook || '',
+        twitter: this.formTwitter || '',
+        instagram: this.formInstagram || '',
+        linkedin: this.formLinkedin || '',
+        otherWebsite: this.formOther || '',
       })
       this.updating = false
     },
@@ -647,12 +768,16 @@ export default {
       await this.getProfile(this.user.uid || this.user.user_id)
     }
 
-    console.log('mounted')
-
     this.formAbout = this.profile.about
     this.formAvatar = this.profile.avatar
     this.formName = this.profile.name
     this.formEmail = this.user.email
+
+    this.formFacebook = this.profile.facebook
+    this.formTwitter = this.profile.twitter
+    this.formInstagram = this.profile.instagram
+    this.formLinkedin = this.profile.linkedin
+    this.formOther = this.profile.otherWebsite
   },
 }
 </script>
@@ -660,5 +785,13 @@ export default {
 <style scoped>
 textarea {
   resize: none;
+}
+
+.btn-social {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

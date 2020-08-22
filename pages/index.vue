@@ -41,13 +41,9 @@
           </a>
         </div>
         <div class="col">
-          <a
-            class="btn btn-danger btn-block disabled"
-            target="_blank"
-            href="https://www.instagram.com/sparkwestnetwork/"
-          >
-            <i class="fa fa-instagram" aria-hidden="true"></i>
-          </a>
+          <nuxt-link to="/contact" class="btn btn-secondary btn-block">
+            <i class="fas fa-envelope"></i>
+          </nuxt-link>
         </div>
       </div>
 
@@ -68,13 +64,9 @@
           <i class="fa fa-twitter" aria-hidden="true"></i>
         </a>
 
-        <a
-          class="btn btn-danger btn-lg disabled"
-          target="_blank"
-          href="https://www.instagram.com/sparkwestnetwork/"
-        >
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
+        <nuxt-link to="/contact" class="btn btn-secondary btn-lg">
+          <i class="fas fa-envelope"></i>
+        </nuxt-link>
       </div>
     </div>
 

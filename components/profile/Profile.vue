@@ -170,7 +170,7 @@ export default {
     },
   },
 
-  mounted() {
+  beforeMount() {
     this.getUserEvents()
   },
 }

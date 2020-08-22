@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container py-3">
     <div
       v-if="error.statusCode === 404"
       class="row d-flex justify-content-center"

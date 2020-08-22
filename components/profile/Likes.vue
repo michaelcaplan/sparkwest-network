@@ -96,7 +96,7 @@ import EventCard from '@/components/EventCard.vue'
 import EventCardPlaceholder from '@/components/EventCardPlaceholder.vue'
 
 export default {
-  name: 'Profile',
+  name: 'Likes',
 
   components: {
     EventCard,
