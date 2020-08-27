@@ -46,4 +46,19 @@ $ yarn generate
 For detailed explanation on how things work, check out the [Nuxt.js docs](https://nuxtjs.org) and the [Firebase docs](https://firebase.google.com/docs)
 
 
-## TODO Firebase functions
+## Firebase Functions Setup
+
+To devlop, test, and deploy Firebase Cloud Functions, `cd` to the `functions` directory and run:
+
+```bash
+# install dependencies
+$ npm install
+
+# serve an emulated cloud environment for testing
+$ npm serve
+
+# deploy just the functions to Firebase
+$ npm deploy
+```
+
+For deatiled explanation on how things work, check out the [Cloud Functions docs](https://firebase.google.com/docs/functions)
