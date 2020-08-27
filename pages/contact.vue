@@ -5,13 +5,23 @@
     <hr />
 
     <div class="row">
-      <div class="col-12 col-md mb-3 mb-md-0">
+      <div class="col-12 col-lg mb-3 mb-lg-0">
         <div class="card">
           <div class="card-body">
+            <div class="card h-100 bg-dark border-0 mb-3">
+              <div
+                class="card-body d-flex align-items-center justify-content-center"
+              >
+                <img src="@/assets/logoLG.svg" alt="" class="img-fluid" />
+              </div>
+            </div>
+
             <p>
-              <b>Lets chat!</b> Have some questions, want to give us some
-              feedback? We would love to here from you!
+              <b>Lets chat!</b> Have some questions, got some ideas, want to
+              give us some feedback? We would love to here from you!
             </p>
+
+            <hr />
 
             <p>Email: <b>Info@sparkwest.network</b></p>
 
@@ -39,7 +49,7 @@
         </div>
       </div>
 
-      <div class="col-12 col-md">
+      <div class="col-12 col-lg">
         <div class="card">
           <div class="card-body">
             <form @submit.prevent="sendMessage">

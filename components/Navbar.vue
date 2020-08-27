@@ -94,7 +94,7 @@
             >
           </li>
 
-          <li v-else class="nav-item dropdown d-flex align-items-center">
+          <li v-if="user" class="nav-item dropdown d-flex align-items-center">
             <button
               class="btn btn-dark dropdown-toggle rounded-pill py-1 px-3"
               type="button"
@@ -110,11 +110,14 @@
               class="dropdown-menu dropdown-menu-right"
               aria-labelledby="profileDropdown"
             >
-              <h6 v-if="profile.name" class="dropdown-header text-truncate">
+              <h6 v-show="profile.name" class="dropdown-header text-truncate">
                 Hello, {{ profile.name }}
               </h6>
 
-              <div class="dropdown-divider"></div>
+              <div
+                v-show="profile && profile.name"
+                class="dropdown-divider"
+              ></div>
 
               <nuxt-link
                 :to="{ name: 'profile' }"
@@ -188,7 +191,7 @@
           </li>
         </ul>
 
-        <ul v-if="!user" class="nav">
+        <ul v-show="!user" class="nav">
           <li class="nav-item d-flex align-items-center mr-2">
             <nuxt-link
               :to="{ name: 'login' }"
@@ -206,7 +209,7 @@
           </li>
         </ul>
 
-        <div v-else class="row">
+        <div v-show="user" class="row">
           <div class="col-auto d-flex align-items-center pr-0">
             <nuxt-link :to="{ name: 'profile' }" class="btn btn-light">
               <i class="fa fa-user fa-lg"></i>
@@ -260,16 +263,6 @@ export default {
     Hamburger,
   },
 
-  async asyncData({ $fireAuth, store, res }) {
-    if (process.server && res && res.local && res.local.user) {
-      const user = await res.local.user
-      store.dispatch('user/getProfile', user.uid || user.user_id)
-    } else {
-      const user = $fireAuth.currentUser
-      store.dispatch('user/getProfile', user.uid || user.user_id)
-    }
-  },
-
   data() {
     return {
       collapseOpen: false,
@@ -289,7 +282,6 @@ export default {
   methods: {
     ...mapActions({
       logout: 'user/logout',
-      getProfile: 'user/getProfile',
     }),
     toggleCollapse() {
       this.collapseOpen = !this.collapseOpen
@@ -305,12 +297,6 @@ export default {
       await this.logout()
       this.$router.push('/')
     },
-  },
-
-  mounted() {
-    if (this.user && !this.profile.name) {
-      this.getProfile(this.user.uid || this.user.user_id)
-    }
   },
 }
 </script>
@@ -353,14 +339,4 @@ export default {
 #navbarCollapse.open {
   height: 209px;
 }
-
-/* .collpase .nav-item {
-  opacity: 0;
-  transition-property: opacity;
-  transition-duration: 0.5s;
-}
-
-.show .nav-item {
-  opacity: 1;
-} */
 </style>

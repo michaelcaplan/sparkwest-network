@@ -44,3 +44,6 @@ $ yarn generate
 ```
 
 For detailed explanation on how things work, check out the [Nuxt.js docs](https://nuxtjs.org) and the [Firebase docs](https://firebase.google.com/docs)
+
+
+## TODO Firebase functions

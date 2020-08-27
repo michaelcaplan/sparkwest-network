@@ -4,10 +4,8 @@ export const state = () => ({})
 
 export const actions = {
   async nuxtServerInit({ dispatch }, { res }) {
-    console.log('Server init')
     if (res && res.locals && res.locals.user) {
-      const { idToken: token, ...authUser } = res.locals.user
-      console.log(authUser)
+      const { allClaims: claims, idToken: token, ...authUser } = res.locals.user
 
       await dispatch('user/onAuthStateChangedAction', {
         authUser,

@@ -18,20 +18,6 @@ import Navbar from '@/components/Navbar'
 import Footer from '~/components/Footer'
 
 export default {
-  asyncData({ $fireAuth, store, res }) {
-    if (process.sever && res && res.locals && res.locals.user) {
-      const user = res.locals.user
-      if (user) {
-        store.dispatch('user/setUser', res.locals.user)
-      }
-    } else {
-      const user = $fireAuth.currentUser
-      if (user) {
-        store.dispatch('user/setUser', user)
-      }
-    }
-  },
-
   components: { Navbar, Footer },
 
   watch: {

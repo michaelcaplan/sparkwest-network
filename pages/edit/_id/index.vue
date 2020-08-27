@@ -5,7 +5,7 @@
 
       <hr />
 
-      <form v-if="!loading && event" @submit.prevent="uploadEvent">
+      <form v-show="!loading && event" @submit.prevent="uploadEvent">
         <div
           v-if="error"
           class="alert alert-danger animate__animated animate__shakeX"
@@ -279,7 +279,7 @@
       </form>
 
       <!-- Placeholder markup -->
-      <div v-if="loading" class="row">
+      <div v-show="loading" class="row">
         <div class="col-12 col-lg mb-3 mb-lg-0">
           <div class="card card-body mb-3">
             <div class="loading gradient rounded w-25 mb-2"></div>
@@ -423,8 +423,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 import TextEditor from '@/components/TextEditor.vue'
 import TextEditorPlaceholder from '@/components/TextEditorPlaceholder.vue'
 
@@ -433,7 +431,7 @@ import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
 export default {
   name: 'EditEvent',
 
-  middleware: 'edit',
+  // middleware: 'edit',
 
   head() {
     return {
@@ -454,9 +452,55 @@ export default {
     VueTimepicker,
   },
 
+  async asyncData({
+    params,
+    req,
+    res,
+    redirect,
+    error,
+    $fireStore,
+    $fireStorage,
+    $fireAuth,
+  }) {
+    let user = null
+
+    // Get current user
+    if (process.server) {
+      console.log(res)
+    } else if ($fireAuth.currentUser) {
+      user = $fireAuth.currentUser
+    } else {
+      redirect('/events/' + params.id)
+    }
+
+    try {
+      // Get event document
+      const docID = params.id
+      const docRef = $fireStore.collection('events').doc(docID)
+      const doc = await docRef.get()
+
+      let event = null
+
+      if (doc.exists) {
+        // Make sure current user is author
+
+        event = {
+          id: docID,
+          data: doc.data(),
+          image: false,
+        }
+      } else {
+        redirect('/eventNotFound')
+      }
+
+      return { event, user }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+
   data() {
     return {
-      event: null,
       loading: true,
 
       title: '',
@@ -489,50 +533,26 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      user: 'user/user',
-    }),
     id() {
       return this.$route.params.id
     },
   },
 
   methods: {
-    async getEvent() {
+    async getEventImg() {
       try {
-        this.loading = true
-        const docRef = this.$fireStore.collection('events').doc(this.id)
-        const doc = await docRef.get()
+        // If document has a refrence to an image, fetch download URL
+        if (this.event && this.event.data.imageRef) {
+          const imageRef = this.$fireStorage
+            .ref()
+            .child(this.event.data.imageRef)
+          const URL = await imageRef.getDownloadURL()
 
-        if (doc.exists) {
-          if (doc.data().imageRef) {
-            const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-            const URL = await imageRef.getDownloadURL()
-
-            this.event = {
-              id: doc.id,
-              data: doc.data(),
-              image: URL,
-            }
-          } else {
-            this.event = {
-              id: doc.id,
-              data: doc.data(),
-              image: false,
-            }
-          }
-
-          if (
-            this.event.data.authorID !== (this.user.uid || this.user.user_id)
-          ) {
-            this.$router.push('/events/' + this.id)
-          }
+          this.event.image = URL
         }
-
-        this.loading = false
       } catch (e) {
         console.error(e)
-        this.loading = false
+        this.event.image = false
       }
     },
 
@@ -747,6 +767,7 @@ export default {
   },
 
   created() {
+    // Attach function to text editor nuxt event
     this.$nuxt.$on('editor-update', (value) => {
       this.description = value.html
       this.chars = value.chars
@@ -754,61 +775,70 @@ export default {
   },
 
   async mounted() {
-    await this.getEvent()
+    try {
+      if (this.event) {
+        await this.getEventImg()
 
-    this.title = this.event.data.title
-    this.description = this.event.data.description
+        this.title = this.event.data.title
+        this.description = this.event.data.description
 
-    this.date = new Date(
-      this.event.data.year,
-      this.event.data.month,
-      this.event.data.day
-    )
+        this.date = new Date(
+          this.event.data.year,
+          this.event.data.month,
+          this.event.data.day
+        )
 
-    let sH = this.event.data.startTimeHour
-    let sA = 'am'
-    if (sH > 12) {
-      sH -= 12
-      sA = 'pm'
+        let sH = this.event.data.startTimeHour
+        let sA = 'am'
+        if (sH > 12) {
+          sH -= 12
+          sA = 'pm'
+        }
+        sH = sH.toString()
+
+        let sM = this.event.data.startTimeMinute
+        if (sM < 10) {
+          sM = '0' + sM
+        } else {
+          sM = sM.toString()
+        }
+
+        let eH = this.event.data.endTimeHour
+        let eA = 'am'
+        if (eH > 12) {
+          eH -= 12
+          eA = 'pm'
+        }
+        eH = eH.toString()
+
+        let eM = this.event.data.endTimeMinute
+        if (eM < 10) {
+          eM = '0' + eM
+        } else {
+          eM = eM.toString()
+        }
+
+        this.startTime = {
+          h: sH,
+          mm: sM,
+          a: sA,
+        }
+        this.endTime = {
+          h: eH,
+          mm: eM,
+          a: eA,
+        }
+
+        this.location = this.event.data.location
+
+        this.filePreview = this.event.image
+      }
+
+      this.loading = false
+    } catch (e) {
+      console.error(e)
+      this.loading = false
     }
-    sH = sH.toString()
-
-    let sM = this.event.data.startTimeMinute
-    if (sM < 10) {
-      sM = '0' + sM
-    } else {
-      sM = sM.toString()
-    }
-
-    let eH = this.event.data.endTimeHour
-    let eA = 'am'
-    if (eH > 12) {
-      eH -= 12
-      eA = 'pm'
-    }
-    eH = eH.toString()
-
-    let eM = this.event.data.endTimeMinute
-    if (eM < 10) {
-      eM = '0' + eM
-    } else {
-      eM = eM.toString()
-    }
-
-    this.startTime = {
-      h: sH,
-      mm: sM,
-      a: sA,
-    }
-    this.endTime = {
-      h: eH,
-      mm: eM,
-      a: eA,
-    }
-
-    this.location = this.event.data.location
-
-    this.filePreview = this.event.image
   },
 }
 </script>

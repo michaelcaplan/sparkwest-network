@@ -25,7 +25,10 @@
             class="avatar rounded border"
             :style="'background-image: url(\'' + profile.avatarUrl + '\')'"
           ></div>
-          <div v-else class="avatar rounded bg-secondary text-light">
+          <div
+            v-if="!profile.avatarUrl && !gettingAvatar"
+            class="avatar rounded bg-secondary text-light"
+          >
             <h1 v-if="profile.name" class="m-0">
               {{ profile.name.substring(0, 1) }}
             </h1>
@@ -35,6 +38,15 @@
               style="width: 3rem; height: 3rem;"
               role="status"
             >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+
+          <div
+            v-if="gettingAvatar"
+            class="avatar rounded border d-flex align-items-center justify-content-center"
+          >
+            <div class="spinner-border text-primary" role="status">
               <span class="sr-only">Loading...</span>
             </div>
           </div>
@@ -166,9 +178,17 @@ export default {
     }
   },
 
+  components: {
+    SocialBtns,
+    profile,
+    likes,
+    edit,
+  },
+
   data() {
     return {
       tabNum: 0,
+      gettingAvatar: true,
     }
   },
 
@@ -181,24 +201,23 @@ export default {
 
   methods: {
     ...mapActions({
-      getProfile: 'user/getProfile',
-      getUserEvents: 'events/getUserEvents',
+      getAvatarUrl: 'user/getAvatarUrl',
     }),
   },
 
-  beforeMount() {
-    this.$nextTick(async () => {
-      this.$nuxt.$loading.start()
-      await this.getProfile(this.user.uid || this.user.user_id)
-      this.$nuxt.$loading.finish()
-    })
-  },
-
-  components: {
-    SocialBtns,
-    profile,
-    likes,
-    edit,
+  async mounted() {
+    try {
+      if (this.profile.avatar && !this.profile.avatarUrl) {
+        this.gettingAvatar = true
+        await this.getAvatarUrl()
+        this.gettingAvatar = false
+      } else {
+        this.gettingAvatar = false
+      }
+    } catch (e) {
+      console.error(e)
+      this.gettingAvatar = false
+    }
   },
 }
 </script>

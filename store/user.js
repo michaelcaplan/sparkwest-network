@@ -47,10 +47,11 @@ export const getters = {
 }
 
 export const actions = {
-  onAuthStateChangedAction({ commit, dispatch }, { authUser }) {
+  async onAuthStateChangedAction({ commit, dispatch }, { authUser }) {
     if (!authUser) {
       commit('SET_LOGGEDIN', false)
       commit('SET_USER', null)
+      commit('LOGOUT')
       return
     }
 
@@ -62,6 +63,8 @@ export const actions = {
       emailVerified,
       displayName,
     })
+
+    await dispatch('getProfile', uid)
   },
 
   setUser({ commit }, user) {
@@ -107,10 +110,6 @@ export const actions = {
 
       if (doc.exists) {
         commit('SET_PROFILE', doc.data())
-
-        if (state.avatar) {
-          await dispatch('getAvatarUrl')
-        }
       }
     } catch (e) {
       console.error(e)
@@ -216,5 +215,10 @@ export const mutations = {
     state.avatar = null
     state.avatarUrl = null
     state.events = null
+    state.facebook = null
+    state.twitter = null
+    state.instagram = null
+    state.linkedin = null
+    state.otherWebsite = null
   },
 }

@@ -1,10 +1,23 @@
 <template>
   <div class="container py-3">
-    <div v-if="event && !loading">
+    <div v-show="event && !loading">
       <div class="row mb-3">
         <div class="col">
           <div class="card card-body">
-            <h1>{{ event.data.title }}</h1>
+            <div class="row">
+              <div class="col">
+                <h1 class="d-none d-md-block">{{ event.data.title }}</h1>
+                <h3 class="d-block d-md-none">{{ event.data.title }}</h3>
+              </div>
+              <div class="col-auto pl-0">
+                <h5>
+                  <i
+                    class="fa fa-info-circle text-primary"
+                    aria-hidden="true"
+                  ></i>
+                </h5>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -230,7 +243,7 @@
     </div>
 
     <!-- Placeholder markup -->
-    <div v-if="loading" class="row">
+    <div v-show="loading" class="row">
       <div class="col-12 mb-3">
         <div class="card card-body">
           <div class="loading-btn gradient w-50 rounded"></div>
@@ -323,28 +336,6 @@
         </div>
       </div>
     </div>
-
-    <div v-if="!loading && !event" class="row d-flex justify-content-center">
-      <div class="col col-lg-6">
-        <h1 class="display-1 text-center">404</h1>
-        <h3 class="text-center">Event not found</h3>
-
-        <hr />
-
-        <p class="text-cent">
-          It seems the event you are looking for does not exist. This could be
-          because the event was deleted or there is a typo in your search
-        </p>
-
-        <div class="row d-flex justify-content-center">
-          <div class="col-auto">
-            <nuxt-link to="/" class="btn btn-primary">
-              Go Back Home
-            </nuxt-link>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -376,6 +367,39 @@ export default {
     AuthorCard,
   },
 
+  async asyncData({
+    params,
+    req,
+    res,
+    redirect,
+    error,
+    $fireStore,
+    $fireStorage,
+  }) {
+    try {
+      // Get event document
+      const docID = params.id
+      const docRef = $fireStore.collection('events').doc(docID)
+      const doc = await docRef.get()
+
+      let event = null
+
+      if (doc.exists) {
+        event = {
+          id: docID,
+          data: doc.data(),
+          image: false,
+        }
+      } else {
+        redirect('/eventNotFound')
+      }
+
+      return { event }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+
   computed: {
     ...mapGetters({
       user: 'user/user',
@@ -395,7 +419,6 @@ export default {
 
   data() {
     return {
-      event: null,
       loading: true,
       liked: false,
       liking: false,
@@ -409,37 +432,20 @@ export default {
   },
 
   methods: {
-    async getEvent() {
+    async getEventImg() {
       try {
-        this.loading = true
-        const docRef = this.$fireStore.collection('events').doc(this.id)
-        const doc = await docRef.get()
+        // If document has a refrence to an image, fetch download URL
+        if (this.event && this.event.data.imageRef) {
+          const imageRef = this.$fireStorage
+            .ref()
+            .child(this.event.data.imageRef)
+          const URL = await imageRef.getDownloadURL()
 
-        if (doc.exists) {
-          if (doc.data().imageRef) {
-            const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-            const URL = await imageRef.getDownloadURL()
-
-            this.event = {
-              id: doc.id,
-              data: doc.data(),
-              image: URL,
-            }
-          } else {
-            this.event = {
-              id: doc.id,
-              data: doc.data(),
-              image: false,
-            }
-          }
-
-          this.checkLike()
+          this.event.image = URL
         }
-
-        this.loading = false
       } catch (e) {
         console.error(e)
-        this.loading = false
+        this.event.image = false
       }
     },
 
@@ -535,12 +541,19 @@ export default {
     },
   },
 
-  mounted() {
-    this.$nextTick(async () => {
-      this.$nuxt.$loading.start()
-      await this.getEvent()
-      this.$nuxt.$loading.finish()
-    })
+  async mounted() {
+    try {
+      if (this.event) {
+        await this.getEventImg()
+      }
+
+      this.checkLike()
+
+      this.loading = false
+    } catch (e) {
+      console.error(e)
+      this.loading = false
+    }
   },
 }
 </script>

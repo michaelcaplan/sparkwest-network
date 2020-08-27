@@ -194,7 +194,13 @@ export default {
           measurementId: process.env.MEASURMENT_ID,
         },
         services: {
-          auth: { persistence: 'local', ssr: true },
+          auth: {
+            persistence: 'local',
+            ssr: true,
+            initialize: {
+              onAuthStateChangedAction: 'user/onAuthStateChangedAction',
+            },
+          },
           firestore: true,
           storage: true,
           functions: true,
@@ -202,12 +208,6 @@ export default {
       },
     ],
   ],
-  /*
-   ** Vue router settings
-   */
-  router: {
-    middleware: 'default',
-  },
   /*
    ** Server Middleware
    */

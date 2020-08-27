@@ -6,21 +6,25 @@ export default async function ({
   route,
   redirect,
 }) {
-  const doc = await $fireStore.collection('events').doc(route.params.id).get()
-
   // Check auth server side
-  if (process.server && res && res.locals && res.locals.user) {
-    // Get access_token cookie from header and get user
-    const user = res.locals.user
+  if (process.server) {
+    if (res && res.locals && res.locals.user) {
+      const user = res.locals.user
 
-    // If user uid isn't the same as events author uid, redirect
-    if (user) {
-      const UID = user.uid || user.user_id
-      if (UID !== doc.data().authorID) {
-        redirect('/events/' + route.params.id)
+      // If user uid isn't the same as events author uid, redirect
+      if (user) {
+        const UID = user.uid || user.user_id
+        const doc = await $fireStore
+          .collection('events')
+          .doc(route.params.id)
+          .get()
+
+        if (UID !== doc.data().authorID) {
+          redirect('/events/' + route.params.id)
+        }
+      } else {
+        redirect('/')
       }
-    } else {
-      redirect('/')
     }
 
     // Check auth client side
@@ -31,11 +35,16 @@ export default async function ({
     // If user uid isn't the same as events author uid, redirect
     if (user) {
       const UID = user.uid || user.user_id
+      const doc = await $fireStore
+        .collection('events')
+        .doc(route.params.id)
+        .get()
+
       if (UID !== doc.data().authorID) {
         redirect('/events/' + route.params.id)
       }
     } else {
-      redirect('/')
+      redirect('/events/' + route.params.id)
     }
   }
 }

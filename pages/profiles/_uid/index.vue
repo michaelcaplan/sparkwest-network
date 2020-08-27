@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
     <div class="container py-3">
-      <div v-if="profile && !loading" class="row">
+      <div v-show="profile && !loading" class="row">
         <div class="col-12 col-lg-auto mb-3 mb-lg-0">
           <div class="card">
             <div class="card-body">
@@ -162,7 +162,7 @@
         </div>
       </div>
 
-      <div v-if="loading">
+      <div v-show="loading">
         <div class="row">
           <div class="col-12 col-lg-auto mb-3 mb-lg-0">
             <div class="card">
@@ -242,31 +242,6 @@
           </div>
         </div>
       </div>
-
-      <div
-        v-if="!loading && !profile"
-        class="row d-flex justify-content-center"
-      >
-        <div class="col col-lg-6">
-          <h1 class="display-1 text-center">404</h1>
-          <h3 class="text-center">Profile not found</h3>
-
-          <hr />
-
-          <p class="text-cent">
-            It seems the profile you are looking for does not exist. This could
-            be because the profile was deleted or there is a typo in your search
-          </p>
-
-          <div class="row d-flex justify-content-center">
-            <div class="col-auto">
-              <nuxt-link to="/" class="btn btn-primary">
-                Go Back Home
-              </nuxt-link>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -307,6 +282,50 @@ export default {
     ProfileEventList,
     ProfileLikesList,
     EventCardPlaceholder,
+  },
+
+  async asyncData({
+    route,
+    params,
+    store,
+    req,
+    res,
+    redirect,
+    error,
+    $fireStore,
+    $fireAuth,
+  }) {
+    let user = null
+    if (process.server) {
+      user = store.state.user.user
+    } else {
+      user = $fireAuth.currentUser
+    }
+
+    try {
+      const docRef = $fireStore.collection('profiles').doc(params.uid)
+      const doc = await docRef.get()
+
+      let profile = null
+
+      if (doc.exists) {
+        if (user && user.uid === params.uid) {
+          redirect('/profile')
+        }
+
+        profile = {
+          uid: params.uid,
+          data: doc.data(),
+          avatar: false,
+        }
+      } else {
+        redirect('/profileNotFound')
+      }
+
+      return { profile }
+    } catch (e) {
+      console.error(e)
+    }
   },
 
   computed: {
@@ -358,47 +377,35 @@ export default {
   },
 
   methods: {
-    async getProfile() {
+    async getProfileAvatar() {
       try {
-        this.loading = true
-        const docRef = this.$fireStore.collection('profiles').doc(this.UID)
-        const doc = await docRef.get()
+        // If document has a refrence to an image, fetch download URL
+        if (this.profile && this.profile.data.avatar) {
+          const imageRef = this.$fireStorage
+            .ref()
+            .child(this.profile.data.avatar)
+          const URL = await imageRef.getDownloadURL()
 
-        if (doc.exists) {
-          if (doc.data().avatar) {
-            const imageRef = this.$fireStorage.ref().child(doc.data().avatar)
-            const URL = await imageRef.getDownloadURL()
-
-            this.profile = {
-              uid: this.UID,
-              data: doc.data(),
-              avatar: URL,
-            }
-          } else {
-            this.profile = {
-              uid: this.UID,
-              data: doc.data(),
-              avatar: false,
-            }
-          }
-        } else {
-          this.loading = false
+          this.profile.avatar = URL
         }
-
-        this.loading = false
       } catch (e) {
         console.error(e)
-        this.loading = false
+        this.profile.avatar = false
       }
     },
   },
 
-  mounted() {
-    this.$nextTick(async () => {
-      this.$nuxt.$loading.start()
-      await this.getProfile()
-      this.$nuxt.$loading.finish()
-    })
+  async mounted() {
+    try {
+      if (this.profile) {
+        await this.getProfileAvatar()
+      }
+
+      this.loading = false
+    } catch (e) {
+      console.log(e)
+      this.loading = false
+    }
   },
 }
 </script>
