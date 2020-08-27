@@ -7,13 +7,13 @@
             <h3 class="mb-0">
               <span class="badge badge-dark d-none d-md-inline-block"
                 >{{ monthName(this.date.month).toUpperCase() }}
-                <span v-if="currentDate.year != date.year">{{
+                <span v-show="currentDate.year != date.year">{{
                   date.year
                 }}</span></span
               >
               <span class="badge badge-dark d-inline-block d-md-none"
                 >{{ monthName(this.date.month, 1).toUpperCase() }}
-                <span v-if="currentDate.year != date.year">{{
+                <span v-show="currentDate.year != date.year">{{
                   date.year
                 }}</span></span
               >
@@ -21,7 +21,7 @@
           </div>
 
           <transition name="fade">
-            <div v-if="showReturn && !loading" class="col-auto pl-0">
+            <div v-show="showReturn && !loading" class="col-auto pl-0">
               <button
                 @click.prevent="returnToCurrent"
                 class="btn btn-info h-100"
@@ -48,8 +48,8 @@
           </div>
           <div class="col">
             <h3 class="mb-0 text-center">
-              <span v-if="loading" class="text-muted">00 - 00</span
-              ><span v-else>{{ displayWeek }}</span>
+              <span v-show="loading" class="text-muted">00 - 00</span
+              ><span v-show="!loading">{{ displayWeek }}</span>
             </h3>
           </div>
           <div class="col-auto">
@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <div v-if="loading" class="row">
+    <div v-show="loading" class="row">
       <div class="col">
         <event-card-placeholder class="mb-2" />
         <event-card-placeholder class="mb-2" />
@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <div v-if="events && !loading && week.length > 0">
+    <div v-show="events && !loading && week.length > 0">
       <div
         v-for="(event, index) in week"
         :key="event.id"
@@ -89,7 +89,7 @@
       </div>
     </div>
 
-    <div v-if="week.length == 0 && !loading" class="row">
+    <div v-show="week.length == 0 && !loading" class="row">
       <div class="col">
         <div class="card">
           <div class="card-body">
@@ -101,7 +101,7 @@
       </div>
     </div>
 
-    <div v-if="user" class="row mt-3">
+    <div v-show="user" class="row mt-3">
       <div class="col">
         <nuxt-link
           to="/newEvent"
@@ -403,7 +403,7 @@ export default {
     },
   },
 
-  async mounted() {
+  beforeMount() {
     // Set current week number of the month
     const dayOfMonth = new Date().getDate()
     const weekIndex = this.weekNums.nums.findIndex((week) => {
@@ -412,7 +412,7 @@ export default {
     this.date.week = weekIndex
 
     // Get months events
-    await this.getEvents(this.date)
+    // await this.getEvents(this.date)
     this.loading = false
   },
 }

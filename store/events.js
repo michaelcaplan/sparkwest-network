@@ -92,8 +92,9 @@ export const actions = {
     }
   },
 
-  async getMonthEvents({ commit }, date) {
+  async getMonthEvents({ commit, dispatch }, date, getImages = false) {
     try {
+      console.log('getting events')
       const docRef = this.$fireStore
         .collection('events')
         .where('year', '==', date.year)
@@ -102,7 +103,27 @@ export const actions = {
 
       const snap = await docRef.get()
 
-      const eventPromises = snap.docs.map(async (doc) => {
+      if (getImages) {
+        dispatch('getEventImages', snap)
+      } else {
+        const events = snap.docs.map((doc) => {
+          return {
+            id: doc.id,
+            data: doc.data(),
+            image: false,
+          }
+        })
+
+        commit('SET_EVENTS', events)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+
+  async getEventImages({ commit }, snap) {
+    try {
+      const docs = snap.docs.map(async (doc) => {
         if (doc.data().imageRef) {
           const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
           const url = await imageRef.getDownloadURL()
@@ -121,8 +142,8 @@ export const actions = {
         }
       })
 
-      const docs = await Promise.all(eventPromises)
-      commit('SET_EVENTS', docs)
+      const events = await Promise.all(docs)
+      commit('SET_USER_EVENTS', events)
     } catch (e) {
       console.error(e)
     }

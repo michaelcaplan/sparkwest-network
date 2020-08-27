@@ -11,10 +11,10 @@
           <div class="px-0 px-sm-2">
             <div class="row">
               <div class="col">
-                <p v-if="weekly" class="m-0 text-center">
+                <p v-show="weekly" class="m-0 text-center">
                   {{ weekName(dayOfWeek, 1).toUpperCase() }}
                 </p>
-                <p v-else class="m-0 text-center">
+                <p v-show="!weekly" class="m-0 text-center">
                   {{ monthName(event.data.month, 1).toUpperCase() }}
                 </p>
               </div>
@@ -70,8 +70,8 @@
                 animate__bounceIn: likeNum > 0,
               }"
             ></i
-            >{{ likeNum }} <span v-if="likeNum === 1">person likes</span
-            ><span v-else>people like</span> this
+            >{{ likeNum }} <span v-show="likeNum === 1">person likes</span
+            ><span v-show="likeNum != 1">people like</span> this
           </span>
         </div>
       </div>

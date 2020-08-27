@@ -90,39 +90,43 @@
             <div class="card-body pb-3">
               <ul class="nav nav-pills nav-fill">
                 <li class="nav-item mb-2">
-                  <a
+                  <nuxt-link
                     id="profile-nav"
-                    :class="{ 'nav-link': true, active: tabNum == 0 }"
-                    @click.prevent="tabNum = 0"
-                    href="#"
+                    to="/profile/events"
+                    class="nav-link"
+                    :class="{
+                      active:
+                        routeName === 'profile' ||
+                        routeName === 'profile-Events',
+                    }"
                   >
                     <i class="fa fa-user-circle"></i>
                     Profile
-                  </a>
+                  </nuxt-link>
                 </li>
 
                 <li class="nav-item mb-2">
-                  <a
+                  <nuxt-link
                     id="likes-nav"
-                    :class="{ 'nav-link': true, active: tabNum == 1 }"
-                    @click.prevent="tabNum = 1"
-                    href="#"
+                    to="/profile/likes"
+                    class="nav-link"
+                    :class="{ active: routeName === 'profile-Likes' }"
                   >
                     <i class="fa fa-heart"></i>
                     Likes
-                  </a>
+                  </nuxt-link>
                 </li>
 
                 <li class="nav-item mb-2">
-                  <a
+                  <nuxt-link
                     id="edit-nav"
-                    :class="{ 'nav-link': true, active: tabNum == 2 }"
-                    @click.prevent="tabNum = 2"
-                    href="#"
+                    to="/profile/edit"
+                    class="nav-link"
+                    :class="{ active: routeName === 'profile-Edit' }"
                   >
                     <i class="fas fa-edit"></i>
                     Edit
-                  </a>
+                  </nuxt-link>
                 </li>
               </ul>
             </div>
@@ -133,17 +137,14 @@
       <div class="row">
         <div class="col">
           <div class="tabs">
-            <div v-show="tabNum === 0" id="profile">
-              <profile />
-            </div>
+            <nuxt-child />
 
-            <div v-show="tabNum === 1" id="likes">
-              <likes />
-            </div>
-
-            <div v-show="tabNum === 2" id="edit">
-              <edit />
-            </div>
+            <events
+              v-if="
+                $route.fullPath === '/profile' ||
+                $route.fullPath === '/profile/'
+              "
+            />
           </div>
         </div>
       </div>
@@ -156,9 +157,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import SocialBtns from '@/components/SocialBtns.vue'
 
-import profile from '@/components/profile/Profile.vue'
-import likes from '@/components/profile/Likes.vue'
-import edit from '@/components/profile/Edit.vue'
+import Events from '@/pages/profile/Events.vue'
 
 export default {
   name: 'Profile',
@@ -180,14 +179,11 @@ export default {
 
   components: {
     SocialBtns,
-    profile,
-    likes,
-    edit,
+    Events,
   },
 
   data() {
     return {
-      tabNum: 0,
       gettingAvatar: true,
     }
   },
@@ -197,6 +193,10 @@ export default {
       profile: 'user/profile',
       user: 'user/user',
     }),
+
+    routeName() {
+      return this.$route.name
+    },
   },
 
   methods: {

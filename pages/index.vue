@@ -189,14 +189,29 @@ export default {
     }
   },
 
+  components: {
+    WeekList,
+  },
+
+  async asyncData({ store, params }) {
+    try {
+      if (store.state.events.events.length === 0) {
+        const date = new Date()
+        await store.dispatch('events/getMonthEvents', {
+          month: date.getMonth(),
+          year: date.getFullYear(),
+        })
+        console.log('Got months events')
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+
   computed: {
     ...mapGetters({
       user: 'user/user',
     }),
-  },
-
-  components: {
-    WeekList,
   },
 }
 </script>

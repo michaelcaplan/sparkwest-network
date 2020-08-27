@@ -110,7 +110,7 @@ import EventCard from '@/components/EventCard.vue'
 import EventCardPlaceholder from '@/components/EventCardPlaceholder.vue'
 
 export default {
-  name: 'Profile',
+  name: 'Events',
 
   components: {
     EventCard,
