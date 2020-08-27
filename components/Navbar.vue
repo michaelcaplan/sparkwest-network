@@ -2,163 +2,166 @@
   <!-- Navigation -->
   <div id="nav">
     <nav
-      class="navbar navbar-expand-lg navbar-dark mt-0"
+      class="navbar navbar-expand-lg navbar-dark mt-0 p-0"
       :class="{ shadow: collapseOpen }"
     >
-      <div class="container">
-        <div class="row w-100">
-          <div class="col">
-            <nuxt-link id="logo" to="/" class="navbar-brand">
-              <img
-                src="../assets/logoLG.svg"
-                alt="logo"
-                class="d-none d-md-inline-block m-1"
-                height="42"
-              />
+      <div class="container py-2 px-3">
+        <div class="w-100">
+          <div class="row">
+            <div class="col">
+              <nuxt-link id="logo" to="/" class="navbar-brand">
+                <img
+                  src="../assets/logoLG.svg"
+                  alt="logo"
+                  class="d-none d-md-inline-block m-1"
+                  height="42"
+                />
 
-              <img
-                src="../assets/logo.svg"
-                alt="logo"
-                class="d-none d-sm-inline-block d-md-none d-lg-none m-1"
-                height="42"
-              />
+                <img
+                  src="../assets/logo.svg"
+                  alt="logo"
+                  class="d-none d-sm-inline-block d-md-none d-lg-none m-1"
+                  height="42"
+                />
 
-              <img
-                src="../assets/logoSM.svg"
-                alt="logo"
-                class="d-inline-block d-sm-none d-md-none d-lg-none m-1"
-                :class="{ open: collapseOpen }"
-                height="42"
-              />
-            </nuxt-link>
-          </div>
+                <img
+                  src="../assets/logoSM.svg"
+                  alt="logo"
+                  class="d-inline-block d-sm-none d-md-none d-lg-none m-1"
+                  :class="{ open: collapseOpen }"
+                  height="42"
+                />
+              </nuxt-link>
+            </div>
 
-          <div class="col-auto d-none d-lg-flex pr-0">
-            <ul class="navbar-nav d-flex align-items-center">
-              <li class="nav-item">
-                <nuxt-link
-                  to="/"
-                  :class="{
-                    'nav-link': true,
-                    'text-light': true,
-                    'font-weight-bold': routeName == 'index',
-                  }"
-                  >Events</nuxt-link
-                >
-              </li>
+            <div class="col-auto d-flex d-lg-none pr-0">
+              <button
+                id="menu-btn"
+                class="btn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+                @click="toggleCollapse"
+              >
+                <hamburger :open="collapseOpen" />
+              </button>
+            </div>
 
-              <li class="nav-item">
-                <nuxt-link
-                  :to="{ name: 'about' }"
-                  :class="{
-                    'nav-link': true,
-                    'text-light': true,
-                    'font-weight-bold': routeName == 'about',
-                  }"
-                  >About</nuxt-link
-                >
-              </li>
-
-              <li class="nav-item mr-2 border-right">
-                <nuxt-link
-                  :to="{ name: 'contact' }"
-                  :class="{
-                    'nav-link': true,
-                    'text-light': true,
-                    'font-weight-bold': routeName == 'contact',
-                  }"
-                  >Contact</nuxt-link
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div class="col-auto d-none d-lg-flex p-0">
-            <ul class="navbar-nav" v-show="!user">
-              <li class="nav-item d-flex align-items-center mr-2">
-                <nuxt-link
-                  :to="{ name: 'login' }"
-                  class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
-                  >Login</nuxt-link
-                >
-              </li>
-
-              <li class="nav-item d-flex align-items-center">
-                <nuxt-link
-                  :to="{ name: 'signUp' }"
-                  class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
-                  >Sign Up</nuxt-link
-                >
-              </li>
-            </ul>
-
-            <ul class="navbar-nav" v-show="user">
-              <li class="nav-item dropdown d-flex align-items-center">
-                <button
-                  class="btn btn-dark dropdown-toggle rounded-pill py-1 px-3"
-                  type="button"
-                  id="profileDropdown"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fa fa-user"></i>
-                </button>
-
-                <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="profileDropdown"
-                >
-                  <h6
-                    v-show="profile.name"
-                    class="dropdown-header text-truncate"
+            <div class="col-auto d-none d-lg-flex pr-0">
+              <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                  <nuxt-link
+                    to="/"
+                    :class="{
+                      'nav-link': true,
+                      'text-light': true,
+                      'font-weight-bold': routeName == 'index',
+                    }"
+                    >Events</nuxt-link
                   >
-                    Hello, {{ profile.name }}
-                  </h6>
+                </li>
+
+                <li class="nav-item">
+                  <nuxt-link
+                    :to="{ name: 'about' }"
+                    :class="{
+                      'nav-link': true,
+                      'text-light': true,
+                      'font-weight-bold': routeName == 'about',
+                    }"
+                    >About</nuxt-link
+                  >
+                </li>
+
+                <li class="nav-item mr-2 border-right">
+                  <nuxt-link
+                    :to="{ name: 'contact' }"
+                    :class="{
+                      'nav-link': true,
+                      'text-light': true,
+                      'font-weight-bold': routeName == 'contact',
+                    }"
+                    >Contact</nuxt-link
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="col-auto d-none d-lg-flex p-0">
+              <ul class="navbar-nav" v-show="!user">
+                <li class="nav-item d-flex align-items-center mr-2">
+                  <nuxt-link
+                    :to="{ name: 'login' }"
+                    class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
+                    >Login</nuxt-link
+                  >
+                </li>
+
+                <li class="nav-item d-flex align-items-center">
+                  <nuxt-link
+                    :to="{ name: 'signUp' }"
+                    class="nav-link text-light btn btn-dark rounded-pill py-1 px-3"
+                    >Sign Up</nuxt-link
+                  >
+                </li>
+              </ul>
+
+              <ul class="navbar-nav" v-show="user">
+                <li class="nav-item dropdown d-flex align-items-center">
+                  <button
+                    class="btn btn-dark dropdown-toggle rounded-pill py-1 px-3"
+                    type="button"
+                    id="profileDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i class="fa fa-user"></i>
+                  </button>
 
                   <div
-                    v-show="profile && profile.name"
-                    class="dropdown-divider"
-                  ></div>
-
-                  <nuxt-link
-                    to="/profile"
-                    class="dropdown-item"
-                    :class="{ active: routeName === 'profile' }"
-                    href="#"
-                    >Profile <i class="fa fa-sm fa-user" aria-hidden="true"></i
-                  ></nuxt-link>
-
-                  <nuxt-link
-                    to="/newEvent"
-                    class="dropdown-item"
-                    :class="{ active: routeName === 'newEvent' }"
-                    href="#"
+                    class="dropdown-menu dropdown-menu-right"
+                    aria-labelledby="profileDropdown"
                   >
-                    New Event
-                    <i class="fa fa-sm fa-plus" aria-hidden="true"></i>
-                  </nuxt-link>
+                    <h6
+                      v-show="profile.name"
+                      class="dropdown-header text-truncate"
+                    >
+                      Hello, {{ profile.name }}
+                    </h6>
 
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" @click.prevent="signout"
-                    >Log Out</a
-                  >
-                </div>
-              </li>
-            </ul>
-          </div>
+                    <div
+                      v-show="profile && profile.name"
+                      class="dropdown-divider"
+                    ></div>
 
-          <div class="col-auto d-flex d-lg-none">
-            <button
-              id="menu-btn"
-              class="btn"
-              type="button"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              @click="toggleCollapse"
-            >
-              <hamburger :open="collapseOpen" />
-            </button>
+                    <nuxt-link
+                      to="/profile"
+                      class="dropdown-item"
+                      :class="{ active: routeName === 'profile' }"
+                      href="#"
+                      >Profile
+                      <i class="fa fa-sm fa-user" aria-hidden="true"></i
+                    ></nuxt-link>
+
+                    <nuxt-link
+                      to="/newEvent"
+                      class="dropdown-item"
+                      :class="{ active: routeName === 'newEvent' }"
+                      href="#"
+                    >
+                      New Event
+                      <i class="fa fa-sm fa-plus" aria-hidden="true"></i>
+                    </nuxt-link>
+
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" @click.prevent="signout"
+                      >Log Out</a
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
