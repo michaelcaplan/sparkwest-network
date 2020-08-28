@@ -87,7 +87,7 @@
               </ul>
             </div>
 
-            <div class="col-auto d-none d-lg-flex p-0">
+            <div class="col-auto d-none d-lg-flex pl-0">
               <ul class="navbar-nav" v-show="!user">
                 <li class="nav-item d-flex align-items-center mr-2">
                   <nuxt-link
