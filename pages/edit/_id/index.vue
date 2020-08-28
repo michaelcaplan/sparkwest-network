@@ -395,7 +395,7 @@
                     @click.prevent="checkDelete = false"
                     :disabled="deleting"
                   >
-                    Cancle
+                    Cancel
                   </button>
                 </div>
                 <div class="col">

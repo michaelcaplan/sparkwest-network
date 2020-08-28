@@ -73,29 +73,38 @@
       </div>
     </div>
 
-    <div v-show="events && !loading && week.length > 0">
+    <div v-show="events && !loading && month">
       <div
-        v-for="(event, index) in week"
-        :key="event.id"
-        class="row"
-        :class="{
-          'mb-2': index < week.length - 1,
-          'mb-0': index === week.length - 1,
-        }"
+        class="week mb-3"
+        v-show="weekIndex === date.week"
+        v-for="(week, weekIndex) in month"
+        :key="weekIndex"
       >
-        <div class="col">
-          <event-card :event="event" :weekly="true" />
+        <div v-if="week.length > 0">
+          <div
+            v-for="(event, eventIndex) in week"
+            :key="event.id"
+            class="row"
+            :class="{
+              'mb-2': eventIndex < week.length - 1,
+              'mb-0': eventIndex === week.length - 1,
+            }"
+          >
+            <div class="col">
+              <event-card :event="event" :weekly="true" />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div v-show="week.length == 0 && !loading" class="row">
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="text-muted text-center mb-0">
-              <i>There are no events for this week</i>
-            </h5>
+        <div v-else class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="text-muted text-center mb-0">
+                  <i>There are no events for this week</i>
+                </h5>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -232,23 +241,28 @@ export default {
       }
     },
 
+    // Formats events into array of weeks of events
+    month() {
+      const month = []
+      this.weekNums.nums.forEach((weekNum) => {
+        const week = this.events.filter((event) => {
+          return (
+            event.data.day >= weekNum.start && event.data.day <= weekNum.end
+          )
+        })
+
+        month.push(week)
+      })
+
+      return month
+    },
+
     // Returns string to display current week start and end
     displayWeek() {
       const start = this.doubleDigit(this.weekNums.nums[this.date.week].start)
       const end = this.doubleDigit(this.weekNums.nums[this.date.week].end)
 
       return start + ' - ' + end
-    },
-
-    // Returns events in week
-    week() {
-      const events = this.events.filter((event) => {
-        const start = this.weekNums.nums[this.date.week].start
-        const end = this.weekNums.nums[this.date.week].end
-        return event.data.day >= start && event.data.day <= end
-      })
-
-      return events
     },
   },
 
