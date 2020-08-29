@@ -1,12 +1,12 @@
 <template>
-  <div id="footer" class="bg-dark py-5 text-light">
+  <div id="footer" class="bg-dark py-3 py-sm-5 text-light">
     <div class="container">
       <div class="row">
         <div class="col-12 col-lg mb-3">
-          <h3>Spark West Network</h3>
+          <h3 class="mb-3 mb-sm-2">Spark West Network</h3>
 
-          <p>
-            an umbrella marketing platform that draws together, assists, and
+          <p class="d-none d-sm-block">
+            An umbrella marketing platform that draws together, assists, and
             coordinates the various organizations, events, and people that
             define our region’s unique entrepreneurial opportunities.
           </p>
@@ -191,10 +191,31 @@
           </form>
         </div>
       </div>
+    </div>
 
-      <p id="copyright" class="text-center m-0">
-        &copy; 2020 Spark West Network. All rights reserved
-      </p>
+    <div id="bottom">
+      <div class="container py-2">
+        <div class="row">
+          <div class="col d-flex align-items-center">
+            <p id="copyright" class="m-0 text-muted">
+              &copy; 2020
+              <span class="d-none d-sm-inline">Spark West Network.</span
+              ><span class="d-inline d-sm-none">SWN</span>
+            </p>
+          </div>
+          <div class="col-auto d-flex align-items-center">
+            <button class="btn btn-dark rounded-pill px-3" @click="nextTheme">
+              <span v-if="$colorMode.preference === 'light'">
+                <i class="fas fa-sun"></i> Light</span
+              >
+              <span v-else-if="$colorMode.preference === 'dark'">
+                <i class="fas fa-moon"></i> Dark</span
+              >
+              <span v-else> <i class="fas fa-desktop"></i> System</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -249,6 +270,16 @@ export default {
         this.success = false
         this.fail = true
       }
+    },
+
+    nextTheme() {
+      if (this.$colorMode.preference === 'light')
+        this.$colorMode.preference = 'dark'
+      else if (this.$colorMode.preference === 'dark')
+        this.$colorMode.preference = 'system'
+      else if (this.$colorMode.preference === 'system')
+        this.$colorMode.preference = 'light'
+      else this.$colorMode.preference = 'system'
     },
   },
 }
