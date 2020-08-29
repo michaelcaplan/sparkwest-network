@@ -207,6 +207,7 @@ export default {
         },
       },
     ],
+    'cookie-universal-nuxt',
   ],
   /*
    ** Server Middleware
@@ -241,7 +242,6 @@ export default {
     },
     workbox: {
       importScripts: [
-        // ...
         '/firebase-auth-sw.js',
       ],
       // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
