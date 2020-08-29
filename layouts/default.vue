@@ -10,15 +10,19 @@
     </div>
 
     <Footer />
+
+    <welcome-popup />
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar'
-import Footer from '~/components/Footer'
+import Footer from '@/components/Footer'
+
+import WelcomePopup from '@/components/WelcomePopup.vue'
 
 export default {
-  components: { Navbar, Footer },
+  components: { Navbar, Footer, WelcomePopup },
 
   watch: {
     $route() {
