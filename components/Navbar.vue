@@ -34,10 +34,11 @@
               </nuxt-link>
             </div>
 
-            <div class="col-auto d-flex d-lg-none pr-0">
+            <div class="col-auto d-flex d-lg-none align-items-center pr-0">
               <button
                 id="menu-btn"
                 class="btn"
+                :disabled="loading"
                 type="button"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
