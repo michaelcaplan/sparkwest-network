@@ -87,8 +87,8 @@
               </ul>
             </div>
 
-            <div class="col-auto d-none d-lg-flex pl-0">
-              <ul class="navbar-nav" v-show="!user">
+            <div class="col-auto d-none d-lg-flex align-items-center pl-0">
+              <ul class="navbar-nav" v-show="!user && !loading">
                 <li class="nav-item d-flex align-items-center mr-2">
                   <nuxt-link
                     :to="{ name: 'login' }"
@@ -106,7 +106,7 @@
                 </li>
               </ul>
 
-              <ul class="navbar-nav" v-show="user">
+              <ul class="navbar-nav" v-show="user && !loading">
                 <li class="nav-item dropdown d-flex align-items-center">
                   <button
                     class="btn btn-dark dropdown-toggle rounded-pill py-1 px-3"
@@ -161,6 +161,14 @@
                   </div>
                 </li>
               </ul>
+
+              <div
+                v-show="loading"
+                class="spinner-border spinner-border-sm text-light"
+                role="status"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
             </div>
           </div>
         </div>
@@ -283,6 +291,7 @@ export default {
   data() {
     return {
       collapseOpen: false,
+      loading: true,
     }
   },
 
@@ -314,6 +323,10 @@ export default {
       await this.logout()
       this.$router.push('/')
     },
+  },
+
+  mounted() {
+    this.loading = false
   },
 }
 </script>
