@@ -28,6 +28,24 @@ MAILCHIMP_KEY=<mailchimp api key>
 
 Replace text surronded by `<>` along with the brackets with its corrosponding information
 
+---
+
+Navigate to `nuxt.config.json` and set `pwa.workbox.dev` to `true`
+
+_Remember to set `pwa.workbox.dev` to false before pushing to production_
+
+```javascript
+pwa: {
+    // ...
+    workbox: {
+        // ...
+        dev: true,
+    },
+}
+```
+
+Then run the following commands:
+
 ```bash
 # install dependencies
 $ yarn install
@@ -45,6 +63,7 @@ $ yarn generate
 
 For detailed explanation on how things work, check out the [Nuxt.js docs](https://nuxtjs.org) and the [Firebase docs](https://firebase.google.com/docs)
 
+---
 
 ## Firebase Functions Setup
 
