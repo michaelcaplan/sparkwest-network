@@ -101,18 +101,33 @@ export default {
   },
 
   watch: {
-    $route() {
+    $route(to) {
       this.show = false
+      if (to.name === 'index') this.checkPopup()
     },
   },
 
-  mounted() {
-    if (!this.$fireAuth.currentUser) {
-      if (
-        this.$cookies.get('first-visit') &&
-        !this.$cookies.get('first-visit').value
-      ) {
-        this.show = false
+  methods: {
+    checkPopup() {
+      if (!this.$fireAuth.currentUser) {
+        if (
+          this.$cookies.get('first-visit') &&
+          !this.$cookies.get('first-visit').value
+        ) {
+          this.show = false
+        } else {
+          this.$cookies.set(
+            'first-visit',
+            { value: false },
+            {
+              path: '/',
+              maxAge: 315400000,
+              expires: new Date(2030),
+            }
+          )
+
+          this.show = true
+        }
       } else {
         this.$cookies.set(
           'first-visit',
@@ -123,19 +138,13 @@ export default {
             expires: new Date(2030),
           }
         )
-
-        this.show = true
       }
-    } else {
-      this.$cookies.set(
-        'first-visit',
-        { value: false },
-        {
-          path: '/',
-          maxAge: 315400000,
-          expires: new Date(2030),
-        }
-      )
+    },
+  },
+
+  mounted() {
+    if (this.$route.name === 'index') {
+      this.checkPopup()
     }
   },
 }
