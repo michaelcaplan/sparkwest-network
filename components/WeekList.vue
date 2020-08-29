@@ -110,17 +110,17 @@
       </div>
     </div>
 
-    <div v-show="user" class="row mt-3">
+    <div class="row mt-3">
       <div class="col">
         <nuxt-link
-          to="/newEvent"
+          :to="path"
           class="btn btn-success float-right d-none d-md-inline-block"
         >
           New Event <i class="fa fa-plus" aria-hidden="true"></i>
         </nuxt-link>
 
         <nuxt-link
-          to="/newEvent"
+          :to="path"
           class="btn btn-block btn-success d-block d-md-none d-lg-none"
         >
           New Event <i class="fa fa-plus" aria-hidden="true"></i>
@@ -263,6 +263,12 @@ export default {
       const end = this.doubleDigit(this.weekNums.nums[this.date.week].end)
 
       return start + ' - ' + end
+    },
+
+    // Sets new event path
+    path() {
+      if (this.user) return '/newEvent'
+      else return '/signUp'
     },
   },
 
