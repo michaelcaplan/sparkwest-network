@@ -6,7 +6,7 @@ importScripts(
 importScripts(
   'https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js'
 )
-firebase.initializeApp({"apiKey":"AIzaSyCmCQh8_AnAoUynML1DWjlRIkvP-oZgwk8","authDomain":"sparkwest-network.firebaseapp.com","databaseURL":"https:\u002F\u002Fsparkwest-network.firebaseio.com","projectId":"sparkwest-network","storageBucket":"sparkwest-network.appspot.com","messagingSenderId":"683874464495","appId":"1:683874464495:web:30ccab48d6abe3594ea11a","measurementId":"G-5THE0FLY5C"})
+firebase.initializeApp({"apiKey":"AIzaSyCmCQh8_AnAoUynML1DWjlRIkvP-oZgwk8","authDomain":"sparkwest-network.firebaseapp.com","databaseURL":"https:\u002F\u002Fsparkwest-network.firebaseio.com","projectId":"sparkwest-network","storageBucket":"sparkwest-network.appspot.com","messagingSenderId":"683874464495","appId":"1:683874464495:web:6e22d76b1556ed3f4ea11a","measurementId":"G-2DLW2ZFNQ0"})
 
 /**
  * Returns a promise that resolves with an ID token if available.
