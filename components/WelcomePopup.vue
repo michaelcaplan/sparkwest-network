@@ -122,7 +122,7 @@ export default {
             {
               path: '/',
               maxAge: 315400000,
-              expires: new Date(2030),
+              expires: new Date(new Date().getFullYear() + 10),
             }
           )
 
@@ -135,7 +135,7 @@ export default {
           {
             path: '/',
             maxAge: 315400000,
-            expires: new Date(2030),
+            expires: new Date(new Date().getFullYear() + 10),
           }
         )
       }
