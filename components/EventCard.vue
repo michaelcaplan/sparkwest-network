@@ -1,9 +1,11 @@
 <template>
   <nuxt-link
     :to="'/events/' + event.id"
-    class="card bg-dark text-light event-card"
+    class="card text-light event-card"
+    :class="{ 'bg-dark': !small, 'bg-like': small }"
   >
-    <div class="card-body">
+    <!-- Regular Event Card -->
+    <div v-show="!small" class="card-body">
       <div class="row">
         <div
           class="col-auto border-right d-flex align-items-center justify-content-center"
@@ -80,6 +82,31 @@
         >Uploaded: {{ uploadDate }}</small
       >
     </div>
+
+    <!-- Small Event Card -->
+    <div v-show="small" class="card-body p-2">
+      <div class="row">
+        <div class="col">
+          <h5>
+            <span class="badge badge-light"
+              >{{ weekName(dayOfWeek, 1).toUpperCase() }}
+              {{ doubleDigit(event.data.day) }}</span
+            >
+          </h5>
+        </div>
+        <div class="col-auto">
+          <p class="text-light mb-0 animate__animated animate__bounceIn">
+            <i
+              class="fa-heart mr-2"
+              :class="{ fas: likeNum > 0, far: likeNum <= 0 }"
+            ></i
+            >{{ likeNum }}
+          </p>
+        </div>
+      </div>
+
+      <p class="text-truncate text-light mb-0">{{ event.data.title }}</p>
+    </div>
   </nuxt-link>
 </template>
 
@@ -87,7 +114,7 @@
 export default {
   name: 'EventCard',
 
-  props: ['event', 'weekly'],
+  props: ['event', 'weekly', 'small'],
 
   computed: {
     uploadDate() {
@@ -181,6 +208,14 @@ export default {
 
 .card-body {
   position: relative;
+}
+
+.bg-like {
+  background-color: var(--brand-primary) !important;
+}
+
+a.bg-like:hover {
+  background-color: var(--brand-primary-hover) !important;
 }
 
 .badge-like {
