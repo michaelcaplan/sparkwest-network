@@ -213,6 +213,10 @@ export default {
    ** Server Middleware
    */
   serverMiddleware: [{ path: '/api', handler: '@/api/index.js' }],
+  axios: {
+    baseURL: '/',
+    browserBaseURL: '/',
+  },
   /*
    ** PWA settings
    */
