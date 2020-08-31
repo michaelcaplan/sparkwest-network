@@ -212,7 +212,7 @@ export default {
   /*
    ** Server Middleware
    */
-  serverMiddleware: [{ path: '/api', handler: '~/api/index.js' }],
+  serverMiddleware: [{ path: '/api', handler: '@/api/index.js' }],
   /*
    ** PWA settings
    */
@@ -241,8 +241,29 @@ export default {
       favicon: false,
     },
     workbox: {
-      importScripts: [
-        '/firebase-auth-sw.js',
+      // Firebase Service Worker
+      importScripts: ['/firebase-auth-sw.js'],
+
+      // External resources to cache at runtime
+      runtimeCaching: [
+        {
+          urlPattern: 'https://fonts.googleapis.com/.*',
+          handler: 'cacheFirst',
+          method: 'GET',
+          strategyOptions: { cacheableResponse: { statuses: [0, 200] } },
+        },
+        {
+          urlPattern: 'https://stackpath.bootstrapcdn.com/*',
+          handler: 'cacheFirst',
+          method: 'GET',
+          strategyOptions: { cacheableResponse: { statuses: [0, 200] } },
+        },
+        {
+          urlPattern: 'https://kit.fontawesome.com/*',
+          handler: 'cacheFirst',
+          method: 'GET',
+          strategyOptions: { cacheableResponse: { statuses: [0, 200] } },
+        },
       ],
       // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
       // only set this true for testing and remember to always clear your browser cache in development
