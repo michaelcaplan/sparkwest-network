@@ -105,7 +105,6 @@ export const actions = {
 
   async getProfile({ commit, state, dispatch }, uid) {
     try {
-      console.log('Getting profile')
       const doc = await this.$fireStore.collection('profiles').doc(uid).get()
 
       if (doc.exists) {
@@ -122,7 +121,6 @@ export const actions = {
         .collection('profiles')
         .doc(state.user.uid || state.user.user_id)
 
-      console.log(info)
       await docRef.update(info)
 
       const user = this.$fireAuth.currentUser
@@ -151,7 +149,6 @@ export const actions = {
     try {
       const folder = state.user.uid || state.user.user_id
       const path = 'profiles/' + folder + '/avatar.png'
-      console.log(path)
 
       const storageRef = this.$fireStorage.ref().child(path)
       const docRef = this.$fireStore.collection('profiles').doc(folder)

@@ -71,8 +71,11 @@
     </div>
 
     <div class="row">
-      <div class="col-12 col-lg-4 mb-3 mb-lg-0 d-none">
-        <div class="card mb-3">
+      <div
+        class="col-12 mb-3 mb-lg-0"
+        :class="{ 'col-lg-4': showFeatured, 'col-lg-auto': !showFeatured }"
+      >
+        <div class="card mb-3 d-none">
           <div class="card-body">
             <h3>
               News
@@ -88,21 +91,8 @@
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-body">
-            <h3>
-              Featured Events
-              <i
-                class="fas fa-bullhorn text-success float-right"
-                aria-hidden="true"
-              ></i>
-            </h3>
-
-            <hr />
-
-            <p class="text-muted mb-0">Nothing new at the moment</p>
-          </div>
-        </div>
+        <!-- Featured events -->
+        <featured-events />
       </div>
 
       <div class="col">
@@ -170,6 +160,7 @@
 import { mapGetters } from 'vuex'
 
 import WeekList from '@/components/WeekList.vue'
+import FeaturedEvents from '@/components/FeaturedEvents.vue'
 
 export default {
   name: 'Home',
@@ -191,17 +182,19 @@ export default {
 
   components: {
     WeekList,
+    FeaturedEvents,
   },
 
+  // Get month events on initial load
   async asyncData({ store, params }) {
     try {
       if (store.state.events.events.length === 0) {
         const date = new Date()
         await store.dispatch('events/getMonthEvents', {
-          month: date.getMonth(),
-          year: date.getFullYear(),
+          date: { month: date.getMonth(), year: date.getFullYear() },
         })
-        console.log('Got months events')
+
+        store.dispatch('events/getTopEvents')
       }
     } catch (e) {
       console.error(e)
@@ -211,6 +204,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'user/user',
+      showFeatured: 'showFeatured',
     }),
   },
 }

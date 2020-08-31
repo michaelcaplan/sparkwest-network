@@ -39,7 +39,6 @@ export default {
 
   methods: {
     setColor(color) {
-      console.log('Setting color to: ' + color)
       this.$colorMode.preference = color
     },
   },

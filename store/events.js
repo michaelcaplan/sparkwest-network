@@ -4,6 +4,9 @@ export const state = () => ({
   monthEvents: [],
   userEvents: [],
   likedEvents: [],
+  topEvents: [],
+  profileEvents: [],
+  profileLikes: [],
 })
 
 export const getters = {
@@ -19,10 +22,23 @@ export const getters = {
   likedEvents(state) {
     return state.likedEvents
   },
+  topEvents(state) {
+    return state.topEvents
+  },
+  profileEvents(state) {
+    return state.profileEvents
+  },
+  profileLikes(state) {
+    return state.profileLikes
+  },
 }
 
+// Gets all of a users posted events
 export const actions = {
-  async getUserEvents({ commit }, uid) {
+  async getUserEvents(
+    { commit, dispatch },
+    { uid, isUser = true, getImages = false }
+  ) {
     try {
       const query = this.$fireStore
         .collection('events')
@@ -31,33 +47,30 @@ export const actions = {
 
       const snap = await query.get()
 
-      const docs = snap.docs.map(async (doc) => {
-        if (doc.data().imageRef) {
-          const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-          const url = await imageRef.getDownloadURL()
-
-          return {
-            id: doc.id,
-            data: doc.data(),
-            image: url,
-          }
-        } else {
+      if (getImages) {
+        dispatch('getEventImages', { snap, isUser })
+      } else {
+        const events = snap.docs.map((doc) => {
           return {
             id: doc.id,
             data: doc.data(),
             image: false,
           }
-        }
-      })
+        })
 
-      const events = await Promise.all(docs)
-      commit('SET_USER_EVENTS', events)
+        if (isUser) commit('SET_USER_EVENTS', events)
+        else commit('SET_PROFILE_EVENTS', events)
+      }
     } catch (e) {
       console.error(e)
     }
   },
 
-  async getLikedEvents({ commit }, uid) {
+  // Get all of a users liked events
+  async getLikedEvents(
+    { commit, dispatch },
+    { uid, isUser = true, getImages = false }
+  ) {
     try {
       const query = this.$fireStore
         .collection('events')
@@ -66,37 +79,27 @@ export const actions = {
 
       const snap = await query.get()
 
-      const docs = snap.docs.map(async (doc) => {
-        if (doc.data().imageRef) {
-          const imageRef = this.$fireStorage.ref().child(doc.data().imageRef)
-          const url = await imageRef.getDownloadURL()
-
-          return {
-            id: doc.id,
-            data: doc.data(),
-            image: url,
-          }
-        } else {
+      if (getImages) {
+        dispatch('getEventImages', { snap, isUser })
+      } else {
+        const events = snap.docs.map((doc) => {
           return {
             id: doc.id,
             data: doc.data(),
             image: false,
           }
-        }
-      })
+        })
 
-      const events = await Promise.all(docs)
-      commit('SET_LIKED_EVENTS', events)
-
-      return events
+        if (isUser) commit('SET_LIKED_EVENTS', events)
+        else commit('SET_PROFILE_LIKED_EVENTS', events)
+      }
     } catch (e) {
       console.error(e)
-
-      return null
     }
   },
 
-  async getMonthEvents({ commit, dispatch }, date, getImages = false) {
+  // Gets all events for a month
+  async getMonthEvents({ commit, dispatch }, { date, getImages = false }) {
     try {
       const docRef = this.$fireStore
         .collection('events')
@@ -107,7 +110,7 @@ export const actions = {
       const snap = await docRef.get()
 
       if (getImages) {
-        dispatch('getEventImages', snap)
+        dispatch('getEventImages', { snap })
       } else {
         const events = snap.docs.map((doc) => {
           return {
@@ -124,7 +127,19 @@ export const actions = {
     }
   },
 
-  async getEventImages({ commit }, snap) {
+  // Gets top events with with most likes of the month
+  getTopEvents({ commit, state }) {
+    const events = state.events.sort((a, b) => {
+      if (a.data.likes.length < b.data.likes.length) return 1
+      if (a.data.likes.length > b.data.likes.length) return -1
+      return 0
+    })
+
+    commit('SET_TOP_EVENTS', events.slice(0, 3))
+  },
+
+  // Takes firebase query snapshot and returns array of event objects with image urls
+  async getEventImages({ commit }, { snap, isUser = true }) {
     try {
       const docs = snap.docs.map(async (doc) => {
         if (doc.data().imageRef) {
@@ -146,13 +161,15 @@ export const actions = {
       })
 
       const events = await Promise.all(docs)
-      commit('SET_USER_EVENTS', events)
+
+      if (isUser) commit('SET_USER_EVENTS', events)
+      else commit('SET_PROFILE_EVENTS', events)
     } catch (e) {
       console.error(e)
     }
   },
 
-  // Formats fetched events into arrays of weeks
+  // Formats fetched events into arrays of weeks [LEGACY]
   formatMonth({ commit }, { events, date }) {
     // Create array of week start and end dates
     const weekNums = []
@@ -212,5 +229,14 @@ export const mutations = {
   },
   SET_LIKED_EVENTS(state, data) {
     state.likedEvents = data
+  },
+  SET_TOP_EVENTS(state, data) {
+    state.topEvents = data
+  },
+  SET_PROFILE_EVENTS(state, data) {
+    state.profileEvents = data
+  },
+  SET_PROFILE_LIKED_EVENTS(state, data) {
+    state.profileLikes = data
   },
 }

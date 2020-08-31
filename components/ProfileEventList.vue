@@ -2,7 +2,7 @@
   <div id="profile">
     <h5>{{ name }} 's Events:</h5>
 
-    <div v-if="loading" class="row mb-3">
+    <div v-show="loading" class="row mb-3">
       <div class="col">
         <event-card-placeholder class="mb-2" />
         <event-card-placeholder class="mb-2" />
@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div v-if="events.length == 0 && !loading" class="card mb-3">
+    <div v-show="events.length == 0 && !loading" class="card mb-3">
       <div class="card-body">
         <h5 class="text-muted m-0">
           {{ name }} doesn't have any events yet ...
@@ -18,18 +18,21 @@
       </div>
     </div>
 
-    <div v-if="events && !loading">
-      <div
-        v-for="(event, index) in pages[this.pageNum]"
-        :key="event.id"
-        class="row"
-        :class="{
-          'mb-2': index < events.length - 1,
-          'mb-3': index === events.length - 1,
-        }"
-      >
-        <div class="col">
-          <event-card :event="event" />
+    <div v-show="events && !loading">
+      <div v-for="(page, pageIndex) in pages" :key="pageIndex" class="page">
+        <div
+          v-for="(event, index) in page"
+          v-show="pageIndex === pageNum"
+          :key="event.id"
+          class="row"
+          :class="{
+            'mb-2': index < events.length - 1,
+            'mb-3': index === events.length - 1,
+          }"
+        >
+          <div class="col">
+            <event-card :event="event" />
+          </div>
         </div>
       </div>
     </div>
@@ -94,7 +97,7 @@ export default {
     EventCardPlaceholder,
   },
 
-  props: ['UID', 'name'],
+  props: ['name'],
 
   data() {
     return {
@@ -105,7 +108,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      events: 'events/userEvents',
+      events: 'events/profileEvents',
     }),
 
     pages() {
@@ -125,17 +128,6 @@ export default {
   },
 
   methods: {
-    async getUserEvents() {
-      try {
-        this.loading = true
-        await this.$store.dispatch('events/getUserEvents', this.UID)
-        this.loading = false
-      } catch (e) {
-        this.loading = false
-        console.error(e)
-      }
-    },
-
     prevPage() {
       if (this.pageNum > 0) this.pageNum -= 1
     },
@@ -146,7 +138,7 @@ export default {
   },
 
   mounted() {
-    this.getUserEvents()
+    this.loading = false
   },
 }
 </script>

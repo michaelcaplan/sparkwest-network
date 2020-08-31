@@ -6,7 +6,7 @@
           Your Events:
         </h3>
 
-        <div v-if="loading" class="row mb-3">
+        <div v-show="loading" class="row mb-3">
           <div class="col">
             <event-card-placeholder class="mb-2" />
             <event-card-placeholder class="mb-2" />
@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <div v-if="events.length == 0 && !loading" class="card mb-3">
+        <div v-show="events.length == 0 && !loading" class="card mb-3">
           <div class="card-body">
             <h5 class="text-muted m-0">
               You haven't created any events yet ...
@@ -22,18 +22,21 @@
           </div>
         </div>
 
-        <div v-if="events && !loading">
-          <div
-            v-for="(event, index) in pages[this.pageNum]"
-            :key="event.id"
-            class="row"
-            :class="{
-              'mb-2': index < events.length - 1,
-              'mb-3': index === events.length - 1,
-            }"
-          >
-            <div class="col">
-              <event-card :event="event" />
+        <div v-show="events && !loading">
+          <div v-for="(page, pageIndex) in pages" :key="pageIndex" class="page">
+            <div
+              v-for="(event, index) in page"
+              v-show="pageIndex === pageNum"
+              :key="event.id"
+              class="row"
+              :class="{
+                'mb-2': index < events.length - 1,
+                'mb-3': index === events.length - 1,
+              }"
+            >
+              <div class="col">
+                <event-card :event="event" />
+              </div>
             </div>
           </div>
         </div>
@@ -117,6 +120,24 @@ export default {
     EventCardPlaceholder,
   },
 
+  async asyncData({ store, res, $fireAuth }) {
+    try {
+      // Get user
+      let user
+      if (process.server) {
+        if (res && res.locals && res.locals.user) user = res.locals.user
+      } else user = $fireAuth.currentUser
+
+      if (!user) user = store.state.user.user
+
+      if (store.state.events.userEvents.length === 0 && user) {
+        await store.dispatch('events/getUserEvents', { uid: user.uid })
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+
   data() {
     return {
       loading: true,
@@ -147,20 +168,6 @@ export default {
   },
 
   methods: {
-    async getUserEvents() {
-      try {
-        this.loading = true
-        await this.$store.dispatch(
-          'events/getUserEvents',
-          this.user.uid || this.user.user_id
-        )
-        this.loading = false
-      } catch (e) {
-        this.loading = false
-        console.error(e)
-      }
-    },
-
     prevPage() {
       if (this.pageNum > 0) this.pageNum -= 1
     },
@@ -170,8 +177,8 @@ export default {
     },
   },
 
-  beforeMount() {
-    this.getUserEvents()
+  mounted() {
+    this.loading = false
   },
 }
 </script>

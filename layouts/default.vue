@@ -11,6 +11,8 @@
 
     <Footer />
 
+    <connection-alert />
+
     <welcome-popup />
   </div>
 </template>
@@ -19,10 +21,12 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
+import ConnectionAlert from '@/components/ConnectionAlert.vue'
+
 import WelcomePopup from '@/components/WelcomePopup.vue'
 
 export default {
-  components: { Navbar, Footer, WelcomePopup },
+  components: { Navbar, Footer, ConnectionAlert, WelcomePopup },
 
   watch: {
     $route() {

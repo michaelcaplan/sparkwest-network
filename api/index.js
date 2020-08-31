@@ -36,10 +36,6 @@ app.post('/subscribe', async (req, res) => {
         },
       })
 
-      console.log(
-        `Successfully added contact as an audience member. The contact's id is ${response.id}.`
-      )
-
       res.json(response.result)
     } else {
       res.status(400).json({ response: 'Invalid post parameters!' })

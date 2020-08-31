@@ -63,50 +63,51 @@
               </h5>
             </div>
             <div class="card-body">
-              <p v-if="user" class="text-center">
-                <span
-                  class="badge badge-pill badge-like-inline mr-1 animate__animated animate__bounceIn"
+              <div v-show="user">
+                <p class="text-center">
+                  <span
+                    class="badge badge-pill badge-like-inline mr-1 animate__animated animate__bounceIn"
+                  >
+                    <i
+                      class="fa-heart mr-2"
+                      :class="{ fas: likeNum > 0, far: likeNum <= 0 }"
+                    ></i
+                    >{{ likeNum }}
+                  </span>
+                  <span v-if="likeNum == 1">person has</span
+                  ><span v-else>people have</span> liked this event
+                </p>
+
+                <button
+                  class="btn btn-block btn-lg btn-like d-flex align-items-center justify-content-center"
+                  :class="{
+                    liked: liked,
+                    'btn-light': !liked,
+                    'btn-danger': liked,
+                  }"
+                  :disabled="liking || !user"
+                  @click.prevent="toggleLike"
                 >
-                  <i
-                    class="fa-heart mr-2"
-                    :class="{ fas: likeNum > 0, far: likeNum <= 0 }"
-                  ></i
-                  >{{ likeNum }}
-                </span>
-                <span v-if="likeNum == 1">person has</span
-                ><span v-else>people have</span> liked this event
-              </p>
+                  <span v-if="!liked && !liking"
+                    ><i
+                      class="far fa-lg fa-heart animate__animated animate__fadeIn"
+                    ></i
+                  ></span>
+                  <span v-if="liked && !liking"
+                    ><i
+                      class="fas fa-lg fa-heart animate__animated animate__bounceIn"
+                    ></i>
+                  </span>
+                  <span
+                    v-if="liking"
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              </div>
 
-              <button
-                v-if="user"
-                class="btn btn-block btn-lg btn-like d-flex align-items-center justify-content-center"
-                :class="{
-                  liked: liked,
-                  'btn-light': !liked,
-                  'btn-danger': liked,
-                }"
-                :disabled="liking || !user"
-                @click.prevent="toggleLike"
-              >
-                <span v-if="!liked && !liking"
-                  ><i
-                    class="far fa-lg fa-heart animate__animated animate__fadeIn"
-                  ></i
-                ></span>
-                <span v-if="liked && !liking"
-                  ><i
-                    class="fas fa-lg fa-heart animate__animated animate__bounceIn"
-                  ></i>
-                </span>
-                <span
-                  v-if="liking"
-                  class="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-              </button>
-
-              <div class="card" v-else>
+              <div class="card" v-show="!user">
                 <div class="card-body">
                   <p class="text-center">
                     <span

@@ -254,18 +254,17 @@ export default {
           first: this.first,
           last: this.last || '',
         }
-        const response = await this.$axios.$post('/api/subscribe', {
+        await this.$axios.$post('/api/subscribe', {
           email: data.email.trim(),
           first: data.first.trim(),
           last: data.last.trim(),
         })
-        console.log(response)
 
         this.subscribing = false
         this.success = true
         this.fail = false
       } catch (e) {
-        console.log(e)
+        console.error(e)
         this.subscribing = false
         this.success = false
         this.fail = true

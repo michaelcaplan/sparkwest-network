@@ -314,11 +314,7 @@ export default {
       this.collapseOpen = !this.collapseOpen
     },
     closeCollapse() {
-      console.log('scroll')
       this.collapseOpen = false
-    },
-    handleScroll() {
-      console.log('scroll')
     },
     async signout() {
       await this.logout()

@@ -454,25 +454,12 @@ export default {
 
   async asyncData({
     params,
-    req,
-    res,
     redirect,
     error,
     $fireStore,
     $fireStorage,
     $fireAuth,
   }) {
-    let user = null
-
-    // Get current user
-    if (process.server) {
-      console.log(res)
-    } else if ($fireAuth.currentUser) {
-      user = $fireAuth.currentUser
-    } else {
-      redirect('/events/' + params.id)
-    }
-
     try {
       // Get event document
       const docID = params.id
@@ -482,8 +469,6 @@ export default {
       let event = null
 
       if (doc.exists) {
-        // Make sure current user is author
-
         event = {
           id: docID,
           data: doc.data(),
@@ -493,7 +478,7 @@ export default {
         redirect('/eventNotFound')
       }
 
-      return { event, user }
+      return { event }
     } catch (e) {
       console.error(e)
     }

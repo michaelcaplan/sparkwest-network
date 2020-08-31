@@ -8,7 +8,7 @@
               <div class="row d-flex justify-content-center">
                 <div class="col-auto">
                   <div
-                    v-if="profile.avatar"
+                    v-if="profile && profile.avatar"
                     class="avatar rounded border"
                     :style="'background-image: url(\'' + profile.avatar + '\')'"
                   ></div>
@@ -254,8 +254,6 @@ import SocialBtns from '@/components/SocialBtns.vue'
 import ProfileEventList from '@/components/ProfileEventList.vue'
 import ProfileLikesList from '@/components/ProfileLikesList.vue'
 
-import EventCardPlaceholder from '@/components/EventCardPlaceholder'
-
 export default {
   name: 'profile',
 
@@ -281,7 +279,6 @@ export default {
     SocialBtns,
     ProfileEventList,
     ProfileLikesList,
-    EventCardPlaceholder,
   },
 
   async asyncData({
@@ -297,7 +294,7 @@ export default {
   }) {
     let user = null
     if (process.server) {
-      user = store.state.user.user
+      if (res && res.locals && res.locals.user) user = res.locals.user
     } else {
       user = $fireAuth.currentUser
     }
@@ -309,15 +306,22 @@ export default {
       let profile = null
 
       if (doc.exists) {
-        if (user && user.uid === params.uid) {
-          redirect('/profile')
-        }
+        if (user && user.uid === params.uid) redirect('/profile')
 
         profile = {
           uid: params.uid,
           data: doc.data(),
           avatar: false,
         }
+
+        await store.dispatch('events/getUserEvents', {
+          uid: params.uid,
+          isUser: false,
+        })
+        await store.dispatch('events/getLikedEvents', {
+          uid: params.uid,
+          isUser: false,
+        })
       } else {
         redirect('/profileNotFound')
       }
@@ -330,8 +334,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      userEvents: 'events/userEvents',
-      likedEvents: 'events/likedEvents',
+      userEvents: 'events/profileEvents',
+      likedEvents: 'events/profileLikes',
     }),
 
     UID() {
@@ -403,7 +407,7 @@ export default {
 
       this.loading = false
     } catch (e) {
-      console.log(e)
+      console.errors(e)
       this.loading = false
     }
   },

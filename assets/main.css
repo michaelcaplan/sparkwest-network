@@ -4,6 +4,7 @@
   --bg-secondary: #e9ecef;
   --bg-dark: #343a40;
   --card-bg: #fff;
+  --card-bg-hover: #f8f9fa;
   --nav-bg: #fe3d61;
   --nav-bg-dark: #343a40;
   --nav-btn: #343a40;
@@ -51,6 +52,7 @@
   --bg-secondary: #343a40;
   --bg-dark: #495057;
   --card-bg: #343a40;
+  --card-bg-hover: #495057;
   --nav-bg: #343a40;
   --nav-bg-dark: #495057;
   --nav-btn: #212529;

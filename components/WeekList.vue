@@ -322,7 +322,7 @@ export default {
       ) {
         try {
           this.loading = true
-          await this.getEvents(this.currentDate)
+          await this.getEvents({ date: this.currentDate })
           this.loading = false
         } catch (e) {
           console.error(e)
@@ -367,7 +367,7 @@ export default {
       // Get next months events
       try {
         this.loading = true
-        await this.getEvents(this.date)
+        await this.getEvents({ date: this.date })
         this.loading = false
       } catch (e) {
         console.error(e)
@@ -381,7 +381,7 @@ export default {
         // Get last months events
         try {
           this.loading = true
-          await this.getEvents(this.date)
+          await this.getEvents({ date: this.date })
           this.loading = false
         } catch (e) {
           console.error(e)
@@ -397,7 +397,7 @@ export default {
           // Get last months events
           try {
             this.loading = true
-            await this.getEvents(this.date)
+            await this.getEvents({ date: this.date })
             this.loading = false
           } catch (e) {
             console.error(e)
@@ -430,9 +430,6 @@ export default {
       return dayOfMonth >= week.start && dayOfMonth <= week.end
     })
     this.date.week = weekIndex
-
-    // Get months events
-    // await this.getEvents(this.date)
     this.loading = false
   },
 }

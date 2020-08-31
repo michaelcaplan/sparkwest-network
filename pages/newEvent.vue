@@ -484,9 +484,6 @@ export default {
         endTime.m = parseInt(this.endTime.mm)
       }
 
-      console.log(startTime)
-      console.log(endTime)
-
       if (startTime.h > endTime.h) {
         this.error = 'Start time must come before end time'
         return false

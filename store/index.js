@@ -1,6 +1,14 @@
 export const strict = false
 
-export const state = () => ({})
+export const state = () => ({
+  showFeatured: false,
+})
+
+export const getters = {
+  showFeatured(state) {
+    return state.showFeatured
+  },
+}
 
 export const actions = {
   async nuxtServerInit({ dispatch }, { res }) {
@@ -12,5 +20,11 @@ export const actions = {
         token,
       })
     }
+  },
+}
+
+export const mutations = {
+  SET_SHOW_FEATURED(state, value) {
+    state.showFeatured = value
   },
 }
