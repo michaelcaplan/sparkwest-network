@@ -497,7 +497,7 @@ export default {
       date: new Date(),
 
       timeFormat: 1,
-      timeFormats: ['k:mm', 'h:mm a'],
+      timeFormats: ['H:mm', 'h:mm a'],
       timePlaceholders: ['9:00', '17:00', '9:00 am', '5:00 pm'],
       startTime: {},
       endTime: {},
@@ -542,9 +542,51 @@ export default {
     },
 
     setFormat() {
-      if (this.timeFormat === 1) this.timeFormat = 0
-      else this.timeFormat = 1
+      if (this.timeFormat === 1) {
+        let newStart
+        let newEnd
+
+        if (this.startTime.h && this.startTime.mm && this.startTime.a) {
+          newStart = this.convertTime(
+            this.startTime.h,
+            this.startTime.mm,
+            this.startTime.a
+          )
+
+          console.log(newStart)
+        }
+
+        if (this.endTime.h && this.endTime.mm && this.endTime.a) {
+          newEnd = this.convertTime(
+            this.endTime.h,
+            this.endTime.mm,
+            this.endTime.a
+          )
+        }
+
+        this.timeFormat = 0
+
+        if (newStart) this.startTime = newStart
+        if (newEnd) this.endTime = newEnd
+      } else {
+        let newStart
+        let newEnd
+
+        if (this.startTime.H && this.startTime.mm) {
+          newStart = this.convertTime(this.startTime.H, this.startTime.mm)
+        }
+
+        if (this.endTime.H && this.endTime.mm) {
+          newEnd = this.convertTime(this.endTime.H, this.endTime.mm)
+        }
+
+        this.timeFormat = 1
+
+        if (newStart) this.startTime = newStart
+        if (newEnd) this.endTime = newEnd
+      }
     },
+
     selectFile(event) {
       if (event.target.files) {
         const file = event.target.files[0]
@@ -569,30 +611,24 @@ export default {
       if (!this.checkForm()) return
       this.uploading = true
 
-      const startTime = {
-        h: null,
-        m: null,
-      }
-      const endTime = {
-        h: null,
-        m: null,
-      }
+      // Format start end times to 24 hour from 12 or 24 hour
+      let startTime
+      let endTime
 
-      //   Format start end times to 24 hour from 12 or 24 hour
       if (this.timeFormat === 1) {
-        startTime.h = parseInt(this.startTime.h)
-        startTime.m = parseInt(this.startTime.mm)
-        if (this.startTime.a === 'pm') startTime.h += 12
-
-        endTime.h = parseInt(this.endTime.h)
-        endTime.m = parseInt(this.endTime.mm)
-        if (this.endTime.a === 'pm') endTime.h += 12
+        startTime = this.convertTime(
+          this.startTime.h,
+          this.startTime.mm,
+          this.startTime.a
+        )
+        endTime = this.convertTime(
+          this.endTime.h,
+          this.endTime.mm,
+          this.endTime.a
+        )
       } else {
-        startTime.h = parseInt(this.startTime.k)
-        startTime.m = parseInt(this.startTime.mm)
-
-        endTime.h = parseInt(this.endTime.k)
-        endTime.m = parseInt(this.endTime.mm)
+        startTime = Object.assign({}, this.startTime)
+        endTime = Object.assign({}, this.endTime)
       }
 
       const data = {
@@ -606,11 +642,11 @@ export default {
 
         timestamp: this.date.getTime(),
 
-        startTimeHour: startTime.h,
-        startTimeMinute: startTime.m,
+        startTimeHour: parseInt(startTime.H),
+        startTimeMinute: parseInt(startTime.mm),
 
-        endTimeHour: endTime.h,
-        endTimeMinute: endTime.m,
+        endTimeHour: parseInt(endTime.H),
+        endTimeMinute: parseInt(endTime.mm),
 
         location: this.location,
       }
@@ -688,37 +724,31 @@ export default {
         }
       }
 
-      // Check that start time is before end time
-      const startTime = {
-        h: null,
-        m: null,
-      }
-      const endTime = {
-        h: null,
-        m: null,
-      }
-
       // Format start end times to 24 hour from 12 or 24 hour
+      let startTime
+      let endTime
+
       if (this.timeFormat === 1) {
-        startTime.h = parseInt(this.startTime.h)
-        startTime.m = parseInt(this.startTime.mm)
-        if (this.startTime.a === 'pm') startTime.h += 12
-
-        endTime.h = parseInt(this.endTime.h)
-        endTime.m = parseInt(this.endTime.mm)
-        if (this.endTime.a === 'pm') endTime.h += 12
+        startTime = this.convertTime(
+          this.startTime.h,
+          this.startTime.mm,
+          this.startTime.a
+        )
+        endTime = this.convertTime(
+          this.endTime.h,
+          this.endTime.mm,
+          this.endTime.a
+        )
       } else {
-        startTime.h = parseInt(this.startTime.k)
-        startTime.m = parseInt(this.startTime.mm)
-
-        endTime.h = parseInt(this.endTime.k)
-        endTime.m = parseInt(this.endTime.mm)
+        startTime = Object.assign({}, this.startTime)
+        endTime = Object.assign({}, this.endTime)
       }
 
-      if (startTime.h > endTime.h) {
+      // Check that start time is before end time
+      if (startTime.H > endTime.H) {
         this.error = 'Start time must come before end time'
         return false
-      } else if (startTime.m > endTime.m && startTime.h === endTime.h) {
+      } else if (startTime.mm > endTime.mm && startTime.H === endTime.H) {
         this.error = 'Start time must come before end time'
         return false
       }
@@ -749,6 +779,22 @@ export default {
         this.checkDelete = false
       }
     },
+
+    // Converts time between 24h and 12h
+    convertTime(h, mm, a = false) {
+      if (a) {
+        let hour = parseInt(h)
+        if (hour === 12) hour = 0
+        if (a === 'pm') hour += 12
+
+        return { H: hour.toString(), mm }
+      } else {
+        const H = parseInt(h) % 12 || 12
+        const ampm = parseInt(h) < 12 || parseInt(h) === 24 ? 'am' : 'pm'
+
+        return { h: H.toString(), mm, a: ampm }
+      }
+    },
   },
 
   created() {
@@ -773,45 +819,68 @@ export default {
           this.event.data.day
         )
 
-        let sH = this.event.data.startTimeHour
-        let sA = 'am'
-        if (sH > 12) {
-          sH -= 12
-          sA = 'pm'
-        }
-        sH = sH.toString()
+        // let sH = this.event.data.startTimeHour
+        // let sA = 'am'
+        // if (sH > 12) {
+        //   sH -= 12
+        //   sA = 'pm'
+        // }
+        // sH = sH.toString()
 
+        // let sM = this.event.data.startTimeMinute
+        // if (sM < 10) {
+        //   sM = '0' + sM
+        // } else {
+        //   sM = sM.toString()
+        // }
+
+        // let eH = this.event.data.endTimeHour
+        // let eA = 'am'
+        // if (eH > 12) {
+        //   eH -= 12
+        //   eA = 'pm'
+        // }
+        // eH = eH.toString()
+
+        // let eM = this.event.data.endTimeMinute
+        // if (eM < 10) {
+        //   eM = '0' + eM
+        // } else {
+        //   eM = eM.toString()
+        // }
+
+        // this.startTime = {
+        //   h: sH,
+        //   mm: sM,
+        //   a: sA,
+        // }
+        // this.endTime = {
+        //   h: eH,
+        //   mm: eM,
+        //   a: eA,
+        // }
+
+        // Format start end times to 24 hour from 12 or 24 hour
         let sM = this.event.data.startTimeMinute
-        if (sM < 10) {
-          sM = '0' + sM
-        } else {
-          sM = sM.toString()
-        }
-
-        let eH = this.event.data.endTimeHour
-        let eA = 'am'
-        if (eH > 12) {
-          eH -= 12
-          eA = 'pm'
-        }
-        eH = eH.toString()
-
         let eM = this.event.data.endTimeMinute
-        if (eM < 10) {
-          eM = '0' + eM
-        } else {
-          eM = eM.toString()
-        }
 
-        this.startTime = {
-          h: sH,
-          mm: sM,
-          a: sA,
-        }
-        this.endTime = {
-          h: eH,
-          mm: eM,
-          a: eA,
+        if (sM < 10) sM = '0' + sM
+        else sM = sM.toString()
+        if (eM < 10) eM = '0' + eM
+        else eM = eM.toString()
+
+        if (this.timeFormat === 1) {
+          this.startTime = this.convertTime(this.event.data.startTimeHour, sM)
+          this.endTime = this.convertTime(this.event.data.endTimeHour, eM)
+        } else {
+          this.startTime = {
+            H: this.event.data.startTimeHour,
+            mm: sM,
+          }
+          this.endTime = {
+            H: this.event.data.endTimeHour,
+            mm: eM,
+          }
         }
 
         this.location = this.event.data.location

@@ -171,11 +171,14 @@
                       Starts:
                     </h5>
                     <h3>
-                      <span class="badge badge-dark">{{
-                        event.data.startTimeHour +
-                        ':' +
-                        doubleDigit(event.data.startTimeMinute)
-                      }}</span>
+                      <span class="badge badge-dark"
+                        >{{
+                          (startTime.h || startTime.H) +
+                          ':' +
+                          doubleDigit(startTime.mm)
+                        }}
+                        <span v-if="startTime.a">{{ startTime.a }}</span></span
+                      >
                     </h3>
                   </div>
                 </div>
@@ -186,11 +189,14 @@
                       Ends:
                     </h5>
                     <h3>
-                      <span class="badge badge-dark">{{
-                        event.data.endTimeHour +
-                        ':' +
-                        doubleDigit(event.data.endTimeMinute)
-                      }}</span>
+                      <span class="badge badge-dark"
+                        >{{
+                          (endTime.h || endTime.H) +
+                          ':' +
+                          doubleDigit(endTime.mm)
+                        }}
+                        <span v-if="endTime.a">{{ endTime.a }}</span></span
+                      >
                     </h3>
                   </div>
                 </div>
@@ -416,6 +422,40 @@ export default {
         return 0
       }
     },
+
+    startTime() {
+      if (this.event) {
+        if (this.timeFormat === 0)
+          return {
+            H: this.event.data.startTimeHour,
+            mm: this.event.data.startTimeMinute,
+          }
+        else
+          return this.convertTime(
+            this.event.data.startTimeHour,
+            this.event.data.startTimeMinute
+          )
+      }
+
+      return false
+    },
+
+    endTime() {
+      if (this.event) {
+        if (this.timeFormat === 0)
+          return {
+            H: this.event.data.endTimeHour,
+            mm: this.event.data.endTimeMinute,
+          }
+        else
+          return this.convertTime(
+            this.event.data.endTimeHour,
+            this.event.data.endTimeMinute
+          )
+      }
+
+      return false
+    },
   },
 
   data() {
@@ -423,6 +463,7 @@ export default {
       loading: true,
       liked: false,
       liking: false,
+      timeFormat: 1,
     }
   },
 
@@ -538,6 +579,22 @@ export default {
             this.liking = false
           }
         }
+      }
+    },
+
+    // Converts time between 24h and 12h
+    convertTime(h, mm, a = false) {
+      if (a) {
+        let hour = parseInt(h)
+        if (hour === 12) hour = 0
+        if (a === 'pm') hour += 12
+
+        return { H: hour.toString(), mm }
+      } else {
+        const H = parseInt(h) % 12 || 12
+        const ampm = parseInt(h) < 12 || parseInt(h) === 24 ? 'am' : 'pm'
+
+        return { h: H.toString(), mm, a: ampm }
       }
     },
   },
