@@ -159,6 +159,10 @@ export default {
     '@nuxtjs/dotenv',
     '@nuxtjs/color-mode',
   ],
+  colorMode: {
+    preference: 'light', // default value of $colorMode.preference
+    fallback: 'light', // fallback value if not system preference found
+  },
   /*
    ** Environment variables to be used at runtime
    */

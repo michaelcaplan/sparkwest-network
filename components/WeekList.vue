@@ -1,9 +1,15 @@
 <template>
   <div id="week-list">
+    <div v-if="!date || !date.month" class="row d-flex justify-content-center">
+      <div class="col-3 col-md-2">
+        <div class="loading-lg gradient w-100 rounded"></div>
+      </div>
+    </div>
+
     <div class="row mb-3 d-flex justify-content-center">
       <div class="col-auto">
         <div class="row">
-          <div class="col-auto">
+          <div v-if="date && date.month" class="col-auto">
             <h3 class="mb-0">
               <span class="badge badge-dark d-none d-md-inline-block"
                 >{{ monthName(this.date.month).toUpperCase() }}
@@ -148,8 +154,8 @@ export default {
     return {
       date: {
         week: 0,
-        month: 7,
-        year: 2020,
+        month: false,
+        year: false,
       },
       loading: true,
     }
@@ -159,6 +165,7 @@ export default {
     ...mapGetters({
       events: 'events/events',
       user: 'user/user',
+      queryDate: 'events/queryDate',
     }),
 
     // Returns current year month and day
@@ -431,6 +438,11 @@ export default {
     })
     this.date.week = weekIndex
     this.loading = false
+
+    if (this.queryDate && this.queryDate.month && this.queryDate.year) {
+      this.date.year = this.queryDate.year
+      this.date.month = this.queryDate.month
+    }
   },
 }
 </script>

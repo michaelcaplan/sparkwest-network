@@ -1,26 +1,41 @@
 <template>
   <div class="row">
-    <div
-      v-for="(color, index) in colors"
-      :key="index"
-      class="col-12 col-md"
-      :class="{
-        'px-3 px-md-0': index > 0 && index < colors.length - 1,
-        'pb-3': index < colors.length - 1,
-      }"
-    >
+    <div class="col-12 col-sm">
+      <p class="text-center">Light</p>
+
       <a
-        class="btn btn-secondary btn-block py-3"
-        :class="{ active: $colorMode.preference === color }"
+        :class="{ current: $colorMode.preference === 'light' }"
+        class="theme-btn theme-light"
         href="#"
-        @click.prevent="setColor(color)"
+        @click="setColor('light')"
       >
-        <i class="fa-lg mb-2" :class="icons[index]"></i>
-        <p class="text-center mb-0">
-          <b>
-            {{ color }}
-          </b>
-        </p>
+        <img src="../assets/lightButton.svg" alt="Light" />
+      </a>
+    </div>
+
+    <div class="col-12 col-sm my-3 my-sm-0">
+      <p class="text-center">Dark</p>
+
+      <a
+        :class="{ current: $colorMode.preference === 'dark' }"
+        class="theme-btn theme-dark"
+        href="#"
+        @click="setColor('dark')"
+      >
+        <img src="../assets/darkButton.svg" alt="Dark" />
+      </a>
+    </div>
+
+    <div class="col-12 col-sm">
+      <p class="text-center">System</p>
+
+      <a
+        :class="{ current: $colorMode.preference === 'system' }"
+        class="theme-btn theme-system"
+        href="#"
+        @click="setColor('system')"
+      >
+        <img src="../assets/systemButton.svg" alt="System" />
       </a>
     </div>
   </div>
@@ -30,13 +45,6 @@
 export default {
   name: 'ThemePicker',
 
-  data() {
-    return {
-      colors: ['light', 'dark', 'system'],
-      icons: ['fas fa-sun', 'fas fa-moon', 'fas fa-desktop'],
-    }
-  },
-
   methods: {
     setColor(color) {
       this.$colorMode.preference = color
@@ -44,3 +52,33 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.theme-btn {
+  width: 100%;
+}
+
+.theme-btn:hover {
+  cursor: pointer;
+}
+
+.theme-btn img {
+  width: 100%;
+  border-radius: 0.75rem;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-width: 3px;
+  border-style: solid;
+}
+
+.theme-btn:hover img {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.theme-btn.current img {
+  border-color: rgba(90, 156, 254, 0.4);
+}
+
+.theme-btn.current:hover img {
+  border-color: rgba(90, 156, 254, 0.6);
+}
+</style>

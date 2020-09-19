@@ -416,7 +416,7 @@
         <h5>Theme:</h5>
 
         <div class="row d-flex justify-content-center">
-          <div class="col-12 col-md-8">
+          <div class="col-8 col-sm-12 col-lg-8">
             <theme-picker />
           </div>
         </div>
