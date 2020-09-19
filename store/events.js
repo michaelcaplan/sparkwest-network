@@ -7,6 +7,7 @@ export const state = () => ({
   topEvents: [],
   profileEvents: [],
   profileLikes: [],
+  queryDate: null,
 })
 
 export const getters = {
@@ -30,6 +31,9 @@ export const getters = {
   },
   profileLikes(state) {
     return state.profileLikes
+  },
+  queryDate(state) {
+    return state.queryDate
   },
 }
 
@@ -121,6 +125,7 @@ export const actions = {
         })
 
         commit('SET_EVENTS', events)
+        commit('SET_QUERY_DATE', date)
       }
     } catch (e) {
       console.error(e)
@@ -238,5 +243,8 @@ export const mutations = {
   },
   SET_PROFILE_LIKED_EVENTS(state, data) {
     state.profileLikes = data
+  },
+  SET_QUERY_DATE(state, data) {
+    state.queryDate = data
   },
 }

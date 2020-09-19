@@ -188,14 +188,12 @@ export default {
   // Get month events on initial load
   async asyncData({ store, params }) {
     try {
-      if (store.state.events.events.length === 0) {
-        const date = new Date()
-        await store.dispatch('events/getMonthEvents', {
-          date: { month: date.getMonth(), year: date.getFullYear() },
-        })
+      const date = new Date()
+      await store.dispatch('events/getMonthEvents', {
+        date: { month: date.getMonth(), year: date.getFullYear() },
+      })
 
-        store.dispatch('events/getTopEvents')
-      }
+      store.dispatch('events/getTopEvents')
     } catch (e) {
       console.error(e)
     }
