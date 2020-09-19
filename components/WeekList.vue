@@ -1,24 +1,26 @@
 <template>
   <div id="week-list">
-    <div v-if="!date || !date.month" class="row d-flex justify-content-center">
-      <div class="col-3 col-md-2">
-        <div class="loading-lg gradient w-100 rounded"></div>
+    <div v-show="!date || !date.month">
+      <div class="row d-flex justify-content-center">
+        <div class="col-3 col-md-2">
+          <div class="loading-lg gradient w-100 rounded"></div>
+        </div>
       </div>
     </div>
 
     <div class="row mb-3 d-flex justify-content-center">
       <div class="col-auto">
         <div class="row">
-          <div v-if="date && date.month" class="col-auto">
+          <div v-show="date && date.month" class="col-auto">
             <h3 class="mb-0">
               <span class="badge badge-dark d-none d-md-inline-block"
-                >{{ monthName(this.date.month).toUpperCase() }}
+                >{{ (monthName(this.date.month) || '').toUpperCase() }}
                 <span v-show="currentDate.year != date.year">{{
                   date.year
                 }}</span></span
               >
               <span class="badge badge-dark d-inline-block d-md-none"
-                >{{ monthName(this.date.month, 1).toUpperCase() }}
+                >{{ (monthName(this.date.month, 1) || '').toUpperCase() }}
                 <span v-show="currentDate.year != date.year">{{
                   date.year
                 }}</span></span
